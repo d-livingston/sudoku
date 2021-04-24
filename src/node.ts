@@ -1,12 +1,13 @@
-import {
-    Direction,
-    NodeInterface,
-    NodePredicateFunction,
-    NodeMapFunction,
-    NodeReduceCallback,
-} from "./types";
+import { Direction } from "./types";
 
-export default class Node implements NodeInterface {
+export type NodePredicateFunction = (node: Node) => boolean;
+export type NodeMapFunction<T> = (node: Node) => T;
+export type NodeReduceCallback = (
+    previousValue: Node,
+    currentNode: Node
+) => Node;
+
+export default class Node {
     public left: Node;
     public right: Node;
     public up: Node;
@@ -21,6 +22,7 @@ export default class Node implements NodeInterface {
         public readonly rowId: number = -1
     ) {
         this.isColumn = rowId < 0;
+        if (this.isColumn) this.column = this;
     }
 
     find(direction: Direction, predicate: NodePredicateFunction) {
