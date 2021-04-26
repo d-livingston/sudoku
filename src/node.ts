@@ -69,11 +69,11 @@ export default class Node {
         initialValue?: T
     ) {
         let result = initialValue;
-        let n: Node = this;
-        do {
+        let n = this[direction];
+        while (n && n !== this) {
             result = callback(result, n);
             n = n[direction];
-        } while (n && n !== this);
+        }
         return result;
     }
 }
