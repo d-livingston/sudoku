@@ -1,7 +1,7 @@
 import Node from "./node";
 
 export default class Network {
-    private readonly root: Node;
+    public readonly root: Node;
 
     static from(matrix: number[][]): Network {
         return new Network(
@@ -20,12 +20,51 @@ export default class Network {
         this.build(isNode);
     }
 
+    find(
+        predicate: (n: Node) => boolean,
+        { isColumn = true, minColumn = 0, maxColumn = this.columns + 1 } = {}
+    ): Node | undefined {
+        let c = this.root;
+        do {
+            c = c.right;
+            if (c.columnId < minColumn) continue;
+            if (c.columnId >= maxColumn) return undefined;
+            if (isColumn) {
+                if (predicate(c)) return c;
+            } else {
+                const n = c.find("down", predicate);
+                if (n) return n;
+            }
+        } while (c !== this.root);
+        return undefined;
+    }
+
+    filter(
+        predicate: (n: Node) => boolean,
+        { isColumn = true, minColumn = 0, maxColumn = this.columns + 1 } = {}
+    ) {
+        let nodes: Node[] = [];
+        let c = this.root;
+        do {
+            c = c.right;
+            if (c.columnId < minColumn) continue;
+            if (c.columnId >= maxColumn) break;
+            if (isColumn) {
+                if (predicate(c)) nodes.push(c);
+            } else {
+                const nodesInColumn = c.filter("down", predicate);
+                nodes = nodes.concat(nodesInColumn);
+            }
+        } while (c !== this.root);
+        return nodes;
+    }
+
     toMatrix(): number[][] {
         const matrix: number[][] = Array.from({ length: this.rows }, () =>
             Array.from({ length: this.columns }, () => 0)
         );
-        this.root.forEach("right", (c) => {
-            c.forEach("down", (n) => {
+        this.root.forEach("right", (c: Node) => {
+            c.forEach("down", (n: Node) => {
                 matrix[n.rowId][n.columnId] = 1;
             });
         });
