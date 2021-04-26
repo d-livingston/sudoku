@@ -85,3 +85,38 @@ describe("filter", () => {
         expect(network.filter((c: Node) => c.rowId === 1)).toEqual([]);
     });
 });
+
+describe("reduce", () => {
+    const network = Network.from([
+        [1, 0, 0],
+        [0, 1, 1],
+    ]);
+
+    it("reduces all columns to a single column", () => {
+        expect(
+            network.reduce((previous: Node, c: Node) => {
+                if (previous) {
+                    return c.columnId > previous.columnId ? c : previous;
+                } else {
+                    return c;
+                }
+            })
+        ).toEqual(network.root.left);
+    });
+
+    it("reduces all nodes to a single node", () => {
+        const result = network.reduce(
+            (previous: Node, n: Node) => {
+                if (previous) {
+                    return n.columnId > previous.columnId ? n : previous;
+                } else {
+                    return n;
+                }
+            },
+            undefined,
+            { isColumn: false }
+        );
+        console.log(result?.columnId, result?.rowId);
+        expect(result).toEqual(network.root.left.down);
+    });
+});

@@ -20,6 +20,26 @@ export default class Network {
         this.build(isNode);
     }
 
+    reduce<T>(
+        callback: (previousValue: T | undefined, currentNode: Node) => T,
+        initialValue?: T,
+        { isColumn = true, minColumn = 0, maxColumn = this.columns + 1 } = {}
+    ): T | undefined {
+        let result = initialValue;
+        let c = this.root;
+        do {
+            c = c.right;
+            if (c.columnId < minColumn) continue;
+            if (c.columnId >= maxColumn) break;
+            if (isColumn) {
+                result = callback(result, c);
+            } else {
+                result = c.reduce("down", callback, result);
+            }
+        } while (c !== this.root);
+        return result;
+    }
+
     find(
         predicate: (n: Node) => boolean,
         { isColumn = true, minColumn = 0, maxColumn = this.columns + 1 } = {}
@@ -142,10 +162,9 @@ export default class Network {
                 if (!isNode(rowIndex, columnIndex)) continue;
 
                 c.size++;
-                const n = c.reduce<Node>("down", (previous, current) => {
-                    if (!previous) return current;
-                    return current.rowId > previous.rowId ? current : previous;
-                });
+
+                let n = c;
+                while (n.down) n = n.down;
 
                 const next = new Node(columnIndex, rowIndex);
                 next.up = n;
