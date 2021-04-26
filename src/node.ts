@@ -44,6 +44,15 @@ export default class Node {
         return results;
     }
 
+    forEach(direction: Direction, callback: (n: Node) => void) {
+        let n = this[direction];
+        while (n && n !== this) {
+            callback(n);
+            n = n[direction];
+        }
+        return;
+    }
+
     map<T>(direction: Direction, callback: NodeMapFunction<T>) {
         const results: T[] = [];
         let n = this[direction];
@@ -54,13 +63,17 @@ export default class Node {
         return results;
     }
 
-    reduce(direction: Direction, callback: NodeReduceCallback) {
-        let result: Node = this;
-        let n = this[direction];
-        while (n && n !== this) {
-            result = <Node>callback(result, n);
+    reduce<T>(
+        direction: Direction,
+        callback: (previousValue: T | undefined, currentNode: Node) => T,
+        initialValue?: T
+    ) {
+        let result = initialValue;
+        let n: Node = this;
+        do {
+            result = callback(result, n);
             n = n[direction];
-        }
+        } while (n && n !== this);
         return result;
     }
 }

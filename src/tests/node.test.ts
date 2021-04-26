@@ -45,33 +45,53 @@ column.down.down.down.down = column;
 
 describe("find", () => {
     it("correctly finds a node in the given direction when there is one that matches", () => {
-        expect(column.find("down", (n) => n.rowId === 4)).toEqual(
-            column.down.down
-        );
+        const mockPredicate = jest.fn((n: Node) => n.rowId === 4);
+        const result = column.find("down", mockPredicate);
+        expect(mockPredicate).toHaveBeenCalledTimes(2);
+        expect(mockPredicate.mock.results[0].value).toBe(false);
+        expect(mockPredicate.mock.results[1].value).toBe(true);
+        expect(result).toEqual(column.down.down);
     });
 
     it("returns undefined when no node exists in the given direction", () => {
-        expect(column.find("down", (n) => n.rowId === 7)).toBeUndefined();
+        const mockPredicate = jest.fn((n: Node) => n.rowId === 7);
+        expect(column.find("down", mockPredicate)).toBeUndefined();
+        expect(mockPredicate).toHaveBeenCalledTimes(3);
     });
 
     it("returns undefined when there are no nodes in the given direction", () => {
-        expect(column.find("right", (n) => n.columnId === 8)).toBeUndefined();
+        const mockPredicate = jest.fn((n: Node) => n.rowId === 4);
+        expect(column.find("right", mockPredicate)).toBeUndefined();
+        expect(mockPredicate).not.toHaveBeenCalled();
     });
 });
 
 describe("filter", () => {
     it("correctly filters nodes when there are nodes in the given direction", () => {
-        expect(column.filter("down", (n) => n.rowId < 8)).toEqual([
+        const mockPredicate = jest.fn((n: Node) => n.rowId < 8);
+        expect(column.filter("down", mockPredicate)).toEqual([
             column.down,
             column.down.down,
         ]);
+        expect(mockPredicate).toHaveBeenCalledTimes(3);
     });
 
     it("correctly filters nodes when there are no nodes that match the predicate", () => {
-        expect(column.filter("down", (n) => n.rowId > 10)).toEqual([]);
+        const mockPredicate = jest.fn((n: Node) => n.rowId > 10);
+        expect(column.filter("down", mockPredicate)).toEqual([]);
+        expect(mockPredicate).toHaveBeenCalledTimes(3);
     });
 
     it("correctly filters when there are no nodes in the given direction", () => {
-        expect(column.filter("right", (n) => n.rowId === 5)).toEqual([]);
+        const mockPredicate = jest.fn((n: Node) => n.rowId > 11);
+        expect(column.filter("right", mockPredicate)).toEqual([]);
+    });
+});
+
+describe("forEach", () => {
+    it("correctly executes the callback function for each node in the direction", () => {
+        const mockCallback = jest.fn((_: Node) => {});
+        column.forEach("down", mockCallback);
+        expect(mockCallback).toHaveBeenCalledTimes(3);
     });
 });
