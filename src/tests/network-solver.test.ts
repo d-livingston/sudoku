@@ -1,0 +1,256 @@
+import NetworkSolver from "../network-solver";
+import Network from "../network";
+import Node from "../node";
+
+const matrix = [
+    [0, 1, 1, 0, 0, 0],
+    [1, 0, 0, 0, 0, 1],
+    [1, 1, 0, 1, 0, 0],
+    [0, 0, 1, 1, 0, 1],
+    [0, 0, 0, 1, 1, 0],
+];
+
+describe("cover", () => {
+    let network: Network;
+    let networkSolver: NetworkSolver;
+    beforeEach(() => {
+        network = Network.from(matrix);
+        networkSolver = new NetworkSolver();
+        networkSolver.setNetwork(network);
+    });
+
+    it("correctly covers a column in the matrix", () => {
+        networkSolver.cover(network.root.right);
+        expect(network.toMatrix()).toEqual([
+            [0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 1, 1, 0, 1],
+            [0, 0, 0, 1, 1, 0],
+        ]);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+
+    it("does nothing when the input is not a column", () => {
+        networkSolver.cover(network.root.right.down);
+        expect(network.toMatrix()).toEqual(matrix);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+
+    it("does nothing when the column has already been covered", () => {
+        const covered = network.root.right;
+        networkSolver.cover(covered);
+        networkSolver.cover(covered);
+        expect(network.toMatrix()).toEqual([
+            [0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 1, 1, 0, 1],
+            [0, 0, 0, 1, 1, 0],
+        ]);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+});
+
+describe("uncover", () => {
+    let network: Network,
+        networkSolver: NetworkSolver,
+        covered: Node,
+        coveredNode: Node;
+    beforeEach(() => {
+        network = Network.from(matrix);
+        networkSolver = new NetworkSolver();
+        networkSolver.setNetwork(network);
+        covered = network.root.right;
+        coveredNode = network.root.right.down;
+        networkSolver.cover(covered);
+    });
+
+    it("correctly uncovers a column in the matrix that has already been covered", () => {
+        networkSolver.uncover(covered);
+        expect(network.toMatrix()).toEqual(matrix);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+
+    it("correctly does nothing when the node is not a column", () => {
+        networkSolver.uncover(coveredNode);
+        expect(network.toMatrix()).toEqual([
+            [0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 1, 1, 0, 1],
+            [0, 0, 0, 1, 1, 0],
+        ]);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+
+    it("correctly does nothing when the column node is in the network", () => {
+        networkSolver.uncover(network.root.right);
+        expect(network.toMatrix()).toEqual([
+            [0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 1, 1, 0, 1],
+            [0, 0, 0, 1, 1, 0],
+        ]);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+});
+
+describe("remove", () => {
+    let network: Network;
+    let networkSolver: NetworkSolver;
+    beforeEach(() => {
+        network = Network.from(matrix);
+        networkSolver = new NetworkSolver();
+        networkSolver.setNetwork(network);
+    });
+
+    it("correctly removes a node in the matrix", () => {
+        networkSolver.remove(network.root.right.down);
+        expect(network.toMatrix()).toEqual([
+            [0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 1, 0],
+        ]);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+
+    it("correctly does nothing when the node is a column", () => {
+        networkSolver.remove(network.root.right);
+        expect(network.toMatrix()).toEqual(matrix);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+
+    it("correctly does nothing when the node is not in the matrix", () => {
+        const removed = network.root.right.down;
+        networkSolver.remove(removed);
+        networkSolver.remove(removed);
+        expect(network.toMatrix()).toEqual([
+            [0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 1, 0],
+        ]);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+});
+
+describe("unremove", () => {
+    let network: Network,
+        networkSolver: NetworkSolver,
+        removed: Node,
+        removedColumn: Node;
+    beforeEach(() => {
+        network = Network.from(matrix);
+        networkSolver = new NetworkSolver();
+        networkSolver.setNetwork(network);
+        removed = network.root.right.down;
+        removedColumn = network.root.right;
+        networkSolver.remove(removed);
+    });
+
+    it("correctly unremoves a node in the network that has already been removed", () => {
+        networkSolver.unremove(removed);
+        expect(network.toMatrix()).toEqual(matrix);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+
+    it("does nothing when trying to unremove a column", () => {
+        networkSolver.unremove(removedColumn);
+        expect(network.toMatrix()).toEqual([
+            [0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 1, 0],
+        ]);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+
+    it("does nothing when trying to unremove a node that is still in the network", () => {
+        networkSolver.unremove(network.root.right.down);
+        expect(network.toMatrix()).toEqual([
+            [0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 1, 0],
+        ]);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+});
+
+describe("hide", () => {
+    let network: Network;
+    let networkSolver: NetworkSolver;
+    beforeEach(() => {
+        network = Network.from(matrix);
+        networkSolver = new NetworkSolver();
+        networkSolver.setNetwork(network);
+    });
+
+    it("correctly hides a node in the network", () => {
+        networkSolver.hide(network.root.right.down);
+        expect(network.toMatrix()).toEqual([
+            [0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [1, 1, 0, 1, 0, 0],
+            [0, 0, 1, 1, 0, 1],
+            [0, 0, 0, 1, 1, 0],
+        ]);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+
+    it("does nothing when the input is not a column", () => {
+        networkSolver.hide(network.root.right);
+        expect(network.toMatrix()).toEqual(matrix);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+
+    it("does nothing when the column has already been covered", () => {
+        const hidden = network.root.right.down;
+        networkSolver.hide(hidden);
+        networkSolver.hide(hidden);
+        expect(network.toMatrix()).toEqual([
+            [0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [1, 1, 0, 1, 0, 0],
+            [0, 0, 1, 1, 0, 1],
+            [0, 0, 0, 1, 1, 0],
+        ]);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+});
+
+describe("unhide", () => {
+    let network: Network, networkSolver: NetworkSolver, hidden: Node;
+    beforeEach(() => {
+        network = Network.from(matrix);
+        networkSolver = new NetworkSolver();
+        networkSolver.setNetwork(network);
+        hidden = network.root.right.down;
+        networkSolver.hide(hidden);
+    });
+
+    it("correctly unhides a node in the network that has already been hidden", () => {
+        networkSolver.unhide(hidden);
+        expect(network.toMatrix()).toEqual(matrix);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+
+    it("correctly does nothing when the node is in the network", () => {
+        networkSolver.unhide(network.root.right.down);
+        expect(network.toMatrix()).toEqual([
+            [0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [1, 1, 0, 1, 0, 0],
+            [0, 0, 1, 1, 0, 1],
+            [0, 0, 0, 1, 1, 0],
+        ]);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+});
