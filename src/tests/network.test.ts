@@ -1,6 +1,8 @@
 import Network from "../network";
 import Node from "../node";
 
+// TODO: test reduce method more
+
 describe("from", () => {
     const matrix = [
         [0, 1, 1, 0, 0, 0],
@@ -116,7 +118,6 @@ describe("reduce", () => {
             undefined,
             { isColumn: false }
         );
-        console.log(result?.columnId, result?.rowId);
         expect(result).toEqual(network.root.left.down);
     });
 });

@@ -23,7 +23,7 @@ export default class Network {
     reduce<T>(
         callback: (previousValue: T | undefined, currentNode: Node) => T,
         initialValue?: T,
-        { isColumn = true, minColumn = 0, maxColumn = this.columns + 1 } = {}
+        { isColumn = true, minColumn = 0, maxColumn = this.columns } = {}
     ): T | undefined {
         let result = initialValue;
         let c = this.root;
@@ -42,7 +42,7 @@ export default class Network {
 
     find(
         predicate: (n: Node) => boolean,
-        { isColumn = true, minColumn = 0, maxColumn = this.columns + 1 } = {}
+        { isColumn = true, minColumn = 0, maxColumn = this.columns } = {}
     ): Node | undefined {
         let c = this.root;
         do {
@@ -61,7 +61,7 @@ export default class Network {
 
     filter(
         predicate: (n: Node) => boolean,
-        { isColumn = true, minColumn = 0, maxColumn = this.columns + 1 } = {}
+        { isColumn = true, minColumn = 0, maxColumn = this.columns } = {}
     ) {
         let nodes: Node[] = [];
         let c = this.root;
