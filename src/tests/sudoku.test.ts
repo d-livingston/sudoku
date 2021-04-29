@@ -7,15 +7,22 @@ import {
     cellsInSudoku9x9,
 } from "./fixtures/sudoku/reference";
 import { invalidSudokus9x9, validSudokus9x9 } from "./fixtures/sudoku/valid";
+import { solvedSudokus9x9 } from "./fixtures/sudoku/solutions";
 
 const sudoku9x9 = new Sudoku(9);
 
 describe("solve", () => {
     it("correctly solves Sudokus with only 1 solution", () => {
-        for (let sudoku of validSudokus9x9) {
+        for (let { sudoku, solution } of solvedSudokus9x9) {
             const solutions = sudoku9x9.solve(sudoku);
             expect(solutions).toHaveLength(1);
-            expect(sudoku9x9.isCompleteSudoku(solutions[0])).toBe(true);
+            expect(solutions[0]).toEqual(solution);
+        }
+    });
+
+    it("correctly returns an empty array when provided an invalid Sudoku", () => {
+        for (let sudoku of invalidSudokus9x9) {
+            expect(sudoku9x9.solve(sudoku)).toEqual([]);
         }
     });
 });
@@ -412,5 +419,16 @@ describe("isValidSudoku", () => {
     });
 });
 
-//TODO: add test for complete sudokus
-describe("isCompleteSudoku", () => {});
+describe("isCompleteSudoku", () => {
+    it("correctly determines that a complete Sudoku is complete", () => {
+        for (let { solution } of solvedSudokus9x9) {
+            expect(sudoku9x9.isCompleteSudoku(solution)).toBe(true);
+        }
+    });
+
+    it("correctly determines that an incomplete Sudoku is incomplete", () => {
+        for (let sudoku of validSudokus9x9) {
+            expect(sudoku9x9.isCompleteSudoku(sudoku)).toBe(false);
+        }
+    });
+});
