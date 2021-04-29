@@ -131,6 +131,10 @@ export default class Network {
         return true;
     }
 
+    public isEmpty(): boolean {
+        return this.root.right === this.root;
+    }
+
     private build(isNode: (row: number, column: number) => boolean) {
         this.buildColumns();
         this.buildRows(isNode);
