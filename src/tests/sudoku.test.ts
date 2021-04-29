@@ -6,6 +6,7 @@ import {
     squaresInSudoku9x9,
     cellsInSudoku9x9,
 } from "./fixtures/sudoku/reference";
+import { invalidSudokus9x9, validSudokus9x9 } from "./fixtures/sudoku/valid";
 
 const sudoku9x9 = new Sudoku(9);
 
@@ -383,6 +384,20 @@ describe("getValueOfNode", () => {
             expect(sudoku9x9.getValueOfNode(n)).toEqual(
                 (i % sudoku9x9.size) + 1
             );
+        }
+    });
+});
+
+describe("isValidSudoku", () => {
+    it("correctly determines that a valid Sudoku is valid", () => {
+        for (let sudoku of validSudokus9x9) {
+            expect(sudoku9x9.isValidSudoku(sudoku)).toBe(true);
+        }
+    });
+
+    it("correctly determines that an invalid Sudoku is invalid", () => {
+        for (let sudoku of invalidSudokus9x9) {
+            expect(sudoku9x9.isValidSudoku(sudoku)).toBe(false);
         }
     });
 });

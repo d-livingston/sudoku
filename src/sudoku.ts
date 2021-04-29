@@ -1,5 +1,8 @@
 import Node from "./node";
 
+/**
+ * Handles all Sudoku-related operations.
+ */
 export default class Sudoku {
     public readonly sqrt: number;
     public readonly rowConstraint: number;
@@ -21,13 +24,49 @@ export default class Sudoku {
     }
 
     /**
+     * Determines if a Sudoku board is valid.
+     * @param sudoku A matrix of numbers representing a Sudoku board.
+     * @returns True if the given matrix represents a valid Sudoku board; false otherwise.
+     */
+    public isValidSudoku(sudoku: number[][]): boolean {
+        if (sudoku.length !== this.size) return false;
+        if (sudoku.some((row) => row.length !== this.size)) return false;
+
+        for (let i = 0; i < this.size; i++) {
+            const valuesInRow = this.getValuesInHouse(
+                sudoku,
+                this.getCellIdsInRow(i)
+            );
+            if (!this.isValidHouse(valuesInRow)) return false;
+        }
+
+        for (let i = 0; i < this.size; i++) {
+            const valuesInColumn = this.getValuesInHouse(
+                sudoku,
+                this.getCellIdsInColumn(i)
+            );
+            if (!this.isValidHouse(valuesInColumn)) return false;
+        }
+
+        for (let i = 0; i < this.size; i++) {
+            const valuesInSquare = this.getValuesInHouse(
+                sudoku,
+                this.getCellIdsInSquare(i)
+            );
+            if (!this.isValidHouse(valuesInSquare)) return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Gets the cell ID of the cell in the given row and column.
      * @param row The row ID of the cell.
      * @param column The column ID of the cell.
      * @returns The cell ID.
      */
     public getCellId(row: number, column: number): number {
-        return this.isValidHouse(row) && this.isValidHouse(column)
+        return this.isValidHouseId(row) && this.isValidHouseId(column)
             ? this._getCellId(row, column)
             : -1;
     }
@@ -38,7 +77,7 @@ export default class Sudoku {
      * @returns The row ID of the cell.
      */
     public getRowId(cell: number): number {
-        return this.isValidCell(cell) ? this._getRowId(cell) : -1;
+        return this.isValidCellId(cell) ? this._getRowId(cell) : -1;
     }
 
     /**
@@ -47,7 +86,7 @@ export default class Sudoku {
      * @returns The column ID of the cell.
      */
     public getColumnId(cell: number): number {
-        return this.isValidCell(cell) ? this._getColumnId(cell) : -1;
+        return this.isValidCellId(cell) ? this._getColumnId(cell) : -1;
     }
 
     /**
@@ -56,7 +95,7 @@ export default class Sudoku {
      * @returns The square ID of the cell.
      */
     public getSquareId(cell: number): number {
-        return this.isValidCell(cell) ? this._getSquareId(cell) : -1;
+        return this.isValidCellId(cell) ? this._getSquareId(cell) : -1;
     }
 
     /**
@@ -65,7 +104,7 @@ export default class Sudoku {
      * @returns An object containing the row ID, column ID, and square ID of the cell.
      */
     public getHouseIdsOfCell(cell: number) {
-        const isValid = this.isValidCell(cell);
+        const isValid = this.isValidCellId(cell);
         return {
             row: isValid ? this._getRowId(cell) : -1,
             column: isValid ? this._getColumnId(cell) : -1,
@@ -80,7 +119,7 @@ export default class Sudoku {
      */
     public getCellIdsInRow(row: number): number[] {
         const firstId = row * this.size;
-        return this.isValidHouse(row)
+        return this.isValidHouseId(row)
             ? Array.from({ length: this.size }, (_, i) => i + firstId)
             : [];
     }
@@ -91,7 +130,7 @@ export default class Sudoku {
      * @returns The cell IDs in the given column.
      */
     public getCellIdsInColumn(column: number): number[] {
-        return this.isValidHouse(column)
+        return this.isValidHouseId(column)
             ? Array.from(
                   { length: this.size },
                   (_, i) => i * this.size + column
@@ -105,7 +144,7 @@ export default class Sudoku {
      * @returns The cell IDs in the given square.
      */
     public getCellIdsInSquare(square: number): number[] {
-        if (this.isValidHouse(square)) {
+        if (this.isValidHouseId(square)) {
             const firstId =
                 Math.floor(square / this.sqrt) * this.sqrt * this.size +
                 (square % this.sqrt) * this.sqrt;
@@ -174,15 +213,53 @@ export default class Sudoku {
             : this._getValueOfRowNode(node);
     }
 
+    /**
+     * Determines if the given row ID and column ID of a node corresponds to a node in the Sudoku network.
+     * @param row The row ID of the node in the network.
+     * @param column The column ID of the node in the network.
+     * @returns True if the node should be in the network; false otherwise.
+     */
+    public isNodeInNetwork(row: number, column: number): boolean {
+        if (column < this.rowConstraint)
+            return this.isNodeInFirstQuadrant(row, column);
+        else if (column < this.columnConstraint)
+            return this.isNodeInSecondQuadrant(row, column);
+        else if (column < this.squareConstraint)
+            return this.isNodeInThirdQuadrant(row, column);
+        else return this.isNodeInFourthQuadrant(row, column);
+    }
+
+    private getValuesInHouse(
+        sudoku: number[][],
+        cellsInHouse: number[]
+    ): number[] {
+        return cellsInHouse.map((cell) => {
+            const row = this._getRowId(cell);
+            const column = this._getColumnId(cell);
+            return sudoku[row][column];
+        });
+    }
+
+    private isValidHouse(house: number[]): boolean {
+        if (house.length !== this.size) return false;
+        const used = new Set<number>();
+        for (let value of house) {
+            if (value === 0) continue;
+            else if (used.has(value)) return false;
+            else used.add(value);
+        }
+        return true;
+    }
+
     private isValidSudokuSize(size: number): boolean {
         return Number.isInteger(size) && Number.isInteger(Math.sqrt(size));
     }
 
-    private isValidCell(cell: number): boolean {
+    private isValidCellId(cell: number): boolean {
         return cell >= 0 && cell < this.rowConstraint && Number.isInteger(cell);
     }
 
-    private isValidHouse(house: number): boolean {
+    private isValidHouseId(house: number): boolean {
         return house >= 0 && house < this.size && Number.isInteger(house);
     }
 
@@ -260,5 +337,30 @@ export default class Sudoku {
     private _getValueOfColumnNode({ columnId }: Node): number {
         if (columnId >= this.rowConstraint) return (columnId % this.size) + 1;
         else return -1;
+    }
+
+    private isNodeInFirstQuadrant(row: number, column: number): boolean {
+        return column === Math.floor(row / this.size);
+    }
+
+    private isNodeInSecondQuadrant(row: number, column: number): boolean {
+        return (
+            column - this.rowConstraint ===
+            Math.floor(row / this.rowConstraint) * this.size + (row % this.size)
+        );
+    }
+
+    private isNodeInThirdQuadrant(row: number, column: number) {
+        return column - this.columnConstraint === row % this.rowConstraint;
+    }
+
+    private isNodeInFourthQuadrant(row: number, column: number) {
+        return (
+            column - this.squareConstraint ===
+            Math.floor(row / this.squareConstraint) * this.sqrt * this.size +
+                (Math.floor(row / (this.sqrt * this.size)) % this.sqrt) *
+                    this.size +
+                (row % this.size)
+        );
     }
 }
