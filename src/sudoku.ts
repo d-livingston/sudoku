@@ -1,4 +1,6 @@
 import Node from "./node";
+import Network from "./network";
+import NetworkSolver from "./network-solver";
 
 /**
  * Handles all Sudoku-related operations.
@@ -11,6 +13,8 @@ export default class Sudoku {
     public readonly rowsInNetwork: number;
     public readonly columnsInNetwork: number;
 
+    private readonly networkSolver: NetworkSolver;
+
     constructor(public readonly size: number) {
         if (!this.isValidSudokuSize(size))
             throw new Error("Not a valid Sudoku size.");
@@ -21,6 +25,40 @@ export default class Sudoku {
         this.squareConstraint = this.rowConstraint * 3;
         this.columnsInNetwork = this.rowConstraint * 4;
         this.rowsInNetwork = this.rowConstraint * size;
+
+        this.networkSolver = new NetworkSolver();
+    }
+
+    /**
+     * Solves a Sudoku board, for multiple solutions, if necessary.
+     * @param sudoku A matrix of numbers representing a Sudoku board.
+     * @returns An array of solutions of the given Sudoku problem.
+     */
+    public solve(sudoku: number[][]): number[][][] {
+        if (!this.isValidSudoku(sudoku)) return [];
+
+        const sudokuNetwork = new Network(
+            this.rowsInNetwork,
+            this.columnsInNetwork,
+            this.isNodeInNetwork.bind(this)
+        );
+        this.networkSolver.setNetwork(sudokuNetwork);
+
+        const nodesMatchingSudoku = sudokuNetwork.filter(
+            (n: Node) => {
+                const row = this._getRowIdOfRowNode(n);
+                const column = this._getColumnIdOfRowNode(n);
+                const value = this._getValueOfRowNode(n);
+                return sudoku[row][column] === value;
+            },
+            { isColumn: false, maxColumn: this.rowConstraint }
+        );
+        nodesMatchingSudoku.forEach((n) => this.networkSolver.addToSolution(n));
+
+        const networkSolutions = this.networkSolver.solve();
+        return networkSolutions.map((networkSolution) =>
+            this.getSudokuFromNetworkSolution(networkSolution)
+        );
     }
 
     /**
@@ -56,6 +94,20 @@ export default class Sudoku {
             if (!this.isValidHouse(valuesInSquare)) return false;
         }
 
+        return true;
+    }
+
+    /**
+     * Determines if a Sudoku board is complete.
+     * @param sudoku A matrix of numbers representing a Sudoku board.
+     * @returns True if the given matrix represents a complete Sudoku board; false otherwise.
+     */
+    public isCompleteSudoku(sudoku: number[][]): boolean {
+        if (!this.isValidSudoku(sudoku)) return false;
+
+        for (let row of sudoku) {
+            if (!row.every((value) => value !== 0)) return false;
+        }
         return true;
     }
 
@@ -245,6 +297,7 @@ export default class Sudoku {
         const used = new Set<number>();
         for (let value of house) {
             if (value === 0) continue;
+            else if (!this.isValidValue(value)) return false;
             else if (used.has(value)) return false;
             else used.add(value);
         }
@@ -261,6 +314,10 @@ export default class Sudoku {
 
     private isValidHouseId(house: number): boolean {
         return house >= 0 && house < this.size && Number.isInteger(house);
+    }
+
+    private isValidValue(value: number): boolean {
+        return value >= 1 && value <= this.size && Number.isInteger(value);
     }
 
     private _getCellId(row: number, column: number): number {
@@ -361,6 +418,23 @@ export default class Sudoku {
                 (Math.floor(row / (this.sqrt * this.size)) % this.sqrt) *
                     this.size +
                 (row % this.size)
+        );
+    }
+
+    private getSudokuFromNetworkSolution(networkSolution: Node[]): number[][] {
+        const sudoku = this.createEmptySudoku();
+        networkSolution.forEach((n) => {
+            const row = this.getRowIdOfNode(n);
+            const column = this.getColumnIdOfNode(n);
+            const value = this.getValueOfNode(n);
+            if (value !== -1) sudoku[row][column] = value;
+        });
+        return sudoku;
+    }
+
+    private createEmptySudoku(): number[][] {
+        return Array.from({ length: this.size }, () =>
+            Array.from({ length: this.size }, () => 0)
         );
     }
 }

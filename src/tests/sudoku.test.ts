@@ -10,6 +10,16 @@ import { invalidSudokus9x9, validSudokus9x9 } from "./fixtures/sudoku/valid";
 
 const sudoku9x9 = new Sudoku(9);
 
+describe("solve", () => {
+    it("correctly solves Sudokus with only 1 solution", () => {
+        for (let sudoku of validSudokus9x9) {
+            const solutions = sudoku9x9.solve(sudoku);
+            expect(solutions).toHaveLength(1);
+            expect(sudoku9x9.isCompleteSudoku(solutions[0])).toBe(true);
+        }
+    });
+});
+
 describe("getCellId", () => {
     it("gets the correct cell id when provided a valid row and column", () => {
         for (let row = 0; row < sudoku9x9.size; row++) {
@@ -401,3 +411,6 @@ describe("isValidSudoku", () => {
         }
     });
 });
+
+//TODO: add test for complete sudokus
+describe("isCompleteSudoku", () => {});
