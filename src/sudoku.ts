@@ -258,7 +258,7 @@ export default class Sudoku {
     }
 
     private _getValueOfColumnNode({ columnId }: Node): number {
-        if (columnId >= this.rowConstraint) return columnId;
+        if (columnId >= this.rowConstraint) return (columnId % this.size) + 1;
         else return -1;
     }
 }

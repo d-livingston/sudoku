@@ -197,7 +197,7 @@ describe("getRowIdOfNode", () => {
         }
     });
 
-    it("gets the correct row ID when provided a column node in the other quadrants", () => {
+    it("returns -1 when provided a column node in the other quadrants", () => {
         for (
             let i = sudoku9x9.columnConstraint;
             i < sudoku9x9.columnsInNetwork;
@@ -209,13 +209,11 @@ describe("getRowIdOfNode", () => {
     });
 
     it("gets the correct row ID when provided a row node", () => {
-        let count = 0;
         for (let i = 0; i < sudoku9x9.rowsInNetwork; i++) {
             const n = new Node(5, i);
             expect(sudoku9x9.getRowIdOfNode(n)).toEqual(
-                Math.floor(count / sudoku9x9.rowConstraint)
+                Math.floor(i / sudoku9x9.rowConstraint)
             );
-            count++;
         }
     });
 });
@@ -245,7 +243,7 @@ describe("getColumnIdOfNode", () => {
         }
     });
 
-    it("gets the correct column ID when provided a column node in the other quadrants", () => {
+    it("returns -1 when provided a column node in the other quadrants", () => {
         for (
             let i = sudoku9x9.rowConstraint;
             i < sudoku9x9.columnConstraint;
@@ -266,18 +264,15 @@ describe("getColumnIdOfNode", () => {
     });
 
     it("gets the correct column ID when provided a row node", () => {
-        let count = 0;
         for (let i = 0; i < sudoku9x9.rowsInNetwork; i++) {
             const n = new Node(5, i);
             expect(sudoku9x9.getColumnIdOfNode(n)).toEqual(
-                Math.floor(count / sudoku9x9.size) % sudoku9x9.size
+                Math.floor(i / sudoku9x9.size) % sudoku9x9.size
             );
-            count++;
         }
     });
 });
 
-// TODO: keep fixing this
 describe("getSquareIdOfNode", () => {
     it("gets the correct square ID when provided a column node in the first quadrant", () => {
         for (let i = 0; i < sudoku9x9.rowConstraint; i++) {
@@ -303,7 +298,7 @@ describe("getSquareIdOfNode", () => {
         }
     });
 
-    it("gets the correct square ID when provided a column node in the other quadrants", () => {
+    it("returns -1 when provided a column node in the other quadrants", () => {
         for (
             let i = sudoku9x9.rowConstraint;
             i < sudoku9x9.squareConstraint;
@@ -315,13 +310,79 @@ describe("getSquareIdOfNode", () => {
     });
 
     it("gets the correct square ID when provided a row node", () => {
-        let count = 0;
         for (let i = 0; i < sudoku9x9.rowsInNetwork; i++) {
             const n = new Node(5, i);
             expect(sudoku9x9.getSquareIdOfNode(n)).toEqual(
-                Math.floor(count / sudoku9x9.rowConstraint)
+                sudoku9x9.getSquareId(
+                    sudoku9x9.getCellId(
+                        sudoku9x9.getRowIdOfNode(n),
+                        sudoku9x9.getColumnIdOfNode(n)
+                    )
+                )
             );
-            count++;
+        }
+    });
+});
+
+describe("getCellIdOfNode", () => {
+    it("gets the correct cell ID when provided a column node in the first quadrant", () => {
+        for (let i = 0; i < sudoku9x9.rowConstraint; i++) {
+            const c = new Node(i);
+            expect(sudoku9x9.getCellIdOfNode(c)).toEqual(i);
+        }
+    });
+
+    it("returns -1 when provided a column node in the other quadrants", () => {
+        for (
+            let i = sudoku9x9.rowConstraint;
+            i < sudoku9x9.columnsInNetwork;
+            i++
+        ) {
+            const c = new Node(i);
+            expect(sudoku9x9.getCellIdOfNode(c)).toEqual(-1);
+        }
+    });
+
+    it("gets the correct cell ID when provided a row node", () => {
+        for (let i = 0; i < sudoku9x9.rowsInNetwork; i++) {
+            const n = new Node(5, i);
+            expect(sudoku9x9.getCellIdOfNode(n)).toEqual(
+                sudoku9x9.getCellId(
+                    sudoku9x9.getRowIdOfNode(n),
+                    sudoku9x9.getColumnIdOfNode(n)
+                )
+            );
+        }
+    });
+});
+
+describe("getValueOfNode", () => {
+    it("gets the correct value when provided a column node in the other quadrants", () => {
+        for (
+            let i = sudoku9x9.rowConstraint;
+            i < sudoku9x9.columnsInNetwork;
+            i++
+        ) {
+            const c = new Node(i);
+            expect(sudoku9x9.getValueOfNode(c)).toEqual(
+                (i % sudoku9x9.size) + 1
+            );
+        }
+    });
+
+    it("returns -1 when provided a column node in the first quadrants", () => {
+        for (let i = 0; i < sudoku9x9.rowConstraint; i++) {
+            const c = new Node(i);
+            expect(sudoku9x9.getValueOfNode(c)).toEqual(-1);
+        }
+    });
+
+    it("gets the correct cell ID when provided a row node", () => {
+        for (let i = 0; i < sudoku9x9.rowsInNetwork; i++) {
+            const n = new Node(5, i);
+            expect(sudoku9x9.getValueOfNode(n)).toEqual(
+                (i % sudoku9x9.size) + 1
+            );
         }
     });
 });
