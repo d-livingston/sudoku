@@ -10,9 +10,22 @@ export enum RemoveTypes {
 export default class NetworkSolver {
     public network: Network;
     private history: { type: RemoveTypes; node: Node }[];
+    private solutions: Node[][];
+    private currentSolution: Node[];
 
     constructor(network?: Network) {
         if (network) this.setNetwork(network);
+    }
+
+    /**
+     * Solves the network for as many solutions as it has.
+     * @returns A list of solutions for the network.
+     */
+    public solve(): Node[][] {
+        this.solutions = [];
+        this.currentSolution = [];
+        this.search();
+        return this.solutions;
     }
 
     /**
@@ -197,5 +210,54 @@ export default class NetworkSolver {
 
     private addEventToHistory(type: RemoveTypes, node: Node) {
         this.history.push({ type, node });
+    }
+
+    private search({
+        onSolutionFound,
+        stopSolving,
+    }: {
+        onSolutionFound?: () => void;
+        stopSolving?: () => boolean;
+    } = {}) {
+        if (stopSolving && stopSolving()) return;
+
+        if (this.network.isEmpty()) {
+            onSolutionFound && onSolutionFound();
+            this.addSolution();
+        } else {
+            const c: Node = this.network.reduce(
+                (smallestC: Node, currentC: Node) => {
+                    if (!smallestC) return currentC;
+                    return currentC.size < smallestC.size
+                        ? currentC
+                        : smallestC;
+                }
+            )!;
+            this.cover(c);
+            c.forEach("down", (r: Node) => {
+                this.addNodeToSolution(r);
+                r.forEach("right", (j: Node) => {
+                    this.cover(j.column);
+                });
+                this.search({ onSolutionFound, stopSolving });
+                r.forEach("left", (_: Node) => {
+                    this.undo();
+                });
+                this.removeLastNodeFromSolution();
+            });
+            this.undo();
+        }
+    }
+
+    private addSolution(): void {
+        this.solutions.push([...this.currentSolution]);
+    }
+
+    private addNodeToSolution(n: Node): void {
+        this.currentSolution.push(n);
+    }
+
+    private removeLastNodeFromSolution(): void {
+        this.currentSolution.pop();
     }
 }

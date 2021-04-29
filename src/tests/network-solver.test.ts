@@ -10,6 +10,52 @@ const matrix = [
     [0, 0, 0, 1, 1, 0],
 ];
 
+describe("solve", () => {
+    it("correctly solves a basic network that only has one solution", () => {
+        const networkSolver = new NetworkSolver(
+            Network.from([
+                [1, 0, 0, 0],
+                [0, 1, 0, 1],
+                [1, 1, 0, 1],
+                [1, 0, 1, 0],
+            ])
+        );
+        const solutions = networkSolver.solve();
+        expect(solutions).toHaveLength(1);
+        expect(solutions[0]).toContainEqual(
+            expect.objectContaining({ rowId: 1 })
+        );
+        expect(solutions[0]).toContainEqual(
+            expect.objectContaining({ rowId: 3 })
+        );
+    });
+
+    it("correctly solves a basic network that has two solutions", () => {
+        const networkSolver = new NetworkSolver(
+            Network.from([
+                [1, 0, 0, 1],
+                [0, 1, 0, 1],
+                [0, 1, 0, 1],
+                [1, 0, 1, 0],
+            ])
+        );
+        const solutions = networkSolver.solve();
+        expect(solutions).toHaveLength(2);
+        expect(solutions).toContainEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ rowId: 1 }),
+                expect.objectContaining({ rowId: 3 }),
+            ])
+        );
+        expect(solutions).toContainEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ rowId: 2 }),
+                expect.objectContaining({ rowId: 3 }),
+            ])
+        );
+    });
+});
+
 describe("cover", () => {
     let network: Network;
     let networkSolver: NetworkSolver;
