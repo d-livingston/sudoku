@@ -13,26 +13,30 @@ export default class NetworkSolver {
     private solutions: Node[][];
     private currentSolution: Node[] = [];
 
-    /**
-     * Solves a given network for as many solutions as it has.
-     */
-    static solve(network: Network): Node[][] {
-        const solver = new NetworkSolver(network);
-        const solutions = solver.solve();
-        return solutions;
-    }
-
     constructor(network?: Network) {
         if (network) this.setNetwork(network);
     }
 
     /**
      * Solves the network for as many solutions as it has.
+     * @param options Options for solving the network.
      * @returns A list of solutions for the network.
      */
-    public solve(): Node[][] {
+    public solve({ findOne = false }: { findOne?: boolean } = {}): Node[][] {
         this.solutions = [];
-        this.search();
+
+        let onSolutionFound = undefined;
+        let stopSolving = undefined;
+
+        if (findOne) {
+            let shouldStopSolving = false;
+            onSolutionFound = () => {
+                shouldStopSolving = true;
+            };
+            stopSolving = () => shouldStopSolving;
+        }
+
+        this.search({ onSolutionFound, stopSolving });
         return this.solutions;
     }
 

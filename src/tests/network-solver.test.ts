@@ -54,6 +54,21 @@ describe("solve", () => {
             ])
         );
     });
+
+    describe("findOne flag", () => {
+        it("correctly stops at one solution when the findOne flag is set", () => {
+            const networkSolver = new NetworkSolver(
+                Network.from([
+                    [1, 0, 0, 1],
+                    [0, 1, 0, 1],
+                    [0, 1, 0, 1],
+                    [1, 0, 1, 0],
+                ])
+            );
+            const solutions = networkSolver.solve({ findOne: true });
+            expect(solutions).toHaveLength(1);
+        });
+    });
 });
 
 describe("cover", () => {
