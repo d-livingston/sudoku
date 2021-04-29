@@ -29,6 +29,10 @@ export default class Sudoku {
         this.networkSolver = new NetworkSolver();
     }
 
+    public generate() {
+        return this._generateCompleteSudoku();
+    }
+
     /**
      * Solves a Sudoku board, for multiple solutions, if necessary.
      * @param sudoku A matrix of numbers representing a Sudoku board.
@@ -37,14 +41,8 @@ export default class Sudoku {
     public solve(sudoku: number[][]): number[][][] {
         if (!this.isValidSudoku(sudoku)) return [];
 
-        const sudokuNetwork = new Network(
-            this.rowsInNetwork,
-            this.columnsInNetwork,
-            this.isNodeInNetwork.bind(this)
-        );
-        this.networkSolver.setNetwork(sudokuNetwork);
-
-        const nodesMatchingSudoku = sudokuNetwork.filter(
+        this.setNetworkToEmptySudoku();
+        const nodesMatchingSudoku = this.networkSolver.network.filter(
             (n: Node) => {
                 const row = this._getRowIdOfRowNode(n);
                 const column = this._getColumnIdOfRowNode(n);
@@ -421,6 +419,16 @@ export default class Sudoku {
         );
     }
 
+    private setNetworkToEmptySudoku(): void {
+        this.networkSolver.setNetwork(
+            new Network(
+                this.rowsInNetwork,
+                this.columnsInNetwork,
+                this.isNodeInNetwork.bind(this)
+            )
+        );
+    }
+
     private getSudokuFromNetworkSolution(networkSolution: Node[]): number[][] {
         const sudoku = this.createEmptySudoku();
         networkSolution.forEach((n) => {
@@ -436,5 +444,31 @@ export default class Sudoku {
         return Array.from({ length: this.size }, () =>
             Array.from({ length: this.size }, () => 0)
         );
+    }
+
+    private _generateCompleteSudoku(): number[][] {
+        this.setNetworkToEmptySudoku();
+        const cells = new Set(
+            this.getCellIdsInRow(0)
+                .concat(this.getCellIdsInColumn(0))
+                .concat(this.getCellIdsInSquare(0))
+        );
+        this._fillCellsInNetworkRandomly([...cells]);
+        const networkSolutions = this.networkSolver.solve({ findOne: true });
+        return this.getSudokuFromNetworkSolution(networkSolutions[0]);
+    }
+
+    private _fillCellsInNetworkRandomly(cells: number[]): void {
+        cells.forEach((cell) => {
+            const c = this.networkSolver.network.find(
+                (node: Node) => node.columnId === cell
+            );
+            if (!c) return;
+            const randomTarget = Math.floor(Math.random() * c.size);
+            let count = 0;
+            const n = c.find("down", (_: Node) => count++ === randomTarget);
+            if (!n) return;
+            this.networkSolver.addToSolution(n);
+        });
     }
 }
