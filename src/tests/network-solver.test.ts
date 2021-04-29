@@ -254,3 +254,37 @@ describe("unhide", () => {
         expect(network.isFullyConnected()).toBe(true);
     });
 });
+
+describe("undo/reset", () => {
+    let network: Network,
+        networkSolver: NetworkSolver,
+        matrixAfterFirst: number[][],
+        matrixAfterSecond: number[][];
+    beforeEach(() => {
+        network = Network.from(matrix);
+        networkSolver = new NetworkSolver(network);
+        networkSolver.hide(network.root.right.down);
+        matrixAfterFirst = network.toMatrix();
+        networkSolver.remove(network.root.left.left.down);
+        matrixAfterSecond = network.toMatrix();
+        networkSolver.cover(network.root.right);
+    });
+
+    it("correctly undo-s the last event", () => {
+        networkSolver.undo();
+        expect(network.toMatrix()).toEqual(matrixAfterSecond);
+        expect(network.isFullyConnected()).toBe(true);
+        networkSolver.undo();
+        expect(network.toMatrix()).toEqual(matrixAfterFirst);
+        expect(network.isFullyConnected()).toBe(true);
+        networkSolver.undo();
+        expect(network.toMatrix()).toEqual(matrix);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+
+    it("correctly resets the network", () => {
+        networkSolver.reset();
+        expect(network.toMatrix()).toEqual(matrix);
+        expect(network.isFullyConnected()).toBe(true);
+    });
+});

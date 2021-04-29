@@ -1,11 +1,48 @@
 import Network from "./network";
 import Node from "./node";
 
+export enum RemoveTypes {
+    HIDE = "hide",
+    COVER = "cover",
+    REMOVE = "remove",
+}
+
 export default class NetworkSolver {
     public network: Network;
+    private history: { type: RemoveTypes; node: Node }[];
 
     constructor(network?: Network) {
         if (network) this.setNetwork(network);
+    }
+
+    /**
+     * Resets the current network to its starting state.
+     */
+    public reset(): void {
+        while (this.history.length !== 0) {
+            this.undo();
+        }
+    }
+
+    /**
+     * Undo-s the last node that is removed.
+     */
+    public undo(): void {
+        const event = this.history.pop();
+        switch (event?.type) {
+            case RemoveTypes.HIDE: {
+                this.unhide(event.node);
+                break;
+            }
+            case RemoveTypes.COVER: {
+                this.uncover(event.node);
+                break;
+            }
+            case RemoveTypes.REMOVE: {
+                this.unremove(event.node);
+                break;
+            }
+        }
     }
 
     /**
@@ -16,6 +53,7 @@ export default class NetworkSolver {
     public cover(c: Node): void {
         if (this.network.find((n: Node) => c === n, { isColumn: true })) {
             this._cover(c);
+            this.addEventToHistory(RemoveTypes.COVER, c);
         }
     }
 
@@ -41,6 +79,7 @@ export default class NetworkSolver {
             this.network.find((node: Node) => n === node, { isColumn: false })
         ) {
             this._remove(n);
+            this.addEventToHistory(RemoveTypes.REMOVE, n);
         }
     }
 
@@ -66,6 +105,7 @@ export default class NetworkSolver {
             this.network.find((node: Node) => n === node, { isColumn: false })
         ) {
             this._hide(n);
+            this.addEventToHistory(RemoveTypes.HIDE, n);
         }
     }
 
@@ -88,6 +128,7 @@ export default class NetworkSolver {
      */
     public setNetwork(network: Network): void {
         this.network = network;
+        this.history = [];
     }
 
     private _cover(c: Node): void {
@@ -152,5 +193,9 @@ export default class NetworkSolver {
         n.column.size++;
         n.up.down = n;
         n.down.up = n;
+    }
+
+    private addEventToHistory(type: RemoveTypes, node: Node) {
+        this.history.push({ type, node });
     }
 }
