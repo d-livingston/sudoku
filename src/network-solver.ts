@@ -11,7 +11,7 @@ export default class NetworkSolver {
     public network: Network;
     private history: { type: RemoveTypes; node: Node }[];
     private solutions: Node[][];
-    private currentSolution: Node[];
+    private currentSolution: Node[] = [];
 
     /**
      * Solves a given network for as many solutions as it has.
@@ -32,9 +32,21 @@ export default class NetworkSolver {
      */
     public solve(): Node[][] {
         this.solutions = [];
-        this.currentSolution = [];
         this.search();
         return this.solutions;
+    }
+
+    /**
+     * Adds a node to the solution of the network.
+     * @param n A row node.
+     */
+    public addToSolution(n: Node): void {
+        if (
+            this.network.find((node: Node) => n === node, { isColumn: false })
+        ) {
+            this.addNodeToSolution(n);
+            this._remove(n);
+        }
     }
 
     /**
