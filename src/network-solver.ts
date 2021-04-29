@@ -18,6 +18,30 @@ export default class NetworkSolver {
     }
 
     /**
+     * Determines if the network has multiple solutions.
+     * @returns True if the network has multiple solutions; false otherwise.
+     */
+    public hasMultipleSolutions(): boolean {
+        this.solutions = [];
+
+        let hasMultipleSolutions = false,
+            stopSolving = false,
+            solutionFound = false;
+        this.search({
+            onSolutionFound: () => {
+                if (solutionFound) {
+                    stopSolving = true;
+                    hasMultipleSolutions = true;
+                } else {
+                    solutionFound = true;
+                }
+            },
+            stopSolving: () => stopSolving,
+        });
+        return hasMultipleSolutions;
+    }
+
+    /**
      * Solves the network for as many solutions as it has.
      * @param options Options for solving the network.
      * @returns A list of solutions for the network.

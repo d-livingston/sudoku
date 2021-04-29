@@ -10,6 +10,32 @@ const matrix = [
     [0, 0, 0, 1, 1, 0],
 ];
 
+describe("hasMultipleSolutions", () => {
+    it("correctly determines a network with one solution only has one solution", () => {
+        const networkSolver = new NetworkSolver(
+            Network.from([
+                [1, 0, 0, 0],
+                [0, 1, 0, 1],
+                [1, 1, 0, 1],
+                [1, 0, 1, 0],
+            ])
+        );
+        expect(networkSolver.hasMultipleSolutions()).toBe(false);
+    });
+
+    it("correctly determines a network with multiple solutions has multiple solutions", () => {
+        const networkSolver = new NetworkSolver(
+            Network.from([
+                [1, 0, 0, 1],
+                [0, 1, 0, 1],
+                [0, 1, 0, 1],
+                [1, 0, 1, 0],
+            ])
+        );
+        expect(networkSolver.hasMultipleSolutions()).toBe(true);
+    });
+});
+
 describe("solve", () => {
     it("correctly solves a basic network that only has one solution", () => {
         const networkSolver = new NetworkSolver(
