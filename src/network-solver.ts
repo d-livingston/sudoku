@@ -13,6 +13,15 @@ export default class NetworkSolver {
     private solutions: Node[][];
     private currentSolution: Node[];
 
+    /**
+     * Solves a given network for as many solutions as it has.
+     */
+    static solve(network: Network): Node[][] {
+        const solver = new NetworkSolver(network);
+        const solutions = solver.solve();
+        return solutions;
+    }
+
     constructor(network?: Network) {
         if (network) this.setNetwork(network);
     }
