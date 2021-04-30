@@ -13,8 +13,6 @@ export default class Sudoku {
     public readonly rowsInNetwork: number;
     public readonly columnsInNetwork: number;
 
-    private readonly networkSolver: NetworkSolver;
-
     constructor(public readonly size: number) {
         if (!this.isValidSudokuSize(size))
             throw new Error("Not a valid Sudoku size.");
@@ -25,12 +23,19 @@ export default class Sudoku {
         this.squareConstraint = this.rowConstraint * 3;
         this.columnsInNetwork = this.rowConstraint * 4;
         this.rowsInNetwork = this.rowConstraint * size;
-
-        this.networkSolver = new NetworkSolver();
     }
 
+    // TODO: FINISH JSDOC
+
+    /**
+     * Generates a Sudoku randomly.
+     * @returns
+     */
     public generate() {
-        return this._generateCompleteSudoku();
+        const solver = this.createNetworkSolverForEmptySudoku();
+        const solution = this.generateCompleteSudoku(solver);
+        const sudoku = this.generateFromComplete(solver, solution);
+        return { sudoku, solution };
     }
 
     /**
@@ -41,19 +46,9 @@ export default class Sudoku {
     public solve(sudoku: number[][]): number[][][] {
         if (!this.isValidSudoku(sudoku)) return [];
 
-        this.setNetworkToEmptySudoku();
-        const nodesMatchingSudoku = this.networkSolver.network.filter(
-            (n: Node) => {
-                const row = this._getRowIdOfRowNode(n);
-                const column = this._getColumnIdOfRowNode(n);
-                const value = this._getValueOfRowNode(n);
-                return sudoku[row][column] === value;
-            },
-            { isColumn: false, maxColumn: this.rowConstraint }
-        );
-        nodesMatchingSudoku.forEach((n) => this.networkSolver.addToSolution(n));
-
-        const networkSolutions = this.networkSolver.solve();
+        const solver = this.createNetworkSolverForEmptySudoku();
+        this.addNodesMatchingSudokuToSolution(solver, sudoku);
+        const networkSolutions = solver.solve();
         return networkSolutions.map((networkSolution) =>
             this.getSudokuFromNetworkSolution(networkSolution)
         );
@@ -279,6 +274,12 @@ export default class Sudoku {
         else return this.isNodeInFourthQuadrant(row, column);
     }
 
+    private createEmptySudoku(): number[][] {
+        return Array.from({ length: this.size }, () =>
+            Array.from({ length: this.size }, () => 0)
+        );
+    }
+
     private getValuesInHouse(
         sudoku: number[][],
         cellsInHouse: number[]
@@ -419,14 +420,30 @@ export default class Sudoku {
         );
     }
 
-    private setNetworkToEmptySudoku(): void {
-        this.networkSolver.setNetwork(
+    private createNetworkSolverForEmptySudoku(): NetworkSolver {
+        return new NetworkSolver(
             new Network(
                 this.rowsInNetwork,
                 this.columnsInNetwork,
                 this.isNodeInNetwork.bind(this)
             )
         );
+    }
+
+    private addNodesMatchingSudokuToSolution(
+        solver: NetworkSolver,
+        sudoku: number[][]
+    ) {
+        const nodesMatchingSudoku = solver.network.filter(
+            (n: Node) => {
+                const row = this._getRowIdOfRowNode(n);
+                const column = this._getColumnIdOfRowNode(n);
+                const value = this._getValueOfRowNode(n);
+                return sudoku[row][column] === value;
+            },
+            { isColumn: false, maxColumn: this.rowConstraint }
+        );
+        nodesMatchingSudoku.forEach((n) => solver.addToSolution(n));
     }
 
     private getSudokuFromNetworkSolution(networkSolution: Node[]): number[][] {
@@ -440,35 +457,88 @@ export default class Sudoku {
         return sudoku;
     }
 
-    private createEmptySudoku(): number[][] {
-        return Array.from({ length: this.size }, () =>
-            Array.from({ length: this.size }, () => 0)
-        );
-    }
-
-    private _generateCompleteSudoku(): number[][] {
-        this.setNetworkToEmptySudoku();
+    private generateCompleteSudoku(solver: NetworkSolver): number[][] {
         const cells = new Set(
             this.getCellIdsInRow(0)
                 .concat(this.getCellIdsInColumn(0))
                 .concat(this.getCellIdsInSquare(0))
         );
-        this._fillCellsInNetworkRandomly([...cells]);
-        const networkSolutions = this.networkSolver.solve({ findOne: true });
-        return this.getSudokuFromNetworkSolution(networkSolutions[0]);
+
+        this.fillCellsInNetworkRandomly(solver, [...cells]);
+        const networkSolutions = solver.solve({ findOne: true });
+        const solution = this.getSudokuFromNetworkSolution(networkSolutions[0]);
+        solver.reset();
+        return solution;
     }
 
-    private _fillCellsInNetworkRandomly(cells: number[]): void {
+    private generateFromComplete(
+        solver: NetworkSolver,
+        solution: number[][]
+    ): number[][] {
+        this.fillCellsInNetworkFromSudoku(
+            solver,
+            solution,
+            this.getRandomCells(15)
+        );
+
+        debugger;
+        while (solver.hasMultipleSolutions()) {
+            this.fillCellsInNetworkFromSudoku(
+                solver,
+                solution,
+                this.getRandomCells(3)
+            );
+        }
+
+        return this.getSudokuFromNetworkSolution(solver.currentSolution);
+    }
+
+    private fillCellsInNetworkRandomly(
+        solver: NetworkSolver,
+        cells: number[]
+    ): void {
         cells.forEach((cell) => {
-            const c = this.networkSolver.network.find(
+            const c = solver.network.find(
                 (node: Node) => node.columnId === cell
             );
-            if (!c) return;
-            const randomTarget = Math.floor(Math.random() * c.size);
-            let count = 0;
-            const n = c.find("down", (_: Node) => count++ === randomTarget);
-            if (!n) return;
-            this.networkSolver.addToSolution(n);
+
+            if (c) {
+                const randomTarget = Math.floor(Math.random() * c.size);
+                let count = 0;
+                const n = c.find("down", (_: Node) => count++ === randomTarget);
+
+                if (n) {
+                    solver.addToSolution(n);
+                }
+            }
         });
+    }
+
+    private fillCellsInNetworkFromSudoku(
+        solver: NetworkSolver,
+        solution: number[][],
+        cells: number[]
+    ): void {
+        cells.forEach((cell) => {
+            const row = this._getRowId(cell);
+            const column = this._getColumnId(cell);
+            const c = solver.network.find(
+                (node: Node) => this._getCellIdOfColumnNode(node) === cell,
+                { maxColumn: this.rowConstraint }
+            );
+
+            const n = c?.find(
+                "down",
+                (node: Node) =>
+                    solution[row][column] === this._getValueOfRowNode(node)
+            );
+            if (n) solver.addToSolution(n);
+        });
+    }
+
+    private getRandomCells(quantity: number): number[] {
+        return Array.from({ length: quantity }, () =>
+            Math.floor(Math.random() * this.rowConstraint)
+        );
     }
 }

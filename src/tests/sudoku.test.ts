@@ -11,6 +11,46 @@ import { solvedSudokus9x9 } from "./fixtures/sudoku/solutions";
 
 const sudoku9x9 = new Sudoku(9);
 
+describe("generate", () => {
+    it("generates a valid sudoku", () => {
+        const { sudoku } = sudoku9x9.generate();
+        expect(sudoku9x9.isValidSudoku(sudoku)).toBe(true);
+        expect(sudoku9x9.isCompleteSudoku(sudoku)).toBe(false);
+    });
+
+    it("generates a complete and valid solution", () => {
+        const { solution } = sudoku9x9.generate();
+        expect(sudoku9x9.isCompleteSudoku(solution)).toBe(true);
+    });
+
+    it("generates a sudoku with only one solution", () => {
+        const { sudoku } = sudoku9x9.generate();
+        expect(sudoku9x9.solve(sudoku)).toHaveLength(1);
+    });
+
+    it("generates a sudoku that matches the given solution", () => {
+        const { sudoku, solution } = sudoku9x9.generate();
+        expect(sudoku9x9.solve(sudoku)[0]).toEqual(solution);
+    });
+
+    it("TEST FILLED CELLS", () => {
+        let totalFilledCells = 0;
+        for (let i = 0; i < 100; i++) {
+            const { sudoku } = sudoku9x9.generate();
+            let filledCells = 0;
+
+            for (let row of sudoku) {
+                for (let value of row) {
+                    if (value !== 0) filledCells++;
+                }
+            }
+
+            totalFilledCells += filledCells;
+        }
+        console.log(totalFilledCells / 100);
+    });
+});
+
 describe("solve", () => {
     it("correctly solves Sudokus with only 1 solution", () => {
         for (let { sudoku, solution } of solvedSudokus9x9) {
