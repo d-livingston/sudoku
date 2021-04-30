@@ -21,6 +21,11 @@ describe("from", () => {
     it("constructs a fully connected network", () => {
         expect(networkFromMatrix.isFullyConnected()).toBe(true);
     });
+
+    it("gets the correct number of active columns", () => {
+        expect(networkFromMatrix.getNumberOfActiveColumns()).toEqual(6);
+        expect(networkFromMatrix.getNumberOfActiveNodes()).toEqual(12);
+    });
 });
 
 describe("find", () => {

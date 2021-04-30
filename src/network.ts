@@ -131,6 +131,22 @@ export default class Network {
         return true;
     }
 
+    /**
+     * Gets the number of active columns in the network.
+     * @returns The number of active columns in the network.
+     */
+    getNumberOfActiveColumns(): number {
+        return this.filter((_: Node) => true).length;
+    }
+
+    /**
+     * Gets the number of active nodes in the network.
+     * @returns The number of active nodes in the network.
+     */
+    getNumberOfActiveNodes(): number {
+        return this.filter((_: Node) => true, { isColumn: false }).length;
+    }
+
     public isEmpty(): boolean {
         return this.root.right === this.root;
     }
