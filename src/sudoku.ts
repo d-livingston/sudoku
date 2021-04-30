@@ -12,6 +12,7 @@ export default class Sudoku {
     public readonly squareConstraint: number;
     public readonly rowsInNetwork: number;
     public readonly columnsInNetwork: number;
+    private readonly solver: NetworkSolver;
 
     constructor(public readonly size: number) {
         if (!this.isValidSudokuSize(size))
@@ -23,6 +24,14 @@ export default class Sudoku {
         this.squareConstraint = this.rowConstraint * 3;
         this.columnsInNetwork = this.rowConstraint * 4;
         this.rowsInNetwork = this.rowConstraint * size;
+
+        this.solver = new NetworkSolver(
+            new Network(
+                this.rowsInNetwork,
+                this.columnsInNetwork,
+                this.isNodeInNetwork.bind(this)
+            )
+        );
     }
 
     // TODO: FINISH JSDOC
@@ -32,9 +41,9 @@ export default class Sudoku {
      * @returns
      */
     public generate() {
-        const solver = this.createNetworkSolverForEmptySudoku();
-        const solution = this.generateCompleteSudoku(solver);
-        const sudoku = this.generateFromComplete(solver, solution);
+        const solution = this.generateCompleteSudoku();
+        const sudoku = this.generateFromComplete(solution);
+        this.solver.reset();
         return { sudoku, solution };
     }
 
@@ -46,12 +55,14 @@ export default class Sudoku {
     public solve(sudoku: number[][]): number[][][] {
         if (!this.isValidSudoku(sudoku)) return [];
 
-        const solver = this.createNetworkSolverForEmptySudoku();
-        this.addNodesMatchingSudokuToSolution(solver, sudoku);
-        const networkSolutions = solver.solve();
-        return networkSolutions.map((networkSolution) =>
+        this.addNodesMatchingSudokuToSolution(sudoku);
+        const networkSolutions = this.solver.solve();
+        const solutions = networkSolutions.map((networkSolution) =>
             this.getSudokuFromNetworkSolution(networkSolution)
         );
+
+        this.solver.reset();
+        return solutions;
     }
 
     /**
@@ -420,21 +431,8 @@ export default class Sudoku {
         );
     }
 
-    private createNetworkSolverForEmptySudoku(): NetworkSolver {
-        return new NetworkSolver(
-            new Network(
-                this.rowsInNetwork,
-                this.columnsInNetwork,
-                this.isNodeInNetwork.bind(this)
-            )
-        );
-    }
-
-    private addNodesMatchingSudokuToSolution(
-        solver: NetworkSolver,
-        sudoku: number[][]
-    ) {
-        const nodesMatchingSudoku = solver.network.filter(
+    private addNodesMatchingSudokuToSolution(sudoku: number[][]) {
+        const nodesMatchingSudoku = this.solver.network.filter(
             (n: Node) => {
                 const row = this._getRowIdOfRowNode(n);
                 const column = this._getColumnIdOfRowNode(n);
@@ -443,7 +441,7 @@ export default class Sudoku {
             },
             { isColumn: false, maxColumn: this.rowConstraint }
         );
-        nodesMatchingSudoku.forEach((n) => solver.addToSolution(n));
+        nodesMatchingSudoku.forEach((n) => this.solver.addToSolution(n));
     }
 
     private getSudokuFromNetworkSolution(networkSolution: Node[]): number[][] {
@@ -457,48 +455,34 @@ export default class Sudoku {
         return sudoku;
     }
 
-    private generateCompleteSudoku(solver: NetworkSolver): number[][] {
+    private generateCompleteSudoku(): number[][] {
         const cells = new Set(
             this.getCellIdsInRow(0)
                 .concat(this.getCellIdsInColumn(0))
                 .concat(this.getCellIdsInSquare(0))
         );
 
-        this.fillCellsInNetworkRandomly(solver, [...cells]);
-        const networkSolutions = solver.solve({ findOne: true });
+        this.fillCellsInNetworkRandomly([...cells]);
+        const networkSolutions = this.solver.solve({ findOne: true });
         const solution = this.getSudokuFromNetworkSolution(networkSolutions[0]);
-        solver.reset();
+        this.solver.reset();
         return solution;
     }
 
-    private generateFromComplete(
-        solver: NetworkSolver,
-        solution: number[][]
-    ): number[][] {
-        this.fillCellsInNetworkFromSudoku(
-            solver,
-            solution,
-            this.getRandomCells(15)
-        );
+    private generateFromComplete(solution: number[][]): number[][] {
+        this.fillCellsInNetworkFromSudoku(solution, this.getRandomCells(15));
 
         debugger;
-        while (solver.hasMultipleSolutions()) {
-            this.fillCellsInNetworkFromSudoku(
-                solver,
-                solution,
-                this.getRandomCells(3)
-            );
+        while (this.solver.hasMultipleSolutions()) {
+            this.fillCellsInNetworkFromSudoku(solution, this.getRandomCells(3));
         }
 
-        return this.getSudokuFromNetworkSolution(solver.currentSolution);
+        return this.getSudokuFromNetworkSolution(this.solver.currentSolution);
     }
 
-    private fillCellsInNetworkRandomly(
-        solver: NetworkSolver,
-        cells: number[]
-    ): void {
+    private fillCellsInNetworkRandomly(cells: number[]): void {
         cells.forEach((cell) => {
-            const c = solver.network.find(
+            const c = this.solver.network.find(
                 (node: Node) => node.columnId === cell
             );
 
@@ -508,21 +492,20 @@ export default class Sudoku {
                 const n = c.find("down", (_: Node) => count++ === randomTarget);
 
                 if (n) {
-                    solver.addToSolution(n);
+                    this.solver.addToSolution(n);
                 }
             }
         });
     }
 
     private fillCellsInNetworkFromSudoku(
-        solver: NetworkSolver,
         solution: number[][],
         cells: number[]
     ): void {
         cells.forEach((cell) => {
             const row = this._getRowId(cell);
             const column = this._getColumnId(cell);
-            const c = solver.network.find(
+            const c = this.solver.network.find(
                 (node: Node) => this._getCellIdOfColumnNode(node) === cell,
                 { maxColumn: this.rowConstraint }
             );
@@ -532,7 +515,7 @@ export default class Sudoku {
                 (node: Node) =>
                     solution[row][column] === this._getValueOfRowNode(node)
             );
-            if (n) solver.addToSolution(n);
+            if (n) this.solver.addToSolution(n);
         });
     }
 
