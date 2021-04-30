@@ -1,28 +1,38 @@
 {
-    "name": "sudoku",
+    "name": "@d-livingston/sudoku",
     "version": "1.0.0",
-    "description": "",
+    "description": "A basic Sudoku package.",
     "main": "dist/index.js",
+    "files": [
+        "dist"
+    ],
+    "author": "Daniel Livingston <contact@daniellivingston.net>",
+    "homepage": "https://github.com/d-livingston/sudoku#readme",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/d-livingston/sudoku.git"
+    },
+    "bugs": {
+        "url": "https://github.com/d-livingston/sudoku/issues"
+    },
+    "keywords": [
+        "sudoku",
+        "generate",
+        "solve",
+        "exact",
+        "cover",
+        "search"
+    ],
     "scripts": {
         "build": "rm -rf dist && rollup -c",
         "start": "rollup -c -w",
         "test": "jest",
         "test:watch": "jest --watch"
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/d-livingston/sudoku.git"
+    "publishConfig": {
+        "access": "public"
     },
-    "keywords": [],
-    "author": "Daniel Livingston",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/d-livingston/sudoku/issues"
-    },
-    "homepage": "https://github.com/d-livingston/sudoku#readme",
-    "files": [
-        "dist"
-    ],
     "devDependencies": {
         "@types/jest": "^26.0.22",
         "jest": "^26.6.3",
