@@ -9,9 +9,9 @@ export enum RemoveTypes {
 
 export default class NetworkSolver {
     public network: Network;
+    public currentSolution: Node[] = [];
     private history: { type: RemoveTypes; node: Node }[];
-    private solutions: Node[][];
-    private currentSolution: Node[] = [];
+    private solutions: Node[][] = [];
 
     constructor(network?: Network) {
         if (network) this.setNetwork(network);
@@ -22,11 +22,10 @@ export default class NetworkSolver {
      * @returns True if the network has multiple solutions; false otherwise.
      */
     public hasMultipleSolutions(): boolean {
-        this.solutions = [];
-
         let hasMultipleSolutions = false,
             stopSolving = false,
             solutionFound = false;
+
         this.search({
             onSolutionFound: () => {
                 if (solutionFound) {
@@ -38,6 +37,8 @@ export default class NetworkSolver {
             },
             stopSolving: () => stopSolving,
         });
+
+        this.solutions = [];
         return hasMultipleSolutions;
     }
 
@@ -47,8 +48,6 @@ export default class NetworkSolver {
      * @returns A list of solutions for the network.
      */
     public solve({ findOne = false }: { findOne?: boolean } = {}): Node[][] {
-        this.solutions = [];
-
         let onSolutionFound = undefined;
         let stopSolving = undefined;
 
@@ -61,7 +60,10 @@ export default class NetworkSolver {
         }
 
         this.search({ onSolutionFound, stopSolving });
-        return this.solutions;
+        const solutions = [...this.solutions];
+
+        this.solutions = [];
+        return solutions;
     }
 
     /**
@@ -73,8 +75,16 @@ export default class NetworkSolver {
             this.network.find((node: Node) => n === node, { isColumn: false })
         ) {
             this.addNodeToSolution(n);
-            this._remove(n);
+            this.remove(n);
         }
+    }
+
+    /**
+     * Removes the last node from the solution of the network.
+     */
+    public removeLastFromSolution(): void {
+        this.removeLastNodeFromSolution();
+        this.undo();
     }
 
     /**
@@ -84,6 +94,8 @@ export default class NetworkSolver {
         while (this.history.length !== 0) {
             this.undo();
         }
+        this.solutions = [];
+        this.currentSolution = [];
     }
 
     /**
