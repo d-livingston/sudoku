@@ -1,6 +1,6 @@
-import Node from "../node/index";
+import Node from "../node";
 
-export default class Network {
+export class Network {
     public readonly root: Node;
 
     /**
