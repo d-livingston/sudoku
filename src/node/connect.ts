@@ -1,18 +1,5 @@
 import { Node } from "./node";
-import { Direction } from "../types";
-
-function getOppositeDirection(direction: Direction): Direction {
-    switch (direction) {
-        case "down":
-            return "up";
-        case "up":
-            return "down";
-        case "left":
-            return "right";
-        case "right":
-            return "left";
-    }
-}
+import { Direction, getOppositeDirection } from "../directions";
 
 declare module "./node" {
     interface Node {
