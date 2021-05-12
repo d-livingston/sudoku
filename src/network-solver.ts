@@ -1,5 +1,5 @@
 import Network from "./network1";
-import Node from "./node";
+import Node from "./node1";
 
 export enum RemoveTypes {
     HIDE = "hide",
