@@ -47,16 +47,16 @@ export class Node {
     }
 
     private constructor(options?: NodeOptions) {
-        if (!options) {
-            this.column = this;
-            this.columnId = -1;
-            this.isColumn = false;
-            this.rowId = -1;
-        } else if (typeof options === "number") {
+        if (typeof options === "number") {
             this.columnId = options;
             this.isColumn = true;
             this.column = this;
             this.size = 0;
+            this.rowId = -1;
+        } else if (!options) {
+            this.column = this;
+            this.columnId = -1;
+            this.isColumn = false;
             this.rowId = -1;
         } else {
             const { column, rowId } = options;
