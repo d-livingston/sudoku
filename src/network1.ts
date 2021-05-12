@@ -1,4 +1,4 @@
-import Node from "./node";
+import Node from "./node1";
 
 export default class Network {
     public readonly root: Node;

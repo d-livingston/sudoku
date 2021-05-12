@@ -1,4 +1,4 @@
-import Network from "../network";
+import Network from "../network1";
 import Node from "../node";
 
 // TODO: test reduce method more

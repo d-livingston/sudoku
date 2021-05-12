@@ -1,5 +1,5 @@
 import NetworkSolver from "../network-solver";
-import Network from "../network";
+import Network from "../network1";
 import Node from "../node";
 
 const matrix = [

@@ -1,5 +1,5 @@
-import Node from "./node";
-import Network from "./network";
+import Node from "./node1";
+import Network from "./network1";
 import NetworkSolver from "./network-solver";
 
 /**
