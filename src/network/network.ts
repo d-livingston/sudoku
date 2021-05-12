@@ -53,6 +53,14 @@ export class Network {
     }
 
     /**
+     * Determines if the network is empty.
+     * @returns True if the network has no columns in it; false otherwise.
+     */
+    isEmpty(): boolean {
+        return this.root.right === this.root;
+    }
+
+    /**
      * Determines if the network has all nodes connected to each other as expected, and the appropriate column sizes.
      * @returns True if the network is fully connected; false otherwise.
      */
