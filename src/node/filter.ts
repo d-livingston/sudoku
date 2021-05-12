@@ -5,6 +5,11 @@ type Predicate = (node: Node) => boolean;
 
 declare module "./node" {
     interface Node {
+        /**
+         * Filters all nodes in the given direction that match a predicate.
+         * @param direction The desired direction to iterate through.
+         * @param predicate The predicate function to match.
+         */
         filter(direction: Direction, predicate: Predicate): Node[];
     }
 }

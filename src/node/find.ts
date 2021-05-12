@@ -5,6 +5,11 @@ type Predicate = (node: Node) => boolean;
 
 declare module "./node" {
     interface Node {
+        /**
+         * Finds a node in the given direction that matches the given predicate function.
+         * @param direction The desired direction to iterate through.
+         * @param predicate The predicate function to match.
+         */
         find(direction: Direction, predicate: Predicate): Node | undefined;
     }
 }
