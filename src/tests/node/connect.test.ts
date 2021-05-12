@@ -1,5 +1,4 @@
-import { Node } from "../../node/node";
-import "../../node/connect";
+import Node from "../../node/index";
 
 describe("connect", () => {
     it("connects two singular nodes to each other", () => {

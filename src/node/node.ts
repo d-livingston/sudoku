@@ -5,6 +5,9 @@ type NodeOptions =
       }
     | number;
 
+/**
+ * A class representing a 2D doubly linked node.
+ */
 export class Node {
     public readonly rowId: number;
     public readonly columnId: number;
@@ -17,14 +20,28 @@ export class Node {
     private _up?: Node;
     private _down?: Node;
 
+    /**
+     * Creates a root node of a network.
+     * @returns A root node.
+     */
     static createRoot(): Node {
         return new Node();
     }
 
+    /**
+     * Creates a column node of a network.
+     * @param columnId The columnId of the column node.
+     * @returns A column node.
+     */
     static createColumn(columnId: number): Node {
         return new Node(columnId);
     }
 
+    /**
+     * Creates a node of a network.
+     * @param options An object with the column and rowId of the node.
+     * @returns A node.
+     */
     static createNode(options: { column: Node; rowId: number }): Node {
         return new Node(options);
     }
@@ -89,7 +106,7 @@ export class Node {
         };
     }
 
-    toJSON() {
+    toJSON(): any {
         return {
             ...this.info,
             left: this.left === this ? "self" : { ...this.left.info },
