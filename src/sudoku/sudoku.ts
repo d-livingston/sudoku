@@ -101,6 +101,66 @@ export class Sudoku {
     }
 
     /**
+     * Gets the house IDs of the given cell.
+     * @param cell The cell ID.
+     * @returns An object containing the row ID, column ID, and square ID of the cell.
+     */
+    public getHouseIdsOfCell(cell: number) {
+        const isValid = this.isValidCellId(cell);
+        return {
+            row: isValid ? this.getRowId(cell) : -1,
+            column: isValid ? this.getColumnId(cell) : -1,
+            square: isValid ? this.getSquareId(cell) : -1,
+        };
+    }
+
+    /**
+     * Gets the cell IDs in the given row.
+     * @param row The row ID.
+     * @returns The cell IDs in the given row. If the row ID is invalid, returns an empty array.
+     */
+    public getCellIdsInRow(row: number): number[] {
+        const firstId = row * this.size;
+        return this.isValidHouseId(row)
+            ? Array.from({ length: this.size }, (_, i) => i + firstId)
+            : [];
+    }
+
+    /**
+     * Gets the cell IDs in the given column.
+     * @param column The column ID.
+     * @returns The cell IDs in the given column. If the row ID is invalid, returns an empty array.
+     */
+    public getCellIdsInColumn(column: number): number[] {
+        return this.isValidHouseId(column)
+            ? Array.from(
+                  { length: this.size },
+                  (_, i) => i * this.size + column
+              )
+            : [];
+    }
+
+    /**
+     * Gets the cell IDs in the given square.
+     * @param square The square ID.
+     * @returns The cell IDs in the given square. If the row ID is invalid, returns an empty array.
+     */
+    public getCellIdsInSquare(square: number): number[] {
+        if (this.isValidHouseId(square)) {
+            const firstId =
+                Math.floor(square / this.sqrt) * this.sqrt * this.size +
+                (square % this.sqrt) * this.sqrt;
+            return Array.from(
+                { length: this.size },
+                (_, i) =>
+                    firstId +
+                    (i % this.sqrt) +
+                    Math.floor(i / this.sqrt) * this.size
+            );
+        } else return [];
+    }
+
+    /**
      * Determines if the given house ID is valid for this Sudoku.
      * @param houseId The ID of the house. The house could be a row, column, or square.
      * @returns True if the ID is valid; false otherwise.

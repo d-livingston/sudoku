@@ -130,3 +130,97 @@ describe("Method: getSquareId", () => {
         expect(sudoku9x9.getSquareId(1.5)).toEqual(-1);
     });
 });
+
+describe("Method: getHouseIdsOfCell", () => {
+    it("gets the correct house ids when provided a valid cell", () => {
+        for (let row = 0; row < sudoku9x9.size; row++) {
+            for (let column = 0; column < sudoku9x9.size; column++) {
+                expect(
+                    sudoku9x9.getHouseIdsOfCell(cellsInSudoku9x9[row][column])
+                ).toEqual({
+                    row: rowsInSudoku9x9[row][column],
+                    column: columnsInSudoku9x9[row][column],
+                    square: squaresInSudoku9x9[row][column],
+                });
+            }
+        }
+    });
+
+    it("returns -1s when an invalid cell is provided", () => {
+        const invalid = {
+            row: -1,
+            column: -1,
+            square: -1,
+        };
+        expect(sudoku9x9.getHouseIdsOfCell(-1)).toEqual(invalid);
+        expect(sudoku9x9.getHouseIdsOfCell(81)).toEqual(invalid);
+        expect(sudoku9x9.getHouseIdsOfCell(1.5)).toEqual(invalid);
+    });
+});
+
+describe("Method: getCellIdsInRow", () => {
+    it("gets the correct cells when provided a valid row", () => {
+        for (let row = 0; row < sudoku9x9.size; row++) {
+            const cells = sudoku9x9.getCellIdsInRow(row);
+            expect(cells).toHaveLength(sudoku9x9.size);
+            expect(cells).toHaveNoDuplicates();
+
+            cells.forEach((cell) => {
+                const row = sudoku9x9.getRowId(cell);
+                const column = sudoku9x9.getColumnId(cell);
+                expect(row).toEqual(rowsInSudoku9x9[row][column]);
+            });
+        }
+    });
+
+    it("returns an empty array when provided an invalid row", () => {
+        expect(sudoku9x9.getCellIdsInRow(-1)).toEqual([]);
+        expect(sudoku9x9.getCellIdsInRow(9)).toEqual([]);
+        expect(sudoku9x9.getCellIdsInRow(1.5)).toEqual([]);
+    });
+});
+
+describe("Method: getCellIdsInColumn", () => {
+    it("gets the correct cells when provided a valid column", () => {
+        for (let column = 0; column < sudoku9x9.size; column++) {
+            const cells = sudoku9x9.getCellIdsInColumn(column);
+            expect(cells).toHaveLength(sudoku9x9.size);
+            expect(cells).toHaveNoDuplicates();
+
+            cells.forEach((cell) => {
+                const row = sudoku9x9.getRowId(cell);
+                const column = sudoku9x9.getColumnId(cell);
+                expect(column).toEqual(columnsInSudoku9x9[row][column]);
+            });
+        }
+    });
+
+    it("returns an empty array when provided an invalid column", () => {
+        expect(sudoku9x9.getCellIdsInColumn(-1)).toEqual([]);
+        expect(sudoku9x9.getCellIdsInColumn(9)).toEqual([]);
+        expect(sudoku9x9.getCellIdsInColumn(1.5)).toEqual([]);
+    });
+});
+
+describe("Method: getCellIdsInSquare", () => {
+    it("gets the correct cells when provided a valid square", () => {
+        for (let square = 0; square < sudoku9x9.size; square++) {
+            const cells = sudoku9x9.getCellIdsInSquare(square);
+            expect(cells).toHaveLength(sudoku9x9.size);
+            expect(cells).toHaveNoDuplicates();
+
+            cells.forEach((cell) => {
+                const row = sudoku9x9.getRowId(cell);
+                const column = sudoku9x9.getColumnId(cell);
+                const square = sudoku9x9.getSquareId(cell);
+                expect(square).toEqual(squaresInSudoku9x9[row][column]);
+            });
+        }
+    });
+
+    it("returns an empty array when provided an invalid square", () => {
+        expect(sudoku9x9.getCellIdsInSquare(-1)).toEqual([]);
+        expect(sudoku9x9.getCellIdsInSquare(9)).toEqual([]);
+        expect(sudoku9x9.getCellIdsInSquare(1.5)).toEqual([]);
+    });
+});
