@@ -6,8 +6,37 @@ import {
     columnsInSudoku9x9,
     squaresInSudoku9x9,
 } from "../fixtures/sudoku/reference";
+import { invalidSudokus9x9, validSudokus9x9 } from "../fixtures/sudoku/valid";
 
 const sudoku9x9 = new Sudoku(9);
+
+describe("constructor", () => {
+    it("constructs a Sudoku object when provided a size", () => {
+        const sudoku = new Sudoku(9);
+        expect(sudoku.size).toBe(9);
+        expect(sudoku.sudoku).toEqual(blank9x9);
+    });
+
+    it("constructs a Sudoku object when provided a Sudoku puzzle", () => {
+        const sudoku = new Sudoku(validSudokus9x9[0]);
+        expect(sudoku.size).toBe(validSudokus9x9[0].length);
+        expect(sudoku.sudoku).toEqual(validSudokus9x9[0]);
+    });
+});
+
+describe("Method: isValid", () => {
+    it("determines a valid Sudoku is valid", () => {
+        for (let sudoku of validSudokus9x9) {
+            expect(Sudoku.isValid(sudoku)).toBe(true);
+        }
+    });
+
+    it("determines an invalid Sudoku is invalid", () => {
+        for (let sudoku of invalidSudokus9x9) {
+            expect(Sudoku.isValid(sudoku)).toBe(false);
+        }
+    });
+});
 
 describe("Static method: isValidSize", () => {
     it("determines that positive perfect squares are valid sizes", () => {

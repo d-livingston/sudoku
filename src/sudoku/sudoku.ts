@@ -1,6 +1,12 @@
+import { House } from "./types";
+
 export class InvalidSizeError extends Error {}
 InvalidSizeError.prototype.name = "InvalidSizeError";
 InvalidSizeError.prototype.message = "Not a valid Sudoku size.";
+
+export class InvalidSudokuError extends Error {}
+InvalidSudokuError.prototype.name = "InvalidSudokuError";
+InvalidSudokuError.prototype.message = "Not a valid Sudoku puzzle.";
 
 /**
  * A class representing a Sudoku puzzle.
@@ -15,6 +21,35 @@ export class Sudoku {
     public readonly squareConstraint: number;
     public readonly rowsInNetwork: number;
     public readonly columnsInNetwork: number;
+
+    /**
+     * Determines if the Sudoku board is valid.
+     * @param sudoku An nxn matrix representing the Sudoku puzzle.
+     * @returns True if the board is valid; false otherwise.
+     */
+    public static isValid(sudoku: number[][]): boolean {
+        try {
+            new Sudoku(sudoku);
+        } catch {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determines if the Sudoku board has the correct dimensions.
+     * @param sudoku An nxn matrix representing the Sudoku puzzle.
+     * @returns True if the board is valid; false otherwise.
+     */
+    public static isValidBoard(sudoku: number[][]): boolean {
+        const size = sudoku.length;
+        if (!Sudoku.isValidSize(size)) return false;
+        for (let row of sudoku) {
+            if (row.length !== size) return false;
+        }
+        return true;
+    }
 
     /**
      * Determines if a Sudoku size is valid or not.
@@ -45,19 +80,32 @@ export class Sudoku {
     }
 
     /**
-     * Constructs a Sudoku object with the given size.
-     * @param size A positive perfect square integer representing the length and width of the Sudoku puzzle.
+     * Constructs a Sudoku object with the given size or the given Sudoku puzzle.
+     * @param initValue Either a number representing the size of the board or an nxn matrix representing the puzzle.
      */
-    constructor(size: number) {
-        if (!Sudoku.isValidSize(size)) throw new InvalidSizeError();
+    constructor(initValue: number | number[][]) {
+        if (typeof initValue === "number") {
+            if (!Sudoku.isValidSize(initValue)) throw new InvalidSizeError();
+            this.size = initValue;
+            this.sudoku = Sudoku.generateBlank(this.size);
+        } else {
+            if (!Sudoku.isValidBoard(initValue)) throw new InvalidSizeError();
+            this.size = initValue.length;
+            this.sudoku = Array.from({ length: this.size }, (_, row) =>
+                Array.from(
+                    { length: this.size },
+                    (_, column) => initValue[row][column]
+                )
+            );
+        }
 
-        this.size = size;
-        this.sqrt = Math.sqrt(size);
-        this.rowConstraint = size * size;
+        this.sqrt = Math.sqrt(this.size);
+        this.rowConstraint = this.size * this.size;
         this.columnConstraint = this.rowConstraint * 2;
         this.squareConstraint = this.rowConstraint * 3;
         this.columnsInNetwork = this.rowConstraint * 4;
-        this.rowsInNetwork = this.rowConstraint * size;
+        this.rowsInNetwork = this.rowConstraint * this.size;
+        if (!this.isValid()) throw new InvalidSudokuError();
     }
 
     /**
@@ -102,6 +150,16 @@ export class Sudoku {
             ? Math.floor(row / this.sqrt) * this.sqrt +
                   Math.floor(column / this.sqrt)
             : -1;
+    }
+
+    /**
+     * Gets the value in the given cell.
+     * @param cell The cell ID.
+     * @returns The value in the cell. If the cell is invalid, returns -1. If the cell is empty, returns 0.
+     */
+    public getValue(cell: number): number {
+        if (!this.isValidCellId(cell)) return -1;
+        return this.sudoku[this.getRowId(cell)][this.getColumnId(cell)];
     }
 
     /**
@@ -193,5 +251,66 @@ export class Sudoku {
      */
     public isValidValue(value: number): boolean {
         return value >= 1 && value <= this.size && Number.isInteger(value);
+    }
+
+    /**
+     * Determines if the current Sudoku is valid or not. A Sudoku is valid if there are no repeated values in any given house.
+     * @returns True if the Sudoku is valid; false otherwise.
+     */
+    public isValid(): boolean {
+        // Already assumed to be a valid board.
+        for (let i = 0; i < this.size; i++) {
+            if (!this.isValidHouse("row", i)) return false;
+        }
+        for (let i = 0; i < this.size; i++) {
+            if (!this.isValidHouse("column", i)) return false;
+        }
+        for (let i = 0; i < this.size; i++) {
+            if (!this.isValidHouse("square", i)) return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determines if the given house is valid for this Sudoku.
+     * @param type The type of house. Can either be 'row', 'column', or 'square'.
+     * @param id The ID of the house.
+     * @returns True if the house is valid; false otherwise.
+     */
+    public isValidHouse(type: House, id: number): boolean {
+        let values: number[] = [];
+        switch (type) {
+            case "row": {
+                values = this.getCellIdsInRow(id).map((cell) =>
+                    this.getValue(cell)
+                );
+                break;
+            }
+            case "column": {
+                values = this.getCellIdsInColumn(id).map((cell) =>
+                    this.getValue(cell)
+                );
+                break;
+            }
+            case "square": {
+                values = this.getCellIdsInSquare(id).map((cell) =>
+                    this.getValue(cell)
+                );
+                break;
+            }
+            default: {
+                return false;
+            }
+        }
+
+        const used = new Set<number>();
+        for (let value of values) {
+            if (value === 0) continue;
+            else if (!this.isValidValue(value)) return false;
+            else if (used.has(value)) return false;
+            else used.add(value);
+        }
+        return true;
     }
 }
