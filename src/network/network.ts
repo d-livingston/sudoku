@@ -1,7 +1,9 @@
 import Node from "../node";
+import { NetworkEvent } from "./types";
 
 export class Network {
     public readonly root: Node;
+    public networkHistory: NetworkEvent[] = [];
 
     /**
      * Creates and returns a network matching the given matrix of 1s and 0s.
