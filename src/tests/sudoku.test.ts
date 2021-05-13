@@ -1,5 +1,5 @@
-import Sudoku from "../sudoku";
-import Node from "../node";
+import Sudoku from "../sudoku1";
+import Node from "../node1";
 import {
     rowsInSudoku9x9,
     columnsInSudoku9x9,
