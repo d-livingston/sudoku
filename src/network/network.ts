@@ -4,6 +4,7 @@ import { NetworkEvent } from "./types";
 export class Network {
     public readonly root: Node;
     public networkHistory: NetworkEvent[] = [];
+    public currentSolutionState: Node[] = [];
 
     /**
      * Creates and returns a network matching the given matrix of 1s and 0s.

@@ -18,3 +18,8 @@ export type NetworkEvent = {
     type: NetworkEventType;
     node: Node;
 };
+
+export type NetworkSolution = {
+    solution: Node[];
+    hasMultipleSolutions: boolean;
+};
