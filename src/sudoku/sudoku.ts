@@ -44,6 +44,10 @@ export class Sudoku {
         );
     }
 
+    /**
+     * Constructs a Sudoku object with the given size.
+     * @param size A positive perfect square integer representing the length and width of the Sudoku puzzle.
+     */
     constructor(size: number) {
         if (!Sudoku.isValidSize(size)) throw new InvalidSizeError();
 
