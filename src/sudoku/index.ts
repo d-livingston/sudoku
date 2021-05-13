@@ -1,4 +1,5 @@
 import { Sudoku } from "./sudoku";
-import "./node";
+import "./network";
 
 export default Sudoku;
+export * from "./types";

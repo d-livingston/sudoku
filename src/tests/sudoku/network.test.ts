@@ -1,5 +1,6 @@
 import Sudoku from "../../sudoku";
 import Node from "../../node";
+import { validSudokus9x9 } from "../fixtures/sudoku/valid";
 
 const sudoku9x9 = new Sudoku(9);
 
@@ -243,5 +244,41 @@ describe("getValueOfNode", () => {
     it("returns -1 when provided a root node", () => {
         const root = Node.createRoot();
         expect(sudoku9x9.getRowIdOfNode(root)).toEqual(-1);
+    });
+});
+
+describe("createNetwork", () => {
+    it("creates a network matching the current Sudoku puzzle", () => {
+        for (let sudoku of validSudokus9x9) {
+            const board = new Sudoku(sudoku);
+            const network = board.createNetwork();
+
+            let numFilled: number = 0;
+            for (let row of sudoku) {
+                for (let value of row) {
+                    if (value !== 0) numFilled++;
+                }
+            }
+
+            expect(network.currentSolutionState).toHaveLength(numFilled);
+            expect(network.currentSolutionState).toHaveNoDuplicates();
+            expect(network.networkHistory).toHaveLength(numFilled);
+
+            network.currentSolutionState.forEach((n) => {
+                const row = board.getRowIdOfNode(n);
+                const column = board.getColumnIdOfNode(n);
+                const value = board.getValueOfNode(n);
+
+                expect(sudoku[row][column]).toEqual(value);
+            });
+        }
+    });
+
+    it("creates a network matching an empty Sudoku puzzle", () => {
+        const board = new Sudoku(9);
+        const network = board.createNetwork();
+
+        expect(network.currentSolutionState).toHaveLength(0);
+        expect(network.networkHistory).toHaveLength(0);
     });
 });

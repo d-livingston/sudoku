@@ -1,5 +1,6 @@
 import { Sudoku } from "./sudoku";
 import Node from "../node";
+import Network, { NetworkEventType } from "../network";
 
 declare module "./sudoku" {
     interface Sudoku {
@@ -9,6 +10,7 @@ declare module "./sudoku" {
         getCellIdOfNode(node: Node): number;
         getValueOfNode(node: Node): number;
         isNode(row: number, column: number): boolean;
+        createNetwork(): Network;
     }
 }
 
@@ -115,4 +117,28 @@ Sudoku.prototype.isNode = function (row: number, column: number): boolean {
                     this.size +
                 (row % this.size)
         );
+};
+
+Sudoku.prototype.createNetwork = function (): Network {
+    const network = new Network(
+        this.rowsInNetwork,
+        this.columnsInNetwork,
+        this.isNode.bind(this)
+    );
+
+    const nodesMatching = network.filter(
+        (n) => {
+            const row = this.getRowIdOfNode(n);
+            const column = this.getColumnIdOfNode(n);
+            const value = this.getValueOfNode(n);
+            return this.sudoku[row][column] === value;
+        },
+        { isColumn: false, maxColumn: this.rowConstraint }
+    );
+    nodesMatching.forEach((n) => {
+        network.dispatch(NetworkEventType.Remove, n);
+        network.currentSolutionState.push(n);
+    });
+
+    return network;
 };
