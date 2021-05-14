@@ -14,6 +14,7 @@ InvalidSudokuError.prototype.message = "Not a valid Sudoku puzzle.";
 export class Sudoku {
     public static readonly DEFAULT_SIZE: number = 9;
     public readonly sudoku: number[][] = [];
+    public readonly initial: number[][] = [];
     public readonly size: number;
     public readonly sqrt: number;
     public readonly rowConstraint: number;
@@ -88,10 +89,17 @@ export class Sudoku {
             if (!Sudoku.isValidSize(initValue)) throw new InvalidSizeError();
             this.size = initValue;
             this.sudoku = Sudoku.generateBlank(this.size);
+            this.initial = Sudoku.generateBlank(this.size);
         } else {
             if (!Sudoku.isValidBoard(initValue)) throw new InvalidSizeError();
             this.size = initValue.length;
             this.sudoku = Array.from({ length: this.size }, (_, row) =>
+                Array.from(
+                    { length: this.size },
+                    (_, column) => initValue[row][column]
+                )
+            );
+            this.initial = Array.from({ length: this.size }, (_, row) =>
                 Array.from(
                     { length: this.size },
                     (_, column) => initValue[row][column]

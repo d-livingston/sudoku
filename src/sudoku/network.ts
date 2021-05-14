@@ -131,7 +131,7 @@ Sudoku.prototype.createNetwork = function (): Network {
             const row = this.getRowIdOfNode(n);
             const column = this.getColumnIdOfNode(n);
             const value = this.getValueOfNode(n);
-            return this.sudoku[row][column] === value;
+            return this.initial[row][column] === value;
         },
         { isColumn: false, maxColumn: this.rowConstraint }
     );
