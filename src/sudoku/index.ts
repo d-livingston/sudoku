@@ -1,4 +1,5 @@
 import { Sudoku } from "./sudoku";
+import "./generate";
 import "./network";
 import "./solve";
 
