@@ -15,7 +15,6 @@ describe("Static Method: generate", () => {
     });
 });
 
-// TODO REMOVE
 // it("test", () => {
 //     let totalTime = 0,
 //         totalFilledCells = 0,
