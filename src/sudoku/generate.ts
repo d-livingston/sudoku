@@ -3,7 +3,7 @@ import Network, { NetworkEventType } from "../network";
 import Node from "../node";
 import "./network";
 import "./solve";
-import { GenerateResult } from "./types";
+import { Difficulty, GenerateResult } from "./types";
 
 declare module "./sudoku" {
     namespace Sudoku {
@@ -22,8 +22,7 @@ Sudoku.generate = function (size: number = 9): GenerateResult {
     fillCells(sudoku, network, solution, initialCells);
 
     let hasMultipleSolutions = true;
-    let columnsTried = 0,
-        nodesTried = 0;
+    let nodesTried = 0;
     while (hasMultipleSolutions) {
         removeLargestColumn(sudoku, network, solution);
 
@@ -31,7 +30,6 @@ Sudoku.generate = function (size: number = 9): GenerateResult {
         hasMultipleSolutions = result.hasMultipleSolutions;
 
         if (!hasMultipleSolutions) {
-            columnsTried = result.columnsTried;
             nodesTried = result.nodesTried;
         }
     }
@@ -45,10 +43,7 @@ Sudoku.generate = function (size: number = 9): GenerateResult {
         solution,
         numFilledCells: getNumFilledCells(generatedSudoku),
         timeElapsed: Date.now() - startTime,
-        backtrackingDetails: {
-            columnsTried,
-            nodesTried,
-        },
+        difficulty: getDifficulty(nodesTried),
     };
 };
 
@@ -155,4 +150,11 @@ function fillCellsRandomly(network: Network, cells: number[]): void {
             }
         }
     });
+}
+
+function getDifficulty(nodesTried: number): Difficulty {
+    if (nodesTried < 50) return "easy";
+    else if (nodesTried < 55) return "medium";
+    else if (nodesTried < 70) return "hard";
+    else return "expert";
 }

@@ -18,28 +18,35 @@ describe("Static Method: generate", () => {
 // it("test", () => {
 //     let totalTime = 0,
 //         totalFilledCells = 0,
-//         numColumnsTried = 0,
-//         numNodesTried = 0,
 //         numTrials = 100;
+
+//     let numEasy = 0,
+//         numMedium = 0,
+//         numHard = 0,
+//         numExpert = 0;
+
 //     for (let i = 0; i < numTrials; i++) {
-//         const { sudoku, timeElapsed, numFilledCells, backtrackingDetails } =
-//             Sudoku.generate();
-//         const { nodesTried, columnsTried } = backtrackingDetails;
-//         numColumnsTried += columnsTried;
-//         numNodesTried += nodesTried;
+//         const { timeElapsed, numFilledCells, difficulty } = Sudoku.generate();
 //         totalTime += timeElapsed;
 //         totalFilledCells += numFilledCells;
 
-//         if (nodesTried > 70) {
-//             console.log(
-//                 i,
-//                 columnsTried,
-//                 nodesTried,
-//                 timeElapsed,
-//                 numFilledCells
-//             );
-
-//             console.log(sudoku);
+//         switch (difficulty) {
+//             case "easy": {
+//                 numEasy++;
+//                 break;
+//             }
+//             case "medium": {
+//                 numMedium++;
+//                 break;
+//             }
+//             case "hard": {
+//                 numHard++;
+//                 break;
+//             }
+//             case "expert": {
+//                 numExpert++;
+//                 break;
+//             }
 //         }
 //     }
 
@@ -48,7 +55,8 @@ describe("Static Method: generate", () => {
 //         `Average number of filled cells: ${totalFilledCells / numTrials}`
 //     );
 //     console.log(
-//         `Average number of columns tried: ${numColumnsTried / numTrials}`
+//         `Distribution of difficulty: Easy - ${numEasy / numTrials} | Medium - ${
+//             numMedium / numTrials
+//         } | Hard - ${numHard / numTrials} | Expert - ${numExpert / numTrials}`
 //     );
-//     console.log(`Average number of nodes tried: ${numNodesTried / numTrials}`);
 // });

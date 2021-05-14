@@ -5,14 +5,12 @@ export type SudokuSolution = {
     hasMultipleSolutions: boolean;
 };
 
+export type Difficulty = "easy" | "medium" | "hard" | "expert";
+
 export type GenerateResult = {
     sudoku: number[][];
     solution: number[][];
     numFilledCells: number;
     timeElapsed: number;
-
-    backtrackingDetails: {
-        columnsTried: number;
-        nodesTried: number;
-    };
+    difficulty: Difficulty;
 };
