@@ -1,5 +1,5 @@
 import { Sudoku } from "./sudoku";
-import Network, { NetworkEventType, NetworkSolution } from "../network";
+import Network, { NetworkEventType } from "../network";
 import Node from "../node";
 import "./network";
 import "./solve";
@@ -18,9 +18,6 @@ Sudoku.generate = function (size: number = 9): GenerateResult {
     const sudoku = new Sudoku(size);
     const network = sudoku.createNetwork();
 
-    // const alreadyFilled = new Set<number>();
-    // const initialCells = getRandomCells(sudoku, alreadyFilled, 9);
-
     const initialCells = getInitialCellsToRemove(sudoku);
     fillCells(sudoku, network, solution, initialCells);
 
@@ -28,13 +25,6 @@ Sudoku.generate = function (size: number = 9): GenerateResult {
     let columnsTried = 0,
         nodesTried = 0;
     while (hasMultipleSolutions) {
-        // fillCells(
-        //     sudoku,
-        //     network,
-        //     solution,
-        //     getRandomCells(sudoku, alreadyFilled)
-        // );
-
         removeLargestColumn(sudoku, network, solution);
 
         const result = network.solve();
@@ -72,7 +62,6 @@ function getInitialCellsToRemove(sudoku: Sudoku): number[] {
     return cells;
 }
 
-// TODO LOOK FOR BEST METHOD
 function removeLargestColumn(
     sudoku: Sudoku,
     network: Network,
@@ -129,23 +118,6 @@ function fillCells(
             network.currentSolutionState.push(node);
         }
     });
-}
-
-function getRandomCells(
-    sudoku: Sudoku,
-    alreadyFilled: Set<number>,
-    amount: number = 1
-): number[] {
-    const cells = new Set<number>();
-    while (cells.size < amount) {
-        const randomCell = Math.floor(Math.random() * sudoku.rowConstraint);
-        if (alreadyFilled.has(randomCell)) continue;
-        if (cells.has(randomCell)) continue;
-
-        alreadyFilled.add(randomCell);
-        cells.add(randomCell);
-    }
-    return [...cells];
 }
 
 Sudoku.generateComplete = function (size: number = 9): number[][] {
