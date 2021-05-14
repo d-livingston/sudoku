@@ -17,9 +17,9 @@ describe("dispatch", () => {
     });
 
     describe("Event type: Cover", () => {
-        it("covers a column in the network", () => {
+        it("covers a column in the network", async () => {
             const column = network.root.right;
-            network.dispatch(NetworkEventType.Cover, column);
+            await network.dispatch(NetworkEventType.Cover, column);
             expect(network.toMatrix()).toEqual([
                 [0, 1, 1, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0],
@@ -32,27 +32,27 @@ describe("dispatch", () => {
             ]);
         });
 
-        it("throws a TypeError when no node is provided and does nothing", () => {
-            expect(() => network.dispatch(NetworkEventType.Cover)).toThrow();
+        it("throws a TypeError when no node is provided and does nothing", async () => {
+            expect(network.dispatch(NetworkEventType.Cover)).rejects.toThrow();
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
         });
 
-        it("throws a TypeError when a regular node is provided and does nothing", () => {
+        it("throws a TypeError when a regular node is provided and does nothing", async () => {
             const node = network.root.right.down;
-            expect(() =>
+            expect(
                 network.dispatch(NetworkEventType.Cover, node)
-            ).toThrow();
+            ).rejects.toThrow();
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
         });
 
-        it("throws a TypeError when the root node is provided and does nothing", () => {
-            expect(() =>
+        it("throws a TypeError when the root node is provided and does nothing", async () => {
+            expect(
                 network.dispatch(NetworkEventType.Cover, network.root)
-            ).toThrow();
+            ).rejects.toThrow();
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
@@ -60,9 +60,9 @@ describe("dispatch", () => {
     });
 
     describe("Event type: Remove", () => {
-        it("removes a node in the network", () => {
+        it("removes a node in the network", async () => {
             const node = network.root.right.down;
-            network.dispatch(NetworkEventType.Remove, node);
+            await network.dispatch(NetworkEventType.Remove, node);
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual([
                 [0, 1, 1, 0, 0, 0],
@@ -76,27 +76,27 @@ describe("dispatch", () => {
             ]);
         });
 
-        it("throws a TypeError when no node is provided and does nothing", () => {
-            expect(() => network.dispatch(NetworkEventType.Remove)).toThrow();
+        it("throws a TypeError when no node is provided and does nothing", async () => {
+            expect(network.dispatch(NetworkEventType.Remove)).rejects.toThrow();
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
         });
 
-        it("throws a TypeError when a column node is provided and does nothing", () => {
+        it("throws a TypeError when a column node is provided and does nothing", async () => {
             const column = network.root.right;
-            expect(() =>
+            expect(
                 network.dispatch(NetworkEventType.Remove, column)
-            ).toThrow();
+            ).rejects.toThrow();
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
         });
 
-        it("throws a TypeError when the root node is provided and does nothing", () => {
-            expect(() =>
+        it("throws a TypeError when the root node is provided and does nothing", async () => {
+            expect(
                 network.dispatch(NetworkEventType.Remove, network.root)
-            ).toThrow();
+            ).rejects.toThrow();
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
@@ -104,9 +104,9 @@ describe("dispatch", () => {
     });
 
     describe("Event type: Hide", () => {
-        it("hides a node in the network", () => {
+        it("hides a node in the network", async () => {
             const node = network.root.right.down;
-            network.dispatch(NetworkEventType.Hide, node);
+            await network.dispatch(NetworkEventType.Hide, node);
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual([
                 [0, 1, 1, 0, 0, 0],
@@ -120,27 +120,27 @@ describe("dispatch", () => {
             ]);
         });
 
-        it("throws a TypeError when no node is provided and does nothing", () => {
-            expect(() => network.dispatch(NetworkEventType.Hide)).toThrow();
+        it("throws a TypeError when no node is provided and does nothing", async () => {
+            expect(network.dispatch(NetworkEventType.Hide)).rejects.toThrow();
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
         });
 
-        it("throws a TypeError when a column node is provided and does nothing", () => {
+        it("throws a TypeError when a column node is provided and does nothing", async () => {
             const column = network.root.right;
-            expect(() =>
+            expect(
                 network.dispatch(NetworkEventType.Hide, column)
-            ).toThrow();
+            ).rejects.toThrow();
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
         });
 
-        it("throws a TypeError when the root node is provided and does nothing", () => {
-            expect(() =>
+        it("throws a TypeError when the root node is provided and does nothing", async () => {
+            expect(
                 network.dispatch(NetworkEventType.Hide, network.root)
-            ).toThrow();
+            ).rejects.toThrow();
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
@@ -148,35 +148,35 @@ describe("dispatch", () => {
     });
 
     describe("Event type: Undo", () => {
-        it("un-does the cover event", () => {
+        it("un-does the cover event", async () => {
             const column = network.root.right;
-            network.dispatch(NetworkEventType.Cover, column);
-            network.dispatch(NetworkEventType.Undo);
+            await network.dispatch(NetworkEventType.Cover, column);
+            await network.dispatch(NetworkEventType.Undo);
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
         });
 
-        it("un-does the remove event", () => {
+        it("un-does the remove event", async () => {
             const node = network.root.right.down;
-            network.dispatch(NetworkEventType.Remove, node);
-            network.dispatch(NetworkEventType.Undo);
+            await network.dispatch(NetworkEventType.Remove, node);
+            await network.dispatch(NetworkEventType.Undo);
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
         });
 
-        it("un-does the hide event", () => {
+        it("un-does the hide event", async () => {
             const node = network.root.right.down;
-            network.dispatch(NetworkEventType.Hide, node);
-            network.dispatch(NetworkEventType.Undo);
+            await network.dispatch(NetworkEventType.Hide, node);
+            await network.dispatch(NetworkEventType.Undo);
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
         });
 
-        it("does nothing if the network history is empty", () => {
-            network.dispatch(NetworkEventType.Undo);
+        it("does nothing if the network history is empty", async () => {
+            await network.dispatch(NetworkEventType.Undo);
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
@@ -184,22 +184,25 @@ describe("dispatch", () => {
     });
 
     describe("Event type: Reset", () => {
-        it("resets the network", () => {
-            network.dispatch(NetworkEventType.Hide, network.root.right.down);
-            network.dispatch(
+        it("resets the network", async () => {
+            await network.dispatch(
+                NetworkEventType.Hide,
+                network.root.right.down
+            );
+            await network.dispatch(
                 NetworkEventType.Remove,
                 network.root.left.left.down
             );
-            network.dispatch(NetworkEventType.Cover, network.root.right);
+            await network.dispatch(NetworkEventType.Cover, network.root.right);
 
-            network.dispatch(NetworkEventType.Reset);
+            await network.dispatch(NetworkEventType.Reset);
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
         });
 
-        it("does nothing if the network history is empty", () => {
-            network.dispatch(NetworkEventType.Reset);
+        it("does nothing if the network history is empty", async () => {
+            await network.dispatch(NetworkEventType.Reset);
             expect(network.isFullyConnected()).toBe(true);
             expect(network.toMatrix()).toEqual(matrix);
             expect(network.networkHistory).toHaveLength(0);
