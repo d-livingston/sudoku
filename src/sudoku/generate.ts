@@ -7,13 +7,23 @@ import { Difficulty, GenerateResult } from "./types";
 
 declare module "./sudoku" {
     namespace Sudoku {
+        /**
+         * Generates a Sudoku of the given size.
+         * @param size The size of the Sudoku. Represented by the number of cells in each row, column, and square. 9 by default.
+         * @returns {GenerateResult} An object with the Sudoku, solution, and difficulty of the puzzle.
+         */
         export function generate(size?: number): GenerateResult;
+
+        /**
+         * Generates a complete Sudoku solution of the given size.
+         * @param size The size of the Sudoku. Represented by the number of cells in each row, column, and square. 9 by default.
+         * @returns A Sudoku solution with the given size.
+         */
         export function generateComplete(size?: number): number[][];
     }
 }
 
 Sudoku.generate = function (size: number = 9): GenerateResult {
-    const startTime = Date.now();
     const solution = Sudoku.generateComplete(size);
     const sudoku = new Sudoku(size);
     const network = sudoku.createNetwork();
@@ -41,8 +51,6 @@ Sudoku.generate = function (size: number = 9): GenerateResult {
     return {
         sudoku: generatedSudoku,
         solution,
-        numFilledCells: getNumFilledCells(generatedSudoku),
-        timeElapsed: Date.now() - startTime,
         difficulty: getDifficulty(nodesTried),
     };
 };
@@ -79,16 +87,6 @@ function removeLargestColumn(
         network.dispatch(NetworkEventType.Remove, node);
         network.currentSolutionState.push(node);
     }
-}
-
-function getNumFilledCells(sudoku: number[][]): number {
-    let count = 0;
-    for (let row of sudoku) {
-        for (let value of row) {
-            if (value !== 0) count++;
-        }
-    }
-    return count;
 }
 
 function fillCells(

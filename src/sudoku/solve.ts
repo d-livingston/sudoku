@@ -4,10 +4,19 @@ import { SudokuSolution } from "./types";
 
 declare module "./sudoku" {
     namespace Sudoku {
+        /**
+         * Solves the Sudoku puzzle and returns the solution.
+         * @param sudoku An nxn matrix representing the Sudoku puzzle.
+         * @returns {SudokuSolution} An object with the solution and whether the puzzle has multiple solutions or not.
+         */
         export function solve(sudoku: number[][]): SudokuSolution;
     }
 
     interface Sudoku {
+        /**
+         * Solves the current Sudoku puzzle and returns the solution.
+         * @returns {SudokuSolution} An object with the solution and whether the puzzle has multiple solutions or not.
+         */
         solve(): SudokuSolution;
     }
 }
