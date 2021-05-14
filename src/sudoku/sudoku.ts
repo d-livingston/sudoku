@@ -24,6 +24,20 @@ export class Sudoku {
     public readonly columnsInNetwork: number;
 
     /**
+     * Determines if the Sudoku board is complete. A Sudoku board is complete if every cell is filled and the Sudoku is valid.
+     * @param sudoku An nxn matrix representing the Sudoku puzzle.
+     * @returns True if the board is complete; false otherwise.
+     */
+    public static isComplete(sudoku: number[][]): boolean {
+        try {
+            const board = new Sudoku(sudoku);
+            return board.isComplete();
+        } catch {
+            return false;
+        }
+    }
+
+    /**
      * Determines if the Sudoku board is valid.
      * @param sudoku An nxn matrix representing the Sudoku puzzle.
      * @returns True if the board is valid; false otherwise.
@@ -259,6 +273,20 @@ export class Sudoku {
      */
     public isValidValue(value: number): boolean {
         return value >= 1 && value <= this.size && Number.isInteger(value);
+    }
+
+    /**
+     * Determines if the current Sudoku is complete or not. A Sudoku is complete if every cell is filled and the Sudoku is valid.
+     * @returns True if the Sudoku is complete; false otherwise.
+     */
+    public isComplete(): boolean {
+        if (!this.isValid()) return false;
+        for (let row of this.sudoku) {
+            for (let value of row) {
+                if (value === 0) return false;
+            }
+        }
+        return true;
     }
 
     /**

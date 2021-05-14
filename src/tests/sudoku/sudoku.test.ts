@@ -6,6 +6,7 @@ import {
     columnsInSudoku9x9,
     squaresInSudoku9x9,
 } from "../fixtures/sudoku/reference";
+import { solvedSudokus9x9 } from "../fixtures/sudoku/solutions";
 import { invalidSudokus9x9, validSudokus9x9 } from "../fixtures/sudoku/valid";
 
 const sudoku9x9 = new Sudoku(9);
@@ -24,7 +25,7 @@ describe("constructor", () => {
     });
 });
 
-describe("Method: isValid", () => {
+describe("Static Method: isValid", () => {
     it("determines a valid Sudoku is valid", () => {
         for (let sudoku of validSudokus9x9) {
             expect(Sudoku.isValid(sudoku)).toBe(true);
@@ -34,6 +35,20 @@ describe("Method: isValid", () => {
     it("determines an invalid Sudoku is invalid", () => {
         for (let sudoku of invalidSudokus9x9) {
             expect(Sudoku.isValid(sudoku)).toBe(false);
+        }
+    });
+});
+
+describe("Static method: isComplete", () => {
+    it("determines that a complete Sudoku is complete", () => {
+        for (let { solution } of solvedSudokus9x9) {
+            expect(Sudoku.isComplete(solution)).toBe(true);
+        }
+    });
+
+    it("determines that a Sudoku that is not filled is incomplete", () => {
+        for (let { sudoku } of solvedSudokus9x9) {
+            expect(Sudoku.isComplete(sudoku)).toBe(false);
         }
     });
 });
