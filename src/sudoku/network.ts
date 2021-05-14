@@ -11,6 +11,7 @@ declare module "./sudoku" {
         getValueOfNode(node: Node): number;
         isNode(row: number, column: number): boolean;
         createNetwork(): Network;
+        convertNodesToSudoku(nodes: Node[]): number[][];
     }
 }
 
@@ -141,4 +142,15 @@ Sudoku.prototype.createNetwork = function (): Network {
     });
 
     return network;
+};
+
+Sudoku.prototype.convertNodesToSudoku = function (nodes: Node[]): number[][] {
+    const sudoku = Sudoku.generateBlank(this.size);
+    nodes.forEach((n) => {
+        const row = this.getRowIdOfNode(n);
+        const column = this.getColumnIdOfNode(n);
+        const value = this.getValueOfNode(n);
+        if (value !== -1) sudoku[row][column] = value;
+    });
+    return sudoku;
 };
