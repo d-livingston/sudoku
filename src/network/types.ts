@@ -22,4 +22,6 @@ export type NetworkEvent = {
 export type NetworkSolution = {
     solution: Node[];
     hasMultipleSolutions: boolean;
+    columnsTried: number;
+    nodesTried: number;
 };
