@@ -10,7 +10,8 @@ declare module "./sudoku" {
         getCellIdOfNode(node: Node): number;
         getValueOfNode(node: Node): number;
         isNode(row: number, column: number): boolean;
-        createNetwork(): Network;
+        createNetwork(): Promise<Network>;
+        createNetworkSync(): Network;
         convertNodesToSudoku(nodes: Node[]): number[][];
     }
 }
@@ -120,7 +121,32 @@ Sudoku.prototype.isNode = function (row: number, column: number): boolean {
         );
 };
 
-Sudoku.prototype.createNetwork = function (): Network {
+Sudoku.prototype.createNetwork = async function (): Promise<Network> {
+    const network = new Network(
+        this.rowsInNetwork,
+        this.columnsInNetwork,
+        this.isNode.bind(this)
+    );
+
+    const nodesMatching = network.filter(
+        (n) => {
+            const row = this.getRowIdOfNode(n);
+            const column = this.getColumnIdOfNode(n);
+            const value = this.getValueOfNode(n);
+            return this.initial[row][column] === value;
+        },
+        { isColumn: false, maxColumn: this.rowConstraint }
+    );
+
+    for (let i = 0; i < nodesMatching.length; i++) {
+        await network.dispatch(NetworkEventType.Remove, nodesMatching[i]);
+        network.currentSolutionState.push(nodesMatching[i]);
+    }
+
+    return network;
+};
+
+Sudoku.prototype.createNetworkSync = function (): Network {
     const network = new Network(
         this.rowsInNetwork,
         this.columnsInNetwork,
@@ -137,7 +163,7 @@ Sudoku.prototype.createNetwork = function (): Network {
         { isColumn: false, maxColumn: this.rowConstraint }
     );
     nodesMatching.forEach((n) => {
-        network.dispatch(NetworkEventType.Remove, n);
+        network.dispatchSync(NetworkEventType.Remove, n);
         network.currentSolutionState.push(n);
     });
 

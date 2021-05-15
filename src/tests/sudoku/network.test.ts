@@ -248,10 +248,10 @@ describe("getValueOfNode", () => {
 });
 
 describe("createNetwork", () => {
-    it("creates a network matching the current Sudoku puzzle", () => {
+    it("creates a network matching the current Sudoku puzzle", async () => {
         for (let sudoku of validSudokus9x9) {
             const board = new Sudoku(sudoku);
-            const network = board.createNetwork();
+            const network = await board.createNetwork();
 
             let numFilled: number = 0;
             for (let row of sudoku) {
@@ -274,9 +274,9 @@ describe("createNetwork", () => {
         }
     });
 
-    it("creates a network matching an empty Sudoku puzzle", () => {
+    it("creates a network matching an empty Sudoku puzzle", async () => {
         const board = new Sudoku(9);
-        const network = board.createNetwork();
+        const network = await board.createNetwork();
 
         expect(network.currentSolutionState).toHaveLength(0);
         expect(network.networkHistory).toHaveLength(0);
