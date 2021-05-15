@@ -12,21 +12,35 @@ declare module "./sudoku" {
          * @param size The size of the Sudoku. Represented by the number of cells in each row, column, and square. 9 by default.
          * @returns {GenerateResult} An object with the Sudoku, solution, and difficulty of the puzzle.
          */
-        export function generate(size?: number): GenerateResult;
+        export function generate(size?: number): Promise<GenerateResult>;
+
+        /**
+         * Generates a Sudoku of the given size.
+         * @param size The size of the Sudoku. Represented by the number of cells in each row, column, and square. 9 by default.
+         * @returns {GenerateResult} An object with the Sudoku, solution, and difficulty of the puzzle.
+         */
+        export function generateSync(size?: number): GenerateResult;
 
         /**
          * Generates a complete Sudoku solution of the given size.
          * @param size The size of the Sudoku. Represented by the number of cells in each row, column, and square. 9 by default.
          * @returns A Sudoku solution with the given size.
          */
-        export function generateComplete(size?: number): number[][];
+        export function generateComplete(size?: number): Promise<number[][]>;
+
+        /**
+         * Generates a complete Sudoku solution of the given size.
+         * @param size The size of the Sudoku. Represented by the number of cells in each row, column, and square. 9 by default.
+         * @returns A Sudoku solution with the given size.
+         */
+        export function generateCompleteSync(size?: number): number[][];
     }
 }
 
-Sudoku.generate = function (size: number = 9): GenerateResult {
-    const solution = Sudoku.generateComplete(size);
+Sudoku.generate = async function (size: number = 9): Promise<GenerateResult> {
+    const solution = Sudoku.generateCompleteSync(size);
     const sudoku = new Sudoku(size);
-    const network = sudoku.createNetwork();
+    const network = sudoku.createNetworkSync();
 
     const initialCells = getInitialCellsToRemove(sudoku);
     fillCells(sudoku, network, solution, initialCells);
@@ -36,7 +50,39 @@ Sudoku.generate = function (size: number = 9): GenerateResult {
     while (hasMultipleSolutions) {
         removeLargestColumn(sudoku, network, solution);
 
-        const result = network.solve();
+        const result = await network.solve();
+        hasMultipleSolutions = result.hasMultipleSolutions;
+
+        if (!hasMultipleSolutions) {
+            nodesTried = result.nodesTried;
+        }
+    }
+
+    const generatedSudoku = sudoku.convertNodesToSudoku(
+        network.currentSolutionState
+    );
+
+    return {
+        sudoku: generatedSudoku,
+        solution,
+        difficulty: getDifficulty(nodesTried),
+    };
+};
+
+Sudoku.generateSync = function (size: number = 9): GenerateResult {
+    const solution = Sudoku.generateCompleteSync(size);
+    const sudoku = new Sudoku(size);
+    const network = sudoku.createNetworkSync();
+
+    const initialCells = getInitialCellsToRemove(sudoku);
+    fillCells(sudoku, network, solution, initialCells);
+
+    let hasMultipleSolutions = true;
+    let nodesTried = 0;
+    while (hasMultipleSolutions) {
+        removeLargestColumn(sudoku, network, solution);
+
+        const result = network.solveSync();
         hasMultipleSolutions = result.hasMultipleSolutions;
 
         if (!hasMultipleSolutions) {
@@ -84,7 +130,7 @@ function removeLargestColumn(
     });
 
     if (node) {
-        network.dispatch(NetworkEventType.Remove, node);
+        network.dispatchSync(NetworkEventType.Remove, node);
         network.currentSolutionState.push(node);
     }
 }
@@ -107,18 +153,30 @@ function fillCells(
             (n) => solution[row][column] === sudoku.getValueOfNode(n)
         );
         if (node) {
-            network.dispatch(NetworkEventType.Remove, node);
+            network.dispatchSync(NetworkEventType.Remove, node);
             network.currentSolutionState.push(node);
         }
     });
 }
 
-Sudoku.generateComplete = function (size: number = 9): number[][] {
+Sudoku.generateComplete = async function (
+    size: number = 9
+): Promise<number[][]> {
     const sudoku = new Sudoku(size);
-    const network = sudoku.createNetwork();
+    const network = await sudoku.createNetwork();
     const initialCells = getInitialCells(sudoku);
     fillCellsRandomly(network, initialCells);
-    const { solution: networkSolution } = network.solve();
+    const { solution: networkSolution } = await network.solve();
+    const solution = sudoku.convertNodesToSudoku(networkSolution);
+    return solution;
+};
+
+Sudoku.generateCompleteSync = function (size: number = 9): number[][] {
+    const sudoku = new Sudoku(size);
+    const network = sudoku.createNetworkSync();
+    const initialCells = getInitialCells(sudoku);
+    fillCellsRandomly(network, initialCells);
+    const { solution: networkSolution } = network.solveSync();
     const solution = sudoku.convertNodesToSudoku(networkSolution);
     return solution;
 };
@@ -143,7 +201,7 @@ function fillCellsRandomly(network: Network, cells: number[]): void {
             );
 
             if (targetNode) {
-                network.dispatch(NetworkEventType.Remove, targetNode);
+                network.dispatchSync(NetworkEventType.Remove, targetNode);
                 network.currentSolutionState.push(targetNode);
             }
         }
