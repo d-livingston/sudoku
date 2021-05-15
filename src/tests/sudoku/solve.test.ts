@@ -4,23 +4,25 @@ import { solvedSudokus9x9 } from "../fixtures/sudoku/solutions";
 import { blank9x9 } from "../fixtures/sudoku/reference";
 
 describe("solve", () => {
-    it("solves Sudokus", () => {
+    it("solves Sudokus", async () => {
         for (let { sudoku, solution: expected } of solvedSudokus9x9) {
-            const { solution, hasMultipleSolutions } = Sudoku.solve(sudoku);
+            const { solution, hasMultipleSolutions } = await Sudoku.solve(
+                sudoku
+            );
             expect(solution).toEqual(expected);
             expect(hasMultipleSolutions).toBe(false);
         }
     });
 
-    it("returns an empty array when the Sudoku is invalid", () => {
+    it("returns an empty array when the Sudoku is invalid", async () => {
         for (let sudoku of invalidSudokus9x9) {
-            const { solution } = Sudoku.solve(sudoku);
+            const { solution } = await Sudoku.solve(sudoku);
             expect(solution).toEqual([]);
         }
     });
 
-    it("correctly determines when Sudokus have multiple solutions", () => {
-        const { hasMultipleSolutions } = Sudoku.solve(blank9x9);
+    it("correctly determines when Sudokus have multiple solutions", async () => {
+        const { hasMultipleSolutions } = await Sudoku.solve(blank9x9);
         expect(hasMultipleSolutions).toBe(true);
     });
 });
