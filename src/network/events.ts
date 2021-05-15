@@ -74,7 +74,8 @@ Network.prototype.dispatch = async function (
             if (this.networkHistory.length === 0) return;
 
             const { type, node } = this.networkHistory.pop()!;
-            return await undo(type, node);
+            await undo(type, node);
+            break;
         }
         case NetworkEventType.Reset: {
             while (this.networkHistory.length !== 0) {
