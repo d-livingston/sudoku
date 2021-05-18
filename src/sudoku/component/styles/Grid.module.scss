@@ -8,10 +8,10 @@
 
 .grid__container {
     position: relative;
-    max-height: 500px;
-    max-width: 500px;
+    max-height: variables.$grid-max-width;
+    max-width: variables.$grid-max-width;
     width: 100%;
-    padding-top: min(100%, 500px);
+    padding-top: Min(100%, variables.$grid-max-width);
 }
 
 .grid {
