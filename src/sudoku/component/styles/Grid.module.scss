@@ -1,0 +1,46 @@
+@use "variables";
+@use "mixins";
+
+.container {
+    height: 100%;
+    width: 100%;
+}
+
+.grid__container {
+    position: relative;
+    max-height: 500px;
+    max-width: 500px;
+    width: 100%;
+    padding-top: min(100%, 500px);
+}
+
+.grid {
+    @include mixins.grid9x9;
+
+    border: 2px solid variables.$color-grid;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.square {
+    @include mixins.grid9x9;
+    border: 2px solid variables.$color-grid;
+}
+
+.cell {
+    border: 1px solid variables.$color-grid;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.value {
+    height: 75%;
+    width: auto;
+}

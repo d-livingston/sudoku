@@ -199,6 +199,22 @@ export class Sudoku {
     }
 
     /**
+     * Gets the cell IDs in the current Sudoku.
+     * @returns The cell IDs in the current Sudoku.
+     */
+    public getCellIds(): number[] {
+        return Array.from({ length: this.rowConstraint }, (_, i) => i);
+    }
+
+    /**
+     * Gets the house IDs in the current Sudoku.
+     * @returns The house IDs in the given Sudoku.
+     */
+    public getHouseIds(): number[] {
+        return Array.from({ length: this.size }, (_, i) => i);
+    }
+
+    /**
      * Gets the cell IDs in the given row.
      * @param row The row ID.
      * @returns The cell IDs in the given row. If the row ID is invalid, returns an empty array.
