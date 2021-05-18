@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Sudoku } from "../sudoku";
+import styles from "./Sudoku.module.scss";
 
 declare module "../sudoku" {
     namespace Sudoku {
@@ -7,8 +8,14 @@ declare module "../sudoku" {
     }
 }
 
-export type SudokuProps = {};
+export type SudokuProps = {
+    sudoku: number[][];
+};
 
-Sudoku.Component = function (props: SudokuProps): JSX.Element {
-    return <div className="sudoku__container"></div>;
+Sudoku.Component = function (_: SudokuProps): JSX.Element {
+    return (
+        <div className={styles.container}>
+            <div className="sudoku__grid"></div>
+        </div>
+    );
 };
