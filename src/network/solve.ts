@@ -113,10 +113,8 @@ const search = async (
         await network.dispatch(NetworkEventType.Cover, column);
         column.forEach("down", (r) => {
             network.currentSolutionState.push(r);
-            r.forEach(
-                "right",
-                async (j) =>
-                    await network.dispatch(NetworkEventType.Cover, j.column)
+            r.forEach("right", (j) =>
+                network.dispatchSync(NetworkEventType.Cover, j.column)
             );
             searchSync(network, {
                 assertStopSolving,
@@ -124,9 +122,8 @@ const search = async (
 
                 onColumnChoice,
             });
-            r.forEach(
-                "left",
-                async () => await network.dispatch(NetworkEventType.Undo)
+            r.forEach("left", () =>
+                network.dispatchSync(NetworkEventType.Undo)
             );
             network.currentSolutionState.pop();
         });

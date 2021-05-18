@@ -96,7 +96,7 @@ Network.prototype.dispatchSync = function (
             if (this.networkHistory.length === 0) return;
 
             const { type, node } = this.networkHistory.pop()!;
-            return undoSync(type, node);
+            return undo(type, node);
         }
         case NetworkEventType.Reset: {
             while (this.networkHistory.length !== 0) {
@@ -110,7 +110,7 @@ Network.prototype.dispatchSync = function (
     }
 };
 
-function undoSync(type: NetworkEventType, node: Node): void {
+function undo(type: NetworkEventType, node: Node): void {
     switch (type) {
         case NetworkEventType.Cover: {
             undoCover(node);

@@ -27,6 +27,28 @@ describe("solve", () => {
     });
 });
 
+describe("solveSync", () => {
+    it("solves Sudokus", () => {
+        for (let { sudoku, solution: expected } of solvedSudokus9x9) {
+            const { solution, hasMultipleSolutions } = Sudoku.solveSync(sudoku);
+            expect(solution).toEqual(expected);
+            expect(hasMultipleSolutions).toBe(false);
+        }
+    });
+
+    it("returns an empty array when the Sudoku is invalid", () => {
+        for (let sudoku of invalidSudokus9x9) {
+            const { solution } = Sudoku.solveSync(sudoku);
+            expect(solution).toEqual([]);
+        }
+    });
+
+    it("correctly determines when Sudokus have multiple solutions", () => {
+        const { hasMultipleSolutions } = Sudoku.solveSync(blank9x9);
+        expect(hasMultipleSolutions).toBe(true);
+    });
+});
+
 // import {
 //     easy9x9,
 //     medium9x9,

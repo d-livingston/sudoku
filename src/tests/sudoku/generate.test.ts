@@ -7,9 +7,24 @@ describe("Static Method: generateComplete", () => {
     });
 });
 
+describe("Static Method: generateCompleteSync", () => {
+    it("generates a Sudoku of size 9 by default", () => {
+        const sudoku = Sudoku.generateCompleteSync();
+        expect(Sudoku.isComplete(sudoku)).toBe(true);
+    });
+});
+
 describe("Static Method: generate", () => {
     it("generates an incomplete Sudoku of size 9 by default", async () => {
         const { sudoku } = await Sudoku.generate();
+        expect(Sudoku.isValid(sudoku)).toBe(true);
+        expect(Sudoku.isComplete(sudoku)).toBe(false);
+    });
+});
+
+describe("Static Method: generateSync", () => {
+    it("generates an incomplete Sudoku of size 9 by default", () => {
+        const { sudoku } = Sudoku.generateSync();
         expect(Sudoku.isValid(sudoku)).toBe(true);
         expect(Sudoku.isComplete(sudoku)).toBe(false);
     });
