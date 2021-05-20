@@ -16,7 +16,12 @@
 
 .value {
     height: 75%;
+    fill: variables.$color-cell-unlocked;
     width: auto;
+}
+
+.locked {
+    fill: variables.$color-cell-locked;
 }
 
 .same_value {

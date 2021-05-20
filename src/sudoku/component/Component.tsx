@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Sudoku } from "../sudoku";
 import { Cell } from "./Cell";
 import createKeydownListener from "./keydownListener";
 import {
@@ -17,7 +16,7 @@ export type ComponentProps = {
 
 export function Component({ sudoku }: ComponentProps): JSX.Element {
     const [state, dispatch] = useSudokuReducer(sudoku);
-    const board = new Sudoku(sudoku);
+    const { board } = state;
 
     const onKeydown = createKeydownListener(
         (value: number) => dispatch(fillCell(value)),
@@ -61,16 +60,13 @@ export function Component({ sudoku }: ComponentProps): JSX.Element {
                                                 value !== 0 &&
                                                 value === state.selected.value
                                             }
+                                            isLocked={board.isLocked(cellId)}
                                             isSelected={isSelected}
                                             isInSameHouse={isInSameHouse}
                                             onClick={(cell: number) =>
                                                 dispatch(selectCell(cell))
                                             }
-                                            value={
-                                                isSelected
-                                                    ? state.selected.value
-                                                    : value
-                                            }
+                                            value={value}
                                         />
                                     );
                                 })}
