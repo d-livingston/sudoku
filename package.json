@@ -1,59 +1,73 @@
 {
-    "name": "@d-livingston/sudoku",
-    "version": "1.0.1",
-    "description": "A basic Sudoku package.",
-    "main": "dist/index.js",
-    "files": [
-        "dist"
-    ],
-    "author": "Daniel Livingston <contact@daniellivingston.net>",
-    "homepage": "https://github.com/d-livingston/sudoku#readme",
-    "license": "ISC",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/d-livingston/sudoku.git"
-    },
-    "bugs": {
-        "url": "https://github.com/d-livingston/sudoku/issues"
-    },
-    "keywords": [
-        "sudoku",
-        "generate",
-        "solve",
-        "exact",
-        "cover",
-        "search"
-    ],
-    "scripts": {
-        "build": "webpack",
-        "start": "rollup -c -w",
-        "test": "jest",
-        "test:watch": "jest --watch --detectOpenHandles"
-    },
-    "publishConfig": {
-        "access": "public"
-    },
-    "devDependencies": {
-        "@types/jest": "^26.0.22",
-        "@types/react": "^17.0.5",
-        "@types/react-test-renderer": "^17.0.1",
-        "autoprefixer": "^10.2.5",
-        "css-loader": "^5.2.4",
-        "jest": "^26.6.3",
-        "postcss": "^8.2.15",
-        "postcss-loader": "^5.3.0",
-        "react-test-renderer": "^17.0.2",
-        "sass": "^1.32.13",
-        "sass-loader": "^11.1.1",
-        "style-loader": "^2.0.0",
-        "ts-jest": "^26.5.5",
-        "ts-loader": "^9.1.2",
-        "typescript": "^4.2.4",
-        "webpack": "^5.37.0",
-        "webpack-cli": "^4.7.0"
-    },
-    "dependencies": {
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2"
-    }
+  "name": "@d-livingston/sudoku",
+  "version": "1.0.1",
+  "description": "A basic Sudoku package.",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Daniel Livingston <contact@daniellivingston.net>",
+  "homepage": "https://github.com/d-livingston/sudoku#readme",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d-livingston/sudoku.git"
+  },
+  "bugs": {
+    "url": "https://github.com/d-livingston/sudoku/issues"
+  },
+  "keywords": [
+    "sudoku",
+    "generate",
+    "solve",
+    "exact",
+    "cover",
+    "search"
+  ],
+  "scripts": {
+    "build": "webpack",
+    "preinstall": "npx npm-force-resolutions",
+    "start": "rollup -c -w",
+    "test": "jest",
+    "test:watch": "jest --watch --detectOpenHandles",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@storybook/addon-actions": "^6.2.9",
+    "@storybook/addon-essentials": "^6.2.9",
+    "@storybook/addon-links": "^6.2.9",
+    "@storybook/builder-webpack5": "^6.2.9",
+    "@storybook/react": "^6.2.9",
+    "@types/jest": "^26.0.22",
+    "@types/react": "^17.0.5",
+    "@types/react-test-renderer": "^17.0.1",
+    "autoprefixer": "^10.2.5",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.4",
+    "jest": "^26.6.3",
+    "postcss": "^8.2.15",
+    "postcss-loader": "^5.3.0",
+    "react-test-renderer": "^17.0.2",
+    "sass": "^1.32.13",
+    "sass-loader": "^11.1.1",
+    "style-loader": "^2.0.0",
+    "ts-jest": "^26.5.5",
+    "ts-loader": "^9.1.2",
+    "typescript": "^4.2.4",
+    "webpack": "^5.37.0",
+    "webpack-cli": "^4.7.0"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "resolutions": {
+    "postcss": ">=8.2.10",
+    "trim": ">=0.0.3"
+  }
 }
