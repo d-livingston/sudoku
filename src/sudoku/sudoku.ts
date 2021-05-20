@@ -185,6 +185,31 @@ export class Sudoku {
     }
 
     /**
+     * Sets the value of the given cell if it can be changed.
+     * @param cell The cell ID.
+     * @param value The desired value to change the cell to.
+     */
+    public setValue(cell: number, value: number): void {
+        if (!this.isValidCellId(cell)) return;
+        if (!this.isValidValue(value)) return;
+        if (this.isLocked(cell)) return;
+
+        this.sudoku[this.getRowId(cell)][this.getColumnId(cell)] = value;
+    }
+
+    /**
+     * Determines if the cell is locked and cannot have its value changed.
+     * @param cell The cell ID.
+     * @returns True if the cell is locked; false otherwise.
+     */
+    public isLocked(cell: number): boolean {
+        const row = this.getRowId(cell);
+        const column = this.getColumnId(cell);
+
+        return this.initial[row][column] !== 0;
+    }
+
+    /**
      * Gets the house IDs of the given cell.
      * @param cell The cell ID.
      * @returns An object containing the row ID, column ID, and square ID of the cell.

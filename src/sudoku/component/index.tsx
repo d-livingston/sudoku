@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Sudoku } from "../sudoku";
+import createKeydownListener from "./keydownListener";
 import styles from "./styles/Grid.module.scss";
 
 declare module "../sudoku" {
@@ -14,6 +15,21 @@ export type SudokuProps = {
 
 Sudoku.Component = function ({ sudoku }: SudokuProps): JSX.Element {
     const board = new Sudoku(sudoku);
+    const [selected, setSelected] = React.useState(-1);
+
+    const onKeydown = createKeydownListener(
+        (value: number) => board.setValue(selected, value),
+        () => {},
+        () => {},
+        () => {}
+    );
+    React.useEffect(() => {
+        window.addEventListener("keydown", onKeydown);
+
+        return () => {
+            window.removeEventListener("keydown", onKeydown);
+        };
+    }, [onKeydown]);
 
     return (
         <div className={styles.container}>
@@ -27,9 +43,10 @@ Sudoku.Component = function ({ sudoku }: SudokuProps): JSX.Element {
                                     const value = board.getValue(cellId);
 
                                     return (
-                                        <div
+                                        <button
                                             key={cellId}
                                             className={styles.cell}
+                                            onClick={() => setSelected(cellId)}
                                         >
                                             <svg
                                                 className={styles.value}
@@ -47,7 +64,7 @@ Sudoku.Component = function ({ sudoku }: SudokuProps): JSX.Element {
                                                     {value !== 0 && value}
                                                 </text>
                                             </svg>
-                                        </div>
+                                        </button>
                                     );
                                 })}
                             </div>
