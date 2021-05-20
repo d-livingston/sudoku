@@ -183,6 +183,21 @@ export class Sudoku {
     }
 
     /**
+     * Gets the cell's info.
+     * @param cell The cell ID.
+     * @returns The info of the cell.
+     */
+    public getCellInfo(cell: number) {
+        return {
+            cell,
+            row: this.getRowId(cell),
+            column: this.getColumnId(cell),
+            square: this.getSquareId(cell),
+            value: this.getValue(cell),
+        };
+    }
+
+    /**
      * Gets the row ID of the given cell.
      * @param cell The cell ID.
      * @returns The row ID of the cell. If the cell is valid, returns -1.
