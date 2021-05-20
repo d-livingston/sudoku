@@ -1,3 +1,4 @@
+import { Direction } from "../directions";
 import { House } from "./types";
 
 export class InvalidSizeError extends Error {}
@@ -140,6 +141,45 @@ export class Sudoku {
         return this.isValidHouseId(row) && this.isValidHouseId(column)
             ? row * this.size + column
             : -1;
+    }
+
+    /**
+     * Gets the cell ID of the cell next to the given cell in the given direction.
+     * @param cell The cell ID.
+     * @param direction The direction to move to.
+     * @returns The next cell in the given direction from a cell ID.
+     */
+    public getCellIdInDirection(cell: number, direction: Direction): number {
+        if (!this.isValidCellId(cell)) return -1;
+
+        const row = this.getRowId(cell);
+        const column = this.getColumnId(cell);
+
+        switch (direction) {
+            case "left": {
+                return column === 0
+                    ? this.getCellId(row, this.size - 1)
+                    : this.getCellId(row, column - 1);
+            }
+            case "right": {
+                return column === this.size - 1
+                    ? this.getCellId(row, 0)
+                    : this.getCellId(row, column + 1);
+            }
+            case "up": {
+                return row === 0
+                    ? this.getCellId(this.size - 1, column)
+                    : this.getCellId(row - 1, column);
+            }
+            case "down": {
+                return row === this.size - 1
+                    ? this.getCellId(0, column)
+                    : this.getCellId(row + 1, column);
+            }
+            default: {
+                throw new Error("Invalid direction provided.");
+            }
+        }
     }
 
     /**

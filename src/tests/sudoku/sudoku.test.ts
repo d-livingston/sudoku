@@ -121,6 +121,56 @@ describe("Method: getCellId", () => {
     });
 });
 
+describe("Method: getCellIdInDirection", () => {
+    describe("left", () => {
+        it("gets the cell to the left when in the middle of the sudoku", () => {
+            expect(sudoku9x9.getCellIdInDirection(5, "left")).toBe(4);
+        });
+        it("gets the cell to the left when on the leftmost edge of the sudoku", () => {
+            expect(sudoku9x9.getCellIdInDirection(0, "left")).toBe(8);
+        });
+        it("returns -1 when an invalid cell is provided", () => {
+            expect(sudoku9x9.getCellIdInDirection(-1, "left")).toBe(-1);
+        });
+    });
+
+    describe("right", () => {
+        it("gets the cell to the right when in the middle of the sudoku", () => {
+            expect(sudoku9x9.getCellIdInDirection(5, "right")).toBe(6);
+        });
+        it("gets the cell to the right when on the rightmost edge of the sudoku", () => {
+            expect(sudoku9x9.getCellIdInDirection(8, "right")).toBe(0);
+        });
+        it("returns -1 when an invalid cell is provided", () => {
+            expect(sudoku9x9.getCellIdInDirection(-1, "right")).toBe(-1);
+        });
+    });
+
+    describe("up", () => {
+        it("gets the cell to the top when in the middle of the sudoku", () => {
+            expect(sudoku9x9.getCellIdInDirection(14, "up")).toBe(5);
+        });
+        it("gets the cell to the top when on the upmost edge of the sudoku", () => {
+            expect(sudoku9x9.getCellIdInDirection(4, "up")).toBe(76);
+        });
+        it("returns -1 when an invalid cell is provided", () => {
+            expect(sudoku9x9.getCellIdInDirection(-1, "up")).toBe(-1);
+        });
+    });
+
+    describe("down", () => {
+        it("gets the cell to the top when in the middle of the sudoku", () => {
+            expect(sudoku9x9.getCellIdInDirection(5, "down")).toBe(14);
+        });
+        it("gets the cell to the top when on the upmost edge of the sudoku", () => {
+            expect(sudoku9x9.getCellIdInDirection(76, "down")).toBe(4);
+        });
+        it("returns -1 when an invalid cell is provided", () => {
+            expect(sudoku9x9.getCellIdInDirection(-1, "down")).toBe(-1);
+        });
+    });
+});
+
 describe("Method: getRowId", () => {
     it("gets the correct row id when provided a valid cell", () => {
         for (let row = 0; row < sudoku9x9.size; row++) {
