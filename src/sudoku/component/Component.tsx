@@ -2,7 +2,12 @@ import * as React from "react";
 import { Sudoku } from "../sudoku";
 import { Cell } from "./Cell";
 import createKeydownListener from "./keydownListener";
-import { useSudokuReducer, selectCell, selectCellInDirection } from "./reducer";
+import {
+    useSudokuReducer,
+    fillCell,
+    selectCell,
+    selectCellInDirection,
+} from "./reducer";
 import { Direction } from "../../directions";
 import styles from "./styles/Grid.module.scss";
 
@@ -15,7 +20,7 @@ export function Component({ sudoku }: ComponentProps): JSX.Element {
     const board = new Sudoku(sudoku);
 
     const onKeydown = createKeydownListener(
-        () => {},
+        (value: number) => dispatch(fillCell(value)),
         () => {},
         (direction: Direction) => dispatch(selectCellInDirection(direction)),
         () => {}
@@ -38,6 +43,8 @@ export function Component({ sudoku }: ComponentProps): JSX.Element {
                             <div key={squareId} className={styles.square}>
                                 {cellIds.map((cellId) => {
                                     const value = board.getValue(cellId);
+                                    const isSelected =
+                                        state.selected.cell === cellId;
 
                                     const isInSameHouse =
                                         board.getRowId(cellId) ===
@@ -54,14 +61,16 @@ export function Component({ sudoku }: ComponentProps): JSX.Element {
                                                 value !== 0 &&
                                                 value === state.selected.value
                                             }
-                                            isSelected={
-                                                state.selected.cell === cellId
-                                            }
+                                            isSelected={isSelected}
                                             isInSameHouse={isInSameHouse}
                                             onClick={(cell: number) =>
                                                 dispatch(selectCell(cell))
                                             }
-                                            value={value}
+                                            value={
+                                                isSelected
+                                                    ? state.selected.value
+                                                    : value
+                                            }
                                         />
                                     );
                                 })}

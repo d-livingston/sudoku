@@ -10,16 +10,39 @@ export default function reducer(
     action: SudokuReducerAction
 ): SudokuReducerState {
     switch (action.type) {
+        case SudokuReducerActionTypes.FILL_CELL: {
+            return handleFillCell(state, action);
+        }
         case SudokuReducerActionTypes.SELECT_CELL: {
             return handleSelectCell(state, action);
         }
         case SudokuReducerActionTypes.SELECT_CELL_IN_DIRECTION: {
-            return handleSelectCellInDirection(state, action);
+            const newCell = state.board.getCellIdInDirection(
+                state.selected.cell,
+                action.payload.direction
+            );
+            return handleSelectCell(state, selectCell(newCell));
         }
         default: {
             throw new Error("Invalid action.");
         }
     }
+}
+
+function handleFillCell(
+    state: SudokuReducerState,
+    action: SudokuReducerAction
+): SudokuReducerState {
+    const { board } = state;
+    const { cell } = state.selected;
+
+    if (board.isLocked(cell)) return state;
+
+    board.setValue(cell, action.payload.value);
+    return {
+        ...state,
+        selected: board.getCellInfo(cell),
+    };
 }
 
 function handleSelectCell(
@@ -31,15 +54,4 @@ function handleSelectCell(
         ...state,
         selected: newSelected,
     };
-}
-
-function handleSelectCellInDirection(
-    state: SudokuReducerState,
-    action: SudokuReducerAction
-): SudokuReducerState {
-    const newCell = state.board.getCellIdInDirection(
-        state.selected.cell,
-        action.payload.direction
-    );
-    return handleSelectCell(state, selectCell(newCell));
 }
