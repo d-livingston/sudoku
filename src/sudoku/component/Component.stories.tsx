@@ -3,14 +3,14 @@ import { Story, Meta } from "@storybook/react";
 import { Component, ComponentProps } from "./Component";
 
 export default {
-    title: "Sudoku",
+    title: "Sudoku/Main Component",
     component: Component,
 } as Meta;
 
 const Template: Story<ComponentProps> = (args) => <Component {...args} />;
 
-export const FullSudoku = Template.bind({});
-FullSudoku.args = {
+export const Primary = Template.bind({});
+Primary.args = {
     sudoku: [
         [9, 0, 7, 4, 0, 0, 0, 0, 0],
         [0, 0, 0, 1, 3, 0, 0, 8, 9],

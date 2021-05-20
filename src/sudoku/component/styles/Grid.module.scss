@@ -17,6 +17,7 @@
 .grid {
     @include mixins.grid9x9;
 
+    background: variables.$color-grid;
     border: 2px solid variables.$color-grid;
     position: absolute;
     top: 0;
@@ -30,17 +31,4 @@
 .square {
     @include mixins.grid9x9;
     border: 2px solid variables.$color-grid;
-}
-
-.cell {
-    border: 1px solid variables.$color-grid;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.value {
-    height: 75%;
-    width: auto;
 }
