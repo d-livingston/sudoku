@@ -368,7 +368,7 @@ export class Sudoku {
      * @returns True if the value is valid; false otherwise.
      */
     public isValidValue(value: number): boolean {
-        return value >= 1 && value <= this.size && Number.isInteger(value);
+        return value >= 0 && value <= this.size && Number.isInteger(value);
     }
 
     /**
