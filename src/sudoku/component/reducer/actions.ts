@@ -1,6 +1,12 @@
 import { SudokuReducerAction, SudokuReducerActionTypes } from "./types";
 import { Direction } from "../../../types";
 
+export function deleteCell(): SudokuReducerAction {
+    return {
+        type: SudokuReducerActionTypes.DELETE_CELL,
+    };
+}
+
 export function fillCell(value: number): SudokuReducerAction {
     return {
         type: SudokuReducerActionTypes.FILL_CELL,

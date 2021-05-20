@@ -10,6 +10,9 @@ export default function reducer(
     action: SudokuReducerAction
 ): SudokuReducerState {
     switch (action.type) {
+        case SudokuReducerActionTypes.DELETE_CELL: {
+            return handleDeleteCell(state, action);
+        }
         case SudokuReducerActionTypes.FILL_CELL: {
             return handleFillCell(state, action);
         }
@@ -27,6 +30,22 @@ export default function reducer(
             throw new Error("Invalid action.");
         }
     }
+}
+
+function handleDeleteCell(
+    state: SudokuReducerState,
+    _: SudokuReducerAction
+): SudokuReducerState {
+    const { board } = state;
+    const { cell } = state.selected;
+
+    if (board.isLocked(cell)) return state;
+
+    board.setValue(cell, 0);
+    return {
+        ...state,
+        selected: board.getCellInfo(cell),
+    };
 }
 
 function handleFillCell(

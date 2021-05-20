@@ -16,6 +16,7 @@ export type SudokuReducerState = {
 };
 
 export enum SudokuReducerActionTypes {
+    DELETE_CELL = "Delete cell",
     FILL_CELL = "Fill cell",
     SELECT_CELL = "Select cell",
     SELECT_CELL_IN_DIRECTION = "Select cell in direction",

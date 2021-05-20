@@ -3,6 +3,7 @@ import { Cell } from "./Cell";
 import createKeydownListener from "./keydownListener";
 import {
     useSudokuReducer,
+    deleteCell,
     fillCell,
     selectCell,
     selectCellInDirection,
@@ -20,7 +21,7 @@ export function Component({ sudoku }: ComponentProps): JSX.Element {
 
     const onKeydown = createKeydownListener(
         (value: number) => dispatch(fillCell(value)),
-        () => {},
+        () => dispatch(deleteCell()),
         (direction: Direction) => dispatch(selectCellInDirection(direction)),
         () => {}
     );
