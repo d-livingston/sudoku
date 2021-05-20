@@ -1,0 +1,32 @@
+@use "variables";
+
+.cell {
+    background: variables.$bg-grid;
+    border: 1px solid variables.$color-grid;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+
+    height: 100%;
+    width: 100%;
+}
+
+.value {
+    height: 75%;
+    width: auto;
+}
+
+.same_value {
+    background: variables.$bg-cell-same-value;
+}
+
+.same_house {
+    background: variables.$bg-cell-same-house;
+}
+
+.selected {
+    background: variables.$bg-cell-selected;
+}
