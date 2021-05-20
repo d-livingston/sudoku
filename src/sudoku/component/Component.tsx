@@ -2,7 +2,8 @@ import * as React from "react";
 import { Sudoku } from "../sudoku";
 import { Cell } from "./Cell";
 import createKeydownListener from "./keydownListener";
-import { useSudokuReducer, selectCell } from "./reducer";
+import { useSudokuReducer, selectCell, selectCellInDirection } from "./reducer";
+import { Direction } from "../../directions";
 import styles from "./styles/Grid.module.scss";
 
 export type ComponentProps = {
@@ -16,7 +17,7 @@ export function Component({ sudoku }: ComponentProps): JSX.Element {
     const onKeydown = createKeydownListener(
         () => {},
         () => {},
-        () => {},
+        (direction: Direction) => dispatch(selectCellInDirection(direction)),
         () => {}
     );
     React.useEffect(() => {

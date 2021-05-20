@@ -1,4 +1,4 @@
-import { Direction } from "../../types";
+import { Direction } from "../../directions";
 
 const createKeydownListener = (
     onNumberKey: (key: number) => void,
