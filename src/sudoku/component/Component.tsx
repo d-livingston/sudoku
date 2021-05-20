@@ -7,6 +7,7 @@ import {
     fillCell,
     selectCell,
     selectCellInDirection,
+    toggleNotes,
 } from "./reducer";
 import { Direction } from "../../directions";
 import styles from "./styles/Grid.module.scss";
@@ -23,7 +24,7 @@ export function Component({ sudoku }: ComponentProps): JSX.Element {
         (value: number) => dispatch(fillCell(value)),
         () => dispatch(deleteCell()),
         (direction: Direction) => dispatch(selectCellInDirection(direction)),
-        () => {}
+        () => dispatch(toggleNotes())
     );
     React.useEffect(() => {
         window.addEventListener("keydown", onKeydown);
@@ -56,6 +57,7 @@ export function Component({ sudoku }: ComponentProps): JSX.Element {
 
                                     return (
                                         <Cell
+                                            key={`cell-${cellId}`}
                                             id={cellId}
                                             hasSameValue={
                                                 value !== 0 &&

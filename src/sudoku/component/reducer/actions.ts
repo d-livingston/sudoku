@@ -29,3 +29,9 @@ export function selectCellInDirection(
         payload: { direction },
     };
 }
+
+export function toggleNotes(): SudokuReducerAction {
+    return {
+        type: SudokuReducerActionTypes.TOGGLE_NOTES,
+    };
+}

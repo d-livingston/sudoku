@@ -26,6 +26,12 @@ export default function reducer(
             );
             return handleSelectCell(state, selectCell(newCell));
         }
+        case SudokuReducerActionTypes.TOGGLE_NOTES: {
+            return {
+                ...state,
+                isTakingNotes: !state.isTakingNotes,
+            };
+        }
         default: {
             throw new Error("Invalid action.");
         }

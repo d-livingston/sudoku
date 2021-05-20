@@ -20,6 +20,7 @@ export enum SudokuReducerActionTypes {
     FILL_CELL = "Fill cell",
     SELECT_CELL = "Select cell",
     SELECT_CELL_IN_DIRECTION = "Select cell in direction",
+    TOGGLE_NOTES = "Toggle notes",
 }
 
 export interface SudokuReducerAction {
