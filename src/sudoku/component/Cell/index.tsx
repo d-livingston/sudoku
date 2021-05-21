@@ -26,6 +26,7 @@ export default function Cell({
 }: CellProps): JSX.Element {
     const cellClassName = classNames(
         styles.cell,
+        { [styles.locked]: isLocked },
         { [styles.same_value]: hasSameValue },
         { [styles.same_house]: isInSameHouse },
         { [styles.selected]: isSelected },
@@ -39,26 +40,16 @@ export default function Cell({
                     <Value key={index} value={value ? index + 1 : 0} />
                 ))
             ) : (
-                <Value isLocked={isLocked} value={value} />
+                <Value value={value} />
             )}
         </button>
     );
 }
 
-function Value({
-    isLocked,
-    value,
-}: {
-    isLocked?: boolean;
-    value: number;
-}): JSX.Element {
-    const valueClassName = classNames(styles.value, {
-        [styles.locked]: isLocked,
-    });
-
+export function Value({ value }: { value: number }): JSX.Element {
     return (
         <svg
-            className={valueClassName}
+            className={styles.value}
             viewBox="0 0 16 16"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
