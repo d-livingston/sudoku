@@ -295,6 +295,20 @@ export class Sudoku {
     }
 
     /**
+     * Gets the cell IDs for every cell in the same row, column, and square.
+     * @param cell The cell ID.
+     * @returns The cell IDs for every cell in the same house as the given cell.
+     */
+    public getCellIdsInSameHouse(cell: number): number[] {
+        const cellsInRow = this.getCellIdsInRow(this.getRowId(cell));
+        const cellsInColumn = this.getCellIdsInColumn(this.getColumnId(cell));
+        const cellsInSquare = this.getCellIdsInSquare(this.getSquareId(cell));
+        return [
+            ...new Set(cellsInRow.concat(cellsInColumn).concat(cellsInSquare)),
+        ];
+    }
+
+    /**
      * Gets the cell IDs in the given row.
      * @param row The row ID.
      * @returns The cell IDs in the given row. If the row ID is invalid, returns an empty array.
