@@ -1,7 +1,7 @@
 import * as React from "react";
 import classNames from "classnames";
-import { CellNotes } from "./reducer";
-import styles from "./styles/Cell.module.scss";
+import { CellNotes } from "../reducer";
+import styles from "./Cell.module.scss";
 
 export type CellProps = {
     id: number;
@@ -14,7 +14,7 @@ export type CellProps = {
     value: number;
 };
 
-export function Cell({
+export default function Cell({
     id,
     hasSameValue,
     isInSameHouse,

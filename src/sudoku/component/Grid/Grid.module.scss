@@ -1,0 +1,28 @@
+@use "../base";
+
+.container {
+    position: relative;
+    max-height: base.$grid-max-width;
+    max-width: base.$grid-max-width;
+    width: 100%;
+    padding-top: Min(100%, base.$grid-max-width);
+}
+
+.grid {
+    @include base.grid3x3;
+
+    background: base.$color-grid;
+    border: 2px solid base.$color-grid;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.square {
+    @include base.grid3x3;
+    border: 2px solid base.$color-grid;
+}

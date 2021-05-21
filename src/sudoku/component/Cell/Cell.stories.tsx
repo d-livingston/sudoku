@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react";
-import { Cell, CellProps } from "./Cell";
+import Cell, { CellProps } from "./index";
 
 export default {
     title: "Sudoku/Cell",

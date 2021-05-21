@@ -1,0 +1,46 @@
+@use "../base";
+
+.cell {
+    background: base.$bg-grid;
+    border: 1px solid base.$color-grid;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+
+    height: 100%;
+    width: 100%;
+}
+
+.notes {
+    @include base.grid3x3;
+}
+
+.value {
+    height: 75%;
+    fill: base.$color-cell-unlocked;
+    width: auto;
+}
+
+.locked {
+    fill: base.$color-cell-locked;
+}
+
+.same_value {
+    background: base.$bg-cell-same-value;
+}
+
+.same_house {
+    background: base.$bg-cell-same-house;
+}
+
+.selected {
+    background: base.$bg-cell-selected;
+}
+
+.note {
+    height: 100%;
+    width: 100%;
+}
