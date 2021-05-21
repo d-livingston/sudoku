@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // VARIABLES
 
 // Colors
@@ -5,10 +7,10 @@ $color-grid: black;
 $bg-grid: white;
 
 $color-cell-locked: black;
-$color-cell-unlocked: #555;
-$bg-cell-same-house: #bbb;
-$bg-cell-same-value: #bbb;
-$bg-cell-selected: cyan;
+$color-cell-unlocked: #1c515c;
+$bg-cell-same-house: color.adjust($color-grid, $lightness: 85%);
+$bg-cell-same-value: color.adjust($color-grid, $lightness: 75%);
+$bg-cell-selected: #44c7e1;
 
 // Other
 $game-padding: 1em;
