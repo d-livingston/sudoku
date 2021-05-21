@@ -1,4 +1,5 @@
 import { selectCell } from "./actions";
+import { deleteNote } from "./notes";
 import {
     SudokuReducerState,
     SudokuReducerAction,
@@ -46,12 +47,18 @@ function handleDeleteCell(
     const { cell } = state.selected;
 
     if (board.isLocked(cell)) return state;
-
-    board.setValue(cell, 0);
-    return {
-        ...state,
-        selected: board.getCellInfo(cell),
-    };
+    if (state.isTakingNotes) {
+        return {
+            ...state,
+            notes: deleteNote(state.notes, state.selected.cell),
+        };
+    } else {
+        board.setValue(cell, 0);
+        return {
+            ...state,
+            selected: board.getCellInfo(cell),
+        };
+    }
 }
 
 function handleFillCell(
@@ -60,14 +67,28 @@ function handleFillCell(
 ): SudokuReducerState {
     const { board } = state;
     const { cell } = state.selected;
+    console.log("blah");
 
     if (board.isLocked(cell)) return state;
+    if (state.isTakingNotes) {
+        if (state.selected.value !== 0) return state;
+        console.log("Pressed in handle fill");
 
-    board.setValue(cell, action.payload.value);
-    return {
-        ...state,
-        selected: board.getCellInfo(cell),
-    };
+        const notes = state.notes;
+        notes[cell][action.payload.value - 1] = !notes[cell][
+            action.payload.value - 1
+        ];
+        return {
+            ...state,
+            notes,
+        };
+    } else {
+        board.setValue(cell, action.payload.value);
+        return {
+            ...state,
+            selected: board.getCellInfo(cell),
+        };
+    }
 }
 
 function handleSelectCell(

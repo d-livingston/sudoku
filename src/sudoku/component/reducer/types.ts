@@ -1,6 +1,7 @@
 import { Sudoku } from "../../sudoku";
 
-export type Notes = {};
+export type CellNotes = boolean[];
+export type Notes = CellNotes[];
 
 export type SudokuReducerState = {
     board: Sudoku;

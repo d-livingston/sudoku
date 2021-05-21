@@ -1,4 +1,5 @@
 @use "variables";
+@use "mixins";
 
 .cell {
     background: variables.$bg-grid;
@@ -12,6 +13,10 @@
 
     height: 100%;
     width: 100%;
+}
+
+.notes {
+    @include mixins.grid3x3;
 }
 
 .value {
@@ -34,4 +39,9 @@
 
 .selected {
     background: variables.$bg-cell-selected;
+}
+
+.note {
+    height: 100%;
+    width: 100%;
 }

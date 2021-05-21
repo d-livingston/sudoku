@@ -15,7 +15,7 @@
 }
 
 .grid {
-    @include mixins.grid9x9;
+    @include mixins.grid3x3;
 
     background: variables.$color-grid;
     border: 2px solid variables.$color-grid;
@@ -29,6 +29,6 @@
 }
 
 .square {
-    @include mixins.grid9x9;
+    @include mixins.grid3x3;
     border: 2px solid variables.$color-grid;
 }

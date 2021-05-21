@@ -66,6 +66,7 @@ export function Component({ sudoku }: ComponentProps): JSX.Element {
                                             isLocked={board.isLocked(cellId)}
                                             isSelected={isSelected}
                                             isInSameHouse={isInSameHouse}
+                                            notes={state.notes[cellId]}
                                             onClick={(cell: number) =>
                                                 dispatch(selectCell(cell))
                                             }
