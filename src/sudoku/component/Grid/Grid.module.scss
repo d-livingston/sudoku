@@ -19,7 +19,7 @@
     @include base.grid3x3;
 
     background: base.$color-grid;
-    border: 2px solid base.$color-grid;
+    border: 1px solid base.$color-grid;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -31,5 +31,5 @@
 
 .square {
     @include base.grid3x3;
-    border: 2px solid base.$color-grid;
+    border: 1px solid base.$color-grid;
 }

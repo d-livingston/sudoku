@@ -1,6 +1,7 @@
 @use "../base";
 
 .container {
+    position: relative;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -9,5 +10,25 @@
 
     @include base.large {
         flex-direction: row;
+    }
+}
+
+.buttons {
+    position: absolute;
+    right: -1em;
+    background: none;
+    border: none;
+    z-index: 1000;
+
+    @include base.large {
+        right: 0;
+        left: base.$grid-max-width + 1em;
+    }
+
+    & button {
+        cursor: pointer;
+        display: block;
+        background: none;
+        border: none;
     }
 }
