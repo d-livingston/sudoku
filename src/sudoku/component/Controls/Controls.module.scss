@@ -48,3 +48,23 @@
         padding: 0.5em;
     }
 }
+
+.notes_button {
+    position: relative;
+}
+
+.notes_button_indicator {
+    font-size: 0.5em;
+    position: absolute;
+    border: 1px solid red;
+    color: red;
+    height: 1.5em;
+    width: 2.5em;
+    top: 5%;
+    left: 65%;
+}
+
+.notes_button_indicator_on {
+    border-color: green;
+    color: green;
+}
