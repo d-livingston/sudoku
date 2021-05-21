@@ -86,6 +86,10 @@ function handleFillCell(
         };
     } else {
         board.setValue(cell, action.payload.value);
+        const cellsInSameHouse = board.getCellIdsInSameHouse(cell);
+        cellsInSameHouse.forEach((cellId) => {
+            state.notes[cellId][action.payload.value - 1] = false;
+        });
         return {
             ...state,
             selected: board.getCellInfo(cell),
