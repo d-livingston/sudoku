@@ -47,17 +47,19 @@ function handleDeleteCell(
     const { cell } = state.selected;
 
     if (board.isLocked(cell)) return state;
-    if (state.isTakingNotes) {
-        return {
-            ...state,
-            notes: deleteNote(state.notes, state.selected.cell),
-        };
-    } else {
+    if (state.selected.value) {
         board.setValue(cell, 0);
         return {
             ...state,
             selected: board.getCellInfo(cell),
         };
+    } else if (state.isTakingNotes) {
+        return {
+            ...state,
+            notes: deleteNote(state.notes, state.selected.cell),
+        };
+    } else {
+        return state;
     }
 }
 
