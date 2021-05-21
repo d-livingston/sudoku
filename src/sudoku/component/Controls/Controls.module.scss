@@ -50,6 +50,17 @@
     }
 }
 
+.button_desc {
+    & svg {
+        width: 1.4em;
+        height: auto;
+    }
+
+    & div {
+        font-size: 0.5em;
+    }
+}
+
 .notes_button {
     position: relative;
 }
