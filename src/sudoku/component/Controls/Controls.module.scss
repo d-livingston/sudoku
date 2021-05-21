@@ -1,11 +1,10 @@
 @use "../base";
 
 .container {
-    background: green;
-
     display: flex;
     flex-direction: column;
     flex: 1 1 100%;
+    justify-content: center;
 
     @include base.large {
         max-width: base.$controls-max-width;
@@ -14,7 +13,6 @@
 
 .number_pad {
     display: flex;
-    height: base.$controls-max-width / 3;
     width: 100%;
 
     @include base.large {
@@ -24,8 +22,20 @@
     }
 }
 
+.other {
+    display: flex;
+
+    @include base.large {
+        font-size: 1.25rem;
+    }
+}
+
 .button {
     background: inherit;
-    border: none;
+    border: 1px solid black;
     cursor: pointer;
+    font-size: 1em;
+    flex: 1 1 100%;
+    margin: 0.25em;
+    padding: 0.5em;
 }

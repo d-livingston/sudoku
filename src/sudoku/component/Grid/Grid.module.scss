@@ -7,8 +7,10 @@
     max-width: base.$grid-max-width;
     width: 100%;
     padding-top: Min(100%, base.$grid-max-width);
+    margin-bottom: base.$grid-margin-bottom;
 
     @include base.large {
+        margin-bottom: 0;
         margin-right: base.$grid-margin-right;
     }
 }

@@ -18,7 +18,10 @@ export default function Controls({ size }: ControlsProps): JSX.Element {
                     </button>
                 ))}
             </div>
-            <div className={styles.other}></div>
+            <div className={styles.other}>
+                <button className={styles.button}>Notes</button>
+                <button className={styles.button}>Delete</button>
+            </div>
         </div>
     );
 }
