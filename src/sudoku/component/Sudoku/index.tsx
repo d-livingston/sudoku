@@ -1,20 +1,22 @@
 import * as React from "react";
-import Grid from "./Grid";
-import createKeydownListener from "./keydownListener";
+import Controls from "../Controls";
+import Grid from "../Grid";
+import createKeydownListener from "../keydownListener";
 import {
     useSudokuReducer,
     deleteCell,
     fillCell,
     selectCellInDirection,
     toggleNotes,
-} from "./reducer";
-import { Direction } from "../../directions";
+} from "../reducer";
+import { Direction } from "../../../directions";
+import styles from "./Sudoku.module.scss";
 
-export type ComponentProps = {
+export type SudokuProps = {
     sudoku: number[][];
 };
 
-export function Component({ sudoku }: ComponentProps): JSX.Element {
+export default function Sudoku({ sudoku }: SudokuProps): JSX.Element {
     const [state, dispatch] = useSudokuReducer(sudoku);
 
     const onKeydown = createKeydownListener(
@@ -32,8 +34,9 @@ export function Component({ sudoku }: ComponentProps): JSX.Element {
     }, [onKeydown]);
 
     return (
-        <div>
+        <div className={styles.container}>
             <Grid state={state} dispatch={dispatch} />
+            <Controls dispatch={dispatch} size={state.board.size} />
         </div>
     );
 }

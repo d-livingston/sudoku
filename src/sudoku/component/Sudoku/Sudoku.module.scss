@@ -1,0 +1,13 @@
+@use "../base";
+
+.container {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: base.$game-padding;
+    width: 100%;
+
+    @include base.large {
+        flex-direction: row;
+    }
+}

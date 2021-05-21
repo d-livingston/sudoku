@@ -11,7 +11,13 @@ $bg-cell-same-value: #bbb;
 $bg-cell-selected: cyan;
 
 // Other
-$grid-max-width: 500px;
+$game-padding: 1em;
+$game-max-width: 700px;
+$grid-max-width: 31em;
+$grid-margin-right: 2em;
+$controls-max-width: 12em;
+$media-breakpoint: $grid-max-width + $grid-margin-right + $controls-max-width +
+    2 * $game-padding;
 
 // MIXINS
 
@@ -20,4 +26,15 @@ $grid-max-width: 500px;
     gap: 0px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
+}
+
+@mixin large {
+    @media (min-width: $media-breakpoint) {
+        @content;
+    }
+}
+
+* {
+    box-sizing: inherit;
+    font: inherit;
 }

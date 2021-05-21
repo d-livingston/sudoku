@@ -1,13 +1,13 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react";
-import { Component, ComponentProps } from "./Component";
+import Sudoku, { SudokuProps } from "./index";
 
 export default {
-    title: "Sudoku/Main Component",
-    component: Component,
+    title: "Sudoku/Game",
+    component: Sudoku,
 } as Meta;
 
-const Template: Story<ComponentProps> = (args) => <Component {...args} />;
+const Template: Story<SudokuProps> = (args) => <Sudoku {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {

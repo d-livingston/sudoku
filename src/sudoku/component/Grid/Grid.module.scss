@@ -2,10 +2,15 @@
 
 .container {
     position: relative;
+
     max-height: base.$grid-max-width;
     max-width: base.$grid-max-width;
     width: 100%;
     padding-top: Min(100%, base.$grid-max-width);
+
+    @include base.large {
+        margin-right: base.$grid-margin-right;
+    }
 }
 
 .grid {
