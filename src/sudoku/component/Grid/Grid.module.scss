@@ -50,14 +50,24 @@
     animation: 1000ms slidein;
 
     & h2 {
-        font-size: 2em;
+        font-size: 1.5em;
         margin: 0;
         padding: 0;
     }
 
     & p {
-        font-size: 1.5em;
+        font-size: 1.2em;
         margin: 0;
+    }
+
+    @include base.large {
+        & h2 {
+            font-size: 2em;
+        }
+
+        &p {
+            font-size: 1.5em;
+        }
     }
 }
 
