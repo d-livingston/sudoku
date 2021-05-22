@@ -17,6 +17,12 @@ export default function Grid({ state, dispatch }: GridProps): JSX.Element {
 
     return (
         <div className={styles.container}>
+            {state.isComplete && (
+                <div className={styles.victory_banner}>
+                    <h2>Congratulations!</h2>
+                    <p>You solved the puzzle!</p>
+                </div>
+            )}
             <div className={styles.grid}>
                 {board.getHouseIds().map((squareId) => {
                     const cellIds = board.getCellIdsInSquare(squareId);

@@ -33,3 +33,42 @@
     @include base.grid3x3;
     border: 1px solid base.$color-grid;
 }
+
+.victory_banner {
+    background: rgba(white, 0.95);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 33%;
+    width: 100%;
+    padding: 2em;
+    position: absolute;
+    z-index: 1000;
+    top: 33%;
+    animation: 1000ms slidein;
+
+    & h2 {
+        font-size: 2em;
+        margin: 0;
+        padding: 0;
+    }
+
+    & p {
+        font-size: 1.5em;
+        margin: 0;
+    }
+}
+
+@keyframes slidein {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}

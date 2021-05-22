@@ -6,6 +6,7 @@ export type Notes = CellNotes[];
 export type SudokuReducerState = {
     board: Sudoku;
     notes: Notes;
+    isComplete: boolean;
     isTakingNotes: boolean;
     selected: {
         cell: number;

@@ -14,6 +14,7 @@ function computeInitialState(sudoku: number[][]): SudokuReducerState {
     const board = new Sudoku(sudoku);
     return {
         board: board,
+        isComplete: board.isComplete(),
         isTakingNotes: false,
         notes: createNotes(board.size),
         selected: board.getCellInfo(-1),

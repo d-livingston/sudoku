@@ -92,6 +92,7 @@ function handleFillCell(
         });
         return {
             ...state,
+            isComplete: board.isComplete(),
             selected: board.getCellInfo(cell),
         };
     }
