@@ -12,17 +12,23 @@ import styles from "./Controls.module.scss";
 
 export type ControlsProps = {
     dispatch: React.Dispatch<SudokuReducerAction>;
+    hidden?: boolean;
     size: number;
     state: SudokuReducerState;
 };
 
 export default function Controls({
     dispatch,
+    hidden,
     state,
     size,
 }: ControlsProps): JSX.Element {
     return (
-        <div className={styles.container}>
+        <div
+            className={classNames(styles.container, {
+                [styles.container_hidden]: hidden,
+            })}
+        >
             <div className={styles.number_pad}>
                 {Array.from({ length: size }, (_, i) => (
                     <button

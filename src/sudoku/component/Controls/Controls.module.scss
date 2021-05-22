@@ -5,9 +5,20 @@
     flex-direction: column;
     flex: 1 1 100%;
     justify-content: center;
+    opacity: 1;
+    transition: opacity 0.5s, transform 0.5s;
 
     @include base.large {
         max-width: base.$controls-max-width;
+    }
+}
+
+.container_hidden {
+    opacity: 0;
+    transform: translateY(-100%);
+
+    @include base.large {
+        transform: translateX(-100%);
     }
 }
 

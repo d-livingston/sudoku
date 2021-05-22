@@ -72,13 +72,12 @@ export default function Sudoku({ sudoku }: SudokuProps): JSX.Element {
             </div>
 
             <Grid state={state} dispatch={dispatch} />
-            {areControlsDisplayed && (
-                <Controls
-                    dispatch={dispatch}
-                    size={state.board.size}
-                    state={state}
-                />
-            )}
+            <Controls
+                dispatch={dispatch}
+                hidden={!areControlsDisplayed}
+                size={state.board.size}
+                state={state}
+            />
         </div>
     );
 }
