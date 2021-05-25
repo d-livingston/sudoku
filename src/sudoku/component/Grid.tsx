@@ -1,10 +1,6 @@
 import * as React from "react";
-import Cell from "../Cell";
-import {
-    selectCell,
-    SudokuReducerAction,
-    SudokuReducerState,
-} from "../reducer";
+import Cell from "./Cell";
+import { selectCell, SudokuReducerAction, SudokuReducerState } from "./reducer";
 import styles from "./Grid.module.scss";
 
 export type GridProps = {

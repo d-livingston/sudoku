@@ -1,13 +1,13 @@
 import * as React from "react";
 import classNames from "classnames";
-import { Value } from "../Cell";
+import { Value } from "./Cell";
 import {
     deleteCell,
     fillCell,
     toggleNotes,
     SudokuReducerAction,
     SudokuReducerState,
-} from "../reducer";
+} from "./reducer";
 import styles from "./Controls.module.scss";
 
 export type ControlsProps = {

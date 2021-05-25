@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react";
-import Sudoku, { SudokuProps } from "./index";
+import Sudoku, { SudokuProps } from "./Sudoku";
 
 export default {
-    title: "Sudoku/Game",
+    title: "Sudoku/Board",
     component: Sudoku,
 } as Meta;
 

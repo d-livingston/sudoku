@@ -1,15 +1,15 @@
 import * as React from "react";
-import Controls from "../Controls";
-import Grid from "../Grid";
-import createKeydownListener from "../keydownListener";
+import Controls from "./Controls";
+import Grid from "./Grid";
+import createKeydownListener from "./keydownListener";
 import {
     useSudokuReducer,
     deleteCell,
     fillCell,
     selectCellInDirection,
     toggleNotes,
-} from "../reducer";
-import { Direction } from "../../../directions";
+} from "./reducer";
+import { Direction } from "../../directions";
 import styles from "./Sudoku.module.scss";
 
 export type SudokuProps = {
