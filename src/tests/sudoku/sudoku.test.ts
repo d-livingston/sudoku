@@ -318,3 +318,17 @@ describe("Method: getCellIdsInSquare", () => {
         expect(sudoku9x9.getCellIdsInSquare(1.5)).toEqual([]);
     });
 });
+
+describe("Method: getInvalidCells", () => {
+    it("returns an empty set when the sudoku is valid", () => {
+        const board = new Sudoku(validSudokus9x9[0]);
+        expect(board.getInvalidCells()).toEqual(new Set());
+    });
+
+    it("gets all invalid cells", () => {
+        const board = new Sudoku(validSudokus9x9[0]);
+        board.setValue(8, 9);
+        board.setValue(80, 3);
+        expect([...board.getInvalidCells()]).toEqual([0, 8, 17, 79, 80]);
+    });
+});

@@ -459,4 +459,69 @@ export class Sudoku {
         }
         return true;
     }
+
+    /**
+     * Gets the set of all invalid cells in the Sudoku.
+     * @returns A set containing all of the invalid cell IDs.
+     */
+    public getInvalidCells(): Set<number> {
+        let invalidCells = new Set<number>();
+        if (this.isValid()) return invalidCells;
+
+        for (let i = 0; i < this.size; i++) {
+            invalidCells = this.union(
+                invalidCells,
+                this.getInvalidCellsInHouse("row", i)
+            );
+            invalidCells = this.union(
+                invalidCells,
+                this.getInvalidCellsInHouse("column", i)
+            );
+            invalidCells = this.union(
+                invalidCells,
+                this.getInvalidCellsInHouse("square", i)
+            );
+        }
+        return invalidCells;
+    }
+
+    /**
+     * Gets the set of all invalid cells in the given house in the Sudoku.
+     * @param type The type of house. Can either be 'row', 'column', or 'square'.
+     * @param id The house ID.
+     * @returns A set containing all of the invalid cell IDs.
+     */
+    public getInvalidCellsInHouse(type: House, id: number): Set<number> {
+        const invalidCells = new Set<number>();
+        let cells: number[];
+        if (type === "row") {
+            cells = this.getCellIdsInRow(id);
+        } else if (type === "column") {
+            cells = this.getCellIdsInColumn(id);
+        } else {
+            cells = this.getCellIdsInSquare(id);
+        }
+
+        const values = cells.map((cell) => this.getValue(cell));
+        first: for (let i = 0; i < values.length; i++) {
+            if (values[i] === 0) continue first;
+            second: for (let j = i + 1; j < values.length; j++) {
+                if (values[j] === 0) continue second;
+
+                if (values[i] === values[j]) {
+                    invalidCells.add(cells[i]);
+                    invalidCells.add(cells[j]);
+                }
+            }
+        }
+        return invalidCells;
+    }
+
+    private union<T>(set1: Set<T>, set2: Set<T>): Set<T> {
+        let u = new Set<T>(set1);
+        for (let element of set2) {
+            u.add(element);
+        }
+        return u;
+    }
 }
