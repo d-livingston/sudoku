@@ -34,7 +34,7 @@ export default function reducer(
             };
         }
         default: {
-            throw new Error("Invalid action.");
+            return state;
         }
     }
 }
@@ -46,12 +46,14 @@ function handleDeleteCell(
     const { board } = state;
     const { cell } = state.selected;
 
+    if (!board.isValidCellId(cell)) return state;
     if (board.isLocked(cell)) return state;
     if (state.selected.value) {
         board.setValue(cell, 0);
         return {
             ...state,
             selected: board.getCellInfo(cell),
+            invalidCells: board.getInvalidCells(),
         };
     } else if (state.isTakingNotes) {
         return {
@@ -69,8 +71,8 @@ function handleFillCell(
 ): SudokuReducerState {
     const { board } = state;
     const { cell } = state.selected;
-    console.log("blah");
 
+    if (!board.isValidCellId(cell)) return state;
     if (board.isLocked(cell)) return state;
     if (state.isTakingNotes) {
         if (state.selected.value !== 0) return state;
@@ -94,6 +96,7 @@ function handleFillCell(
             ...state,
             isComplete: board.isComplete(),
             selected: board.getCellInfo(cell),
+            invalidCells: board.getInvalidCells(),
         };
     }
 }

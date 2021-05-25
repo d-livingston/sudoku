@@ -41,6 +41,10 @@
     background: base.$bg-cell-selected;
 }
 
+.invalid {
+    fill: red;
+}
+
 .note {
     height: 100%;
     width: 100%;

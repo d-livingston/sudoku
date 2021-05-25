@@ -7,6 +7,7 @@ export type CellProps = {
     id: number;
     hasSameValue?: boolean;
     isInSameHouse?: boolean;
+    isInvalid?: boolean;
     isLocked?: boolean;
     isSelected?: boolean;
     notes: CellNotes;
@@ -18,6 +19,7 @@ export default function Cell({
     id,
     hasSameValue,
     isInSameHouse,
+    isInvalid,
     isLocked,
     isSelected,
     notes,
@@ -27,6 +29,7 @@ export default function Cell({
     const cellClassName = classNames(
         styles.cell,
         { [styles.locked]: isLocked },
+        { [styles.invalid]: isInvalid && !isLocked },
         { [styles.same_value]: hasSameValue },
         { [styles.same_house]: isInSameHouse },
         { [styles.selected]: isSelected },

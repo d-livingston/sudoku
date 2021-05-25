@@ -45,6 +45,9 @@ export default function Grid({ state, dispatch }: GridProps): JSX.Element {
                                             value !== 0 &&
                                             value === state.selected.value
                                         }
+                                        isInvalid={state.invalidCells.has(
+                                            cellId
+                                        )}
                                         isLocked={board.isLocked(cellId)}
                                         isSelected={isSelected}
                                         isInSameHouse={isInSameHouse}

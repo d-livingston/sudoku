@@ -15,6 +15,7 @@ export type SudokuReducerState = {
         square: number;
         value: number;
     };
+    invalidCells: Set<number>;
 };
 
 export enum SudokuReducerActionTypes {
