@@ -1,10 +1,81 @@
-import { selectCell } from "./actions";
-import { deleteNote } from "./notes";
-import {
-    SudokuReducerState,
-    SudokuReducerAction,
-    SudokuReducerActionTypes,
-} from "./types";
+import { Direction } from "../../directions";
+import { Notes, createNotes, toggleNote, deleteCellNotes } from "./notes";
+import { Sudoku } from "../sudoku";
+
+export type SudokuReducerState = {
+    board: Sudoku;
+    notes: Notes;
+    isComplete: boolean;
+    isTakingNotes: boolean;
+    selected: {
+        cell: number;
+        row: number;
+        column: number;
+        square: number;
+        value: number;
+    };
+    invalidCells: Set<number>;
+};
+
+export function computeInitialState(sudoku: number[][]): SudokuReducerState {
+    const board = new Sudoku(sudoku);
+    return {
+        board: board,
+        isComplete: board.isComplete(),
+        isTakingNotes: false,
+        notes: createNotes(board.size),
+        selected: board.getCellInfo(-1),
+        invalidCells: new Set<number>(),
+    };
+}
+
+export enum SudokuReducerActionTypes {
+    DELETE_CELL = "Delete cell",
+    FILL_CELL = "Fill cell",
+    SELECT_CELL = "Select cell",
+    SELECT_CELL_IN_DIRECTION = "Select cell in direction",
+    TOGGLE_NOTES = "Toggle notes",
+}
+
+export interface SudokuReducerAction {
+    type: SudokuReducerActionTypes;
+    payload?: any;
+}
+
+export function deleteCell(): SudokuReducerAction {
+    return {
+        type: SudokuReducerActionTypes.DELETE_CELL,
+    };
+}
+
+export function fillCell(value: number): SudokuReducerAction {
+    return {
+        type: SudokuReducerActionTypes.FILL_CELL,
+        payload: { value },
+    };
+}
+
+export function selectCell(cell: number): SudokuReducerAction {
+    return {
+        type: SudokuReducerActionTypes.SELECT_CELL,
+        payload: { cell },
+    };
+}
+
+export function selectCellInDirection(
+    direction: Direction
+): SudokuReducerAction {
+    return {
+        type: SudokuReducerActionTypes.SELECT_CELL_IN_DIRECTION,
+        payload: { direction },
+    };
+}
+
+export function toggleNotes(): SudokuReducerAction {
+    return {
+        type: SudokuReducerActionTypes.TOGGLE_NOTES,
+    };
+}
 
 export default function reducer(
     state: SudokuReducerState,
@@ -58,7 +129,7 @@ function handleDeleteCell(
     } else if (state.isTakingNotes) {
         return {
             ...state,
-            notes: deleteNote(state.notes, state.selected.cell),
+            notes: deleteCellNotes(state.notes, state.selected.cell),
         };
     } else {
         return state;
@@ -76,15 +147,9 @@ function handleFillCell(
     if (board.isLocked(cell)) return state;
     if (state.isTakingNotes) {
         if (state.selected.value !== 0) return state;
-        console.log("Pressed in handle fill");
-
-        const notes = state.notes;
-        notes[cell][action.payload.value - 1] = !notes[cell][
-            action.payload.value - 1
-        ];
         return {
             ...state,
-            notes,
+            notes: toggleNote(state.notes, cell, action.payload.value),
         };
     } else {
         board.setValue(cell, action.payload.value);

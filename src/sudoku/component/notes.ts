@@ -1,4 +1,5 @@
-import { Notes } from "./types";
+export type CellNotes = boolean[];
+export type Notes = CellNotes[];
 
 export function createNotes(size: number): Notes {
     return Array.from({ length: size * size }, () =>
@@ -7,11 +8,12 @@ export function createNotes(size: number): Notes {
 }
 
 export function toggleNote(notes: Notes, cell: number, value: number): Notes {
-    notes[cell][value - 1] = !notes[cell][value - 1];
-    return notes;
+    const newNotes = copyNotes(notes);
+    newNotes[cell][value - 1] = !newNotes[cell][value - 1];
+    return newNotes;
 }
 
-export function deleteNote(notes: Notes, cell: number): Notes {
+export function deleteCellNotes(notes: Notes, cell: number): Notes {
     const newNotes = copyNotes(notes);
     newNotes[cell] = newNotes[cell].map(() => false);
     return newNotes;
