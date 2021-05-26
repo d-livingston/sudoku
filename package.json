@@ -27,7 +27,6 @@
     "scripts": {
         "build": "rollup -c",
         "clean": "rm -rf dist",
-        "preinstall": "npx npm-force-resolutions",
         "start": "rollup -c -w",
         "test": "jest",
         "test:watch": "jest --watch --detectOpenHandles",
