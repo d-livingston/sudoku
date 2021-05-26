@@ -27,7 +27,9 @@
     "scripts": {
         "build": "rollup -c",
         "clean": "rm -rf dist",
+        "preinstall": "npm i --package-lock-only --ignore-scripts && npx npm-force-resolutions",
         "start": "rollup -c -w",
+        "test": "jest",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook"
     },
