@@ -1,6 +1,6 @@
 import * as React from "react";
 import classNames from "classnames";
-import { CellNotes } from "./reducer";
+import { CellNotes } from "./notes";
 import styles from "./Cell.module.scss";
 
 export type CellProps = {
