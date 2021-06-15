@@ -36,8 +36,3 @@ $media-breakpoint: $grid-max-width + $grid-margin-right + $controls-max-width +
         @content;
     }
 }
-
-* {
-    box-sizing: inherit;
-    font: inherit;
-}

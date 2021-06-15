@@ -4,7 +4,7 @@ import typescript from "rollup-plugin-typescript2";
 import postcss from "rollup-plugin-postcss";
 import autoprefixer from "autoprefixer";
 import { terser } from "rollup-plugin-terser";
-import { visualizer } from "rollup-plugin-visualizer";
+// import { visualizer } from "rollup-plugin-visualizer";
 
 import pkg from "./package.json";
 
@@ -25,6 +25,6 @@ export default {
             plugins: [autoprefixer()],
         }),
         terser(),
-        visualizer({ open: true, filename: "build-analysis.html" }),
+        // visualizer({ open: true, filename: "build-analysis.html" }),
     ],
 };
