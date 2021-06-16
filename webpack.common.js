@@ -1,15 +1,20 @@
 const path = require("path");
-const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
-    mode: "production",
     entry: "./src/index.ts",
     output: {
-        library: "sudoku",
-        libraryTarget: "umd",
         path: path.resolve(__dirname, "dist"),
         filename: "index.js",
+        library: {
+            name: "sudoku",
+            type: "umd",
+            export: "default",
+        },
         globalObject: "this",
+    },
+    externals: {
+        react: "react",
+        "react-dom": "reactDOM",
     },
     module: {
         rules: [
@@ -38,9 +43,5 @@ module.exports = {
     },
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
-    },
-    optimization: {
-        minimize: true,
-        minimizer: [new TerserPlugin()],
     },
 };
