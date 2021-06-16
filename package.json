@@ -1,6 +1,6 @@
 {
     "name": "@d-livingston/sudoku",
-    "version": "2.0.3",
+    "version": "2.0.4",
     "description": "A basic Sudoku package.",
     "main": "dist/index.js",
     "files": [
