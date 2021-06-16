@@ -9,5 +9,27 @@ module.exports = {
     core: {
         builder: "webpack5",
     },
-    presets: [path.resolve(__dirname, "./preset.js")],
+    webpackFinal: async (config) => {
+        const { module = {} } = config;
+
+        const newConfig = {
+            ...config,
+            module: {
+                ...module,
+                rules: [...(module.rules || [])],
+            },
+        };
+
+        newConfig.module.rules.push({
+            test: /\.scss$/,
+            include: [path.resolve(__dirname, "../src")],
+            use: ["style-loader", "css-loader", "sass-loader"],
+        });
+
+        newConfig.resolve.fallback = {
+            http: false,
+        };
+
+        return newConfig;
+    },
 };
