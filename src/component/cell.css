@@ -1,0 +1,14 @@
+.sudoku__cell {
+    box-sizing: border-box;
+    background-color: var(--sudoku-cell-bg);
+    border: none;
+    cursor: pointer;
+    color: var(--sudoku-cell-color);
+    height: var(--sudoku-cell-width);
+    padding: 0;
+    width: var(--sudoku-cell-width);
+}
+
+.sudoku__selected {
+    background-color: var(--sudoku-selected-bg);
+}

@@ -36,6 +36,10 @@ function isValidSudokuSize(size: number): boolean {
     );
 }
 
+export function copySudoku(sudoku: number[][]): number[][] {
+    return sudoku.map((row) => row.map((value) => value));
+}
+
 export function copyRow(sudoku: number[][], row: number): number[] {
     return [...sudoku[row]];
 }
@@ -61,4 +65,50 @@ export function copySquare(sudoku: number[][], square: number): number[] {
                 );
         })
     );
+}
+
+export function getCell(size: number, row: number, column: number): number {
+    return row * size + column;
+}
+
+export function getRow(size: number, cell: number): number {
+    return Math.floor(cell / size);
+}
+
+export function getColumn(size: number, cell: number): number {
+    return cell % size;
+}
+
+export function getSquare(size: number, cell: number): number {
+    const sqrt = Math.sqrt(size);
+    const row = getRow(size, cell);
+    const column = getColumn(size, cell);
+    return Math.floor(row / sqrt) * sqrt + Math.floor(column / sqrt);
+}
+
+export function getSquareCells(sudoku: number[][], square: number): number[] {
+    const sqrt = Math.sqrt(sudoku.length);
+    const rowMin = Math.floor(square / sqrt) * sqrt;
+    const rowMax = rowMin + sqrt;
+    const columnMin = (square % sqrt) * sqrt;
+    const columnMax = columnMin + sqrt;
+
+    return flatten(
+        sudoku.map((row, rowIndex) => {
+            if (rowIndex < rowMin || rowIndex >= rowMax) return [];
+            else
+                return row
+                    .map((_, columnIndex) =>
+                        getCell(sudoku.length, rowIndex, columnIndex)
+                    )
+                    .filter(
+                        (_, columnIndex) =>
+                            columnIndex >= columnMin && columnIndex < columnMax
+                    );
+        })
+    );
+}
+
+export function getValue(sudoku: number[][], cell: number): number {
+    return sudoku[getRow(sudoku.length, cell)][getColumn(sudoku.length, cell)];
 }

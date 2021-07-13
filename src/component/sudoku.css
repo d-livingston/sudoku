@@ -1,0 +1,11 @@
+.sudoku__board {
+    box-sizing: border-box;
+    border: var(--sudoku-board-border);
+    background-color: var(--sudoku-color);
+    display: grid;
+    grid-template-columns: var(--sudoku-rows);
+    grid-template-rows: var(--sudoku-rows);
+    gap: 3px;
+    height: var(--sudoku-board-width);
+    width: var(--sudoku-board-width);
+}

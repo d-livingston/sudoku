@@ -1,0 +1,32 @@
+:root {
+    /* customizable */
+    --sudoku-cell-width: 48px;
+    --sudoku-color: #555;
+    --sudoku-size: 3;
+    --sudoku-cell-color: var(--sudoku-color);
+    --sudoku-selected-bg: #7bc4e0;
+    --sudoku-rows: repeat(var(--sudoku-size), 1fr);
+    --sudoku-grid-border: 2px solid var(--sudoku-color);
+    --sudoku-cell-bg: #fff;
+
+    /* Widths and borders */
+    /* squares */
+    --sudoku-square-gap: 1px;
+    --sudoku-square-width: calc(
+        var(--sudoku-cell-width) * var(--sudoku-size) + (var(--sudoku-size) - 1) *
+            var(--sudoku-square-gap)
+    );
+    --sudoku-square-border: var(--sudoku-cell-border-width) solid
+        var(--sudoku-color);
+
+    /* board */
+    --sudoku-board-gap: 3px;
+    --sudoku-board-border-width: 3px;
+    --sudoku-board-width: calc(
+        var(--sudoku-square-width) * var(--sudoku-size) +
+            (var(--sudoku-size) - 1) *
+            (var(--sudoku-board-gap) + var(--sudoku-board-border-width))
+    );
+    --sudoku-board-border: var(--sudoku-board-border-width) solid
+        var(--sudoku-color);
+}

@@ -1,5 +1,6 @@
 import { shuffle } from "lodash";
 import solve from "./solve";
+import { getRow, getColumn } from "./utils";
 
 const defaultSize = 9;
 
@@ -106,14 +107,6 @@ function removeAll(sudoku: number[][]): Array<{ cell: number; value: number }> {
         });
     }
     return removedCells;
-}
-
-function getRow(size: number, cell: number): number {
-    return Math.floor(cell / size);
-}
-
-function getColumn(size: number, cell: number): number {
-    return cell % size;
 }
 
 function getPossibleCells(size: number): number[] {
