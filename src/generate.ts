@@ -3,25 +3,21 @@ import solve from "./solve";
 
 const defaultSize = 9;
 
-export type GenerateOptions = {
-    verbose?: boolean;
-};
-
 export type GenerateResult = {
     sudoku: number[][];
     solution: number[][];
 };
 
 export function generate(options: { verbose: true }): GenerateResult;
-export function generate(options: { verbose: false }): number[][];
-export default function generate({ verbose = false }: GenerateOptions = {}):
-    | number[][]
-    | GenerateResult {
+export function generate(options?: { verbose: false }): number[][];
+export function generate(options?: {
+    verbose: boolean;
+}): number[][] | GenerateResult {
     const size = defaultSize;
     const solution = buildCompleteSudoku(size);
     const removedCells = removeAll(solution);
     const sudoku = buildSudoku(size, removedCells);
-    if (verbose) {
+    if (options?.verbose) {
         return {
             sudoku,
             solution,
