@@ -1,7 +1,6 @@
 module.exports = {
     roots: ["<rootDir>/src"],
     testMatch: ["**/src/**/*.+(test).+(ts|tsx)"],
-    setupFilesAfterEnv: ["./src/tests/fixtures/extend-expect.ts"],
     transform: {
         "^.+\\.(ts|tsx)$": "ts-jest",
     },

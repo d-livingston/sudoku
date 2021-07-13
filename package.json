@@ -1,76 +1,16 @@
 {
-    "name": "@d-livingston/sudoku",
-    "version": "2.0.6",
-    "description": "A basic Sudoku package.",
-    "main": "dist/index.js",
-    "files": [
-        "dist"
-    ],
-    "author": "Daniel Livingston <contact@daniellivingston.net>",
-    "homepage": "https://github.com/d-livingston/sudoku#readme",
-    "license": "ISC",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/d-livingston/sudoku.git"
-    },
-    "bugs": {
-        "url": "https://github.com/d-livingston/sudoku/issues"
-    },
-    "keywords": [
-        "sudoku",
-        "puzzle",
-        "generate",
-        "solve",
-        "react",
-        "component"
-    ],
     "scripts": {
-        "build": "webpack --config webpack.prod.js",
-        "clean": "rm -rf dist",
-        "dev": "webpack --config webpack.dev.js",
         "test": "jest",
-        "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook"
-    },
-    "publishConfig": {
-        "access": "public"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.14.6",
-        "@storybook/addon-actions": "^6.3.0-rc.7",
-        "@storybook/addon-essentials": "^6.3.0-rc.7",
-        "@storybook/addon-links": "^6.3.0-rc.7",
-        "@storybook/builder-webpack5": "^6.3.0-rc.7",
-        "@storybook/manager-webpack5": "^6.3.0-rc.7",
-        "@storybook/react": "^6.3.0-rc.7",
-        "@types/jest": "^26.0.23",
-        "@types/lodash": "^4.14.171",
-        "@types/react": "^17.0.11",
-        "@types/react-dom": "^17.0.7",
-        "@types/react-test-renderer": "^17.0.1",
-        "autoprefixer": "^10.2.6",
-        "babel-loader": "^8.2.2",
-        "css-loader": "^5.2.6",
-        "jest": "^26.6.3",
-        "postcss": "^8.2.15",
-        "postcss-loader": "^6.1.0",
-        "react-test-renderer": "^17.0.2",
-        "sass": "^1.35.1",
-        "sass-loader": "^11.1.1",
-        "style-loader": "^2.0.0",
-        "terser-webpack-plugin": "^5.1.3",
-        "ts-jest": "^26.5.6",
-        "ts-loader": "^9.2.3",
-        "typescript": "^4.3.2",
-        "webpack": "^5.39.0",
-        "webpack-bundle-analyzer": "^4.4.2",
-        "webpack-cli": "^4.7.2",
-        "webpack-merge": "^5.8.0"
+        "test:watch": "jest --watch"
     },
     "dependencies": {
-        "classnames": "^2.3.1",
-        "lodash": "^4.17.21",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2"
+        "lodash": "^4.17.21"
+    },
+    "devDependencies": {
+        "@types/jest": "^26.0.24",
+        "@types/lodash": "^4.14.171",
+        "jest": "^27.0.6",
+        "ts-jest": "^27.0.3",
+        "typescript": "^4.3.5"
     }
 }
