@@ -44,6 +44,7 @@
         "@storybook/manager-webpack5": "^6.3.0-rc.7",
         "@storybook/react": "^6.3.0-rc.7",
         "@types/jest": "^26.0.23",
+        "@types/lodash": "^4.14.171",
         "@types/react": "^17.0.11",
         "@types/react-dom": "^17.0.7",
         "@types/react-test-renderer": "^17.0.1",
@@ -68,6 +69,7 @@
     },
     "dependencies": {
         "classnames": "^2.3.1",
+        "lodash": "^4.17.21",
         "react": "^17.0.2",
         "react-dom": "^17.0.2"
     }
