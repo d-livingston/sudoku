@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import classNames from "classnames";
-import Value from "./Value";
+import Value from "../Value";
 import "./cell.css";
 
 export type CellProps = {

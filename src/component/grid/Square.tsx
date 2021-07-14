@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import Cell from "./Cell";
-import { getColumn, getRow, getValue } from "../utils";
-import type { State } from "./reducer";
+import { getColumn, getRow, getValue } from "../../utils";
+import type { State } from "../reducer";
 import "./square.css";
 
 export type SquareProps = {

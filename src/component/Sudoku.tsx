@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import Controls from "./controls";
-import Square from "./Square";
+import Grid from "./grid";
 import reducer, {
     computeInitialState,
     select,
@@ -11,7 +11,6 @@ import reducer, {
     toggleNotes,
 } from "./reducer";
 import createKeydownListener from "./onKeydown";
-import { getSquareCells, getValue } from "../utils";
 import "./globals.css";
 import "./sudoku.css";
 
@@ -50,28 +49,7 @@ const Sudoku: React.FC<SudokuProps> = ({ sudoku: initial }) => {
 
     return (
         <div id="sudoku" className="sudoku__container">
-            <div className="sudoku__board">
-                {Array.from({ length: state.sudoku.length }, (_, i) => i).map(
-                    (squareId) => {
-                        return (
-                            <Square
-                                key={squareId}
-                                id={squareId}
-                                cells={getSquareCells(
-                                    state.sudoku,
-                                    squareId
-                                ).map((cell) => ({
-                                    cell,
-                                    value: getValue(state.sudoku, cell),
-                                }))}
-                                selectCell={selectCell}
-                                state={state}
-                            />
-                        );
-                    }
-                )}
-            </div>
-
+            <Grid state={state} selectCell={selectCell} />
             <Controls state={state} dispatch={dispatch} />
         </div>
     );
