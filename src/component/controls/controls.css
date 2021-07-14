@@ -1,0 +1,64 @@
+.sudoku__controls_container {
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.sudoku__controls {
+    display: grid;
+    background-color: var(--sudoku-btn-color);
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 3fr 1px 1fr;
+    grid-template-areas:
+        "numpad numpad"
+        ". ."
+        "notes erase";
+    border: 3px solid var(--sudoku-btn-color);
+    gap: 1px;
+}
+
+.sudoku__notes_btn {
+    grid-area: notes;
+}
+
+.sudoku__erase_btn {
+    grid-area: erase;
+}
+
+.sudoku__notes_btn,
+.sudoku__erase_btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+}
+
+.sudoku__notes_btn svg,
+.sudoku__erase_btn svg {
+    width: 32px;
+    height: auto;
+}
+
+.sudoku__notes_btn {
+    position: relative;
+}
+
+.sudoku__notes_indicator {
+    position: absolute;
+    font-weight: bold;
+    padding: 2px;
+    right: 3px;
+    top: 3px;
+}
+
+.sudoku__notes_indicator_on {
+    color: green;
+    border: 2px solid green;
+}
+
+.sudoku__notes_indicator_off {
+    color: red;
+    border: 2px solid red;
+}

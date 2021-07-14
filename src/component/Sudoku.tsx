@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
+import Controls from "./controls";
 import Square from "./Square";
 import reducer, {
     computeInitialState,
@@ -70,6 +71,8 @@ const Sudoku: React.FC<SudokuProps> = ({ sudoku: initial }) => {
                     }
                 )}
             </div>
+
+            <Controls state={state} dispatch={dispatch} />
         </div>
     );
 };

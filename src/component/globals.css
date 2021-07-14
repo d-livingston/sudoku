@@ -9,6 +9,9 @@
     --sudoku-same-value-bg: #b8ffde;
     --sudoku-same-house-bg: #e5fff4;
     --sudoku-cell-bg: #fff;
+    --sudoku-btn-bg: #fff;
+    --sudoku-btn-bg-hover: #eee;
+    --sudoku-btn-color: #000;
 
     --sudoku-rows: repeat(var(--sudoku-size), 1fr);
     /* Widths and borders */

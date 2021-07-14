@@ -1,0 +1,7 @@
+.sudoku__number_pad {
+    grid-area: numpad;
+    display: grid;
+    grid-template-columns: var(--sudoku-rows);
+    grid-template-rows: var(--sudoku-rows);
+    gap: 1px;
+}
