@@ -12,6 +12,7 @@ export type CellProps = {
     isInvalid?: boolean;
     isLocked?: boolean;
     isSelected?: boolean;
+    notes: boolean[];
 };
 
 const propTypes = {
@@ -32,6 +33,7 @@ const Cell: React.FC<CellProps> = ({
     isSelected,
     isInvalid,
     isLocked,
+    notes,
 }) => {
     return (
         <button
@@ -41,10 +43,17 @@ const Cell: React.FC<CellProps> = ({
                 sudoku__selected: isSelected,
                 sudoku__invalid: isInvalid,
                 sudoku__locked: isLocked,
+                sudoku__notes: value === 0,
             })}
             onClick={onClick}
         >
-            <Value value={value} />
+            {value === 0 ? (
+                notes.map((note, index) => (
+                    <Value value={note ? index + 1 : 0} />
+                ))
+            ) : (
+                <Value value={value} />
+            )}
         </button>
     );
 };

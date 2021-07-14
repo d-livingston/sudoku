@@ -9,6 +9,25 @@
     width: var(--sudoku-cell-width);
 }
 
+.sudoku__same_house {
+    background-color: var(--sudoku-same-house-bg);
+}
+
+.sudoku__same_value {
+    background-color: var(--sudoku-same-value-bg);
+}
+
 .sudoku__selected {
     background-color: var(--sudoku-selected-bg);
+}
+
+.sudoku__locked {
+    color: var(--sudoku-locked-color);
+}
+
+.sudoku__notes {
+    display: grid;
+    grid-template-rows: var(--sudoku-rows);
+    grid-template-columns: var(--sudoku-rows);
+    gap: 0;
 }

@@ -1,7 +1,15 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import Square from "./Square";
-import reducer, { computeInitialState, select } from "./reducer";
+import reducer, {
+    computeInitialState,
+    select,
+    selectInDirection,
+    fill,
+    remove,
+    toggleNotes,
+} from "./reducer";
+import createKeydownListener from "./onKeydown";
 import { getSquareCells, getValue } from "../utils";
 import "./globals.css";
 import "./sudoku.css";
@@ -22,19 +30,32 @@ const Sudoku: React.FC<SudokuProps> = ({ sudoku: initial }) => {
         computeInitialState(initial)
     );
 
-    const selectCell = (cell: number) => {
-        console.log("SELECTING CELL " + cell);
-        dispatch(select(cell));
-    };
+    const selectCell = (cell: number) => dispatch(select(cell));
+
+    React.useEffect(() => {
+        const onKeydown = createKeydownListener({
+            onNumberKey: (value: number) => dispatch(fill(value)),
+            onRemoveKey: () => dispatch(remove()),
+            onDirectionKey: (direction: "left" | "right" | "up" | "down") =>
+                dispatch(selectInDirection(direction)),
+            onNotesToggleKey: () => dispatch(toggleNotes()),
+        });
+        window && window.addEventListener("keydown", onKeydown);
+
+        return () => {
+            window && window.removeEventListener("keydown", onKeydown);
+        };
+    }, []);
 
     return (
-        <div className="sudoku__container">
+        <div id="sudoku" className="sudoku__container">
             <div className="sudoku__board">
                 {Array.from({ length: state.sudoku.length }, (_, i) => i).map(
                     (squareId) => {
                         return (
                             <Square
                                 key={squareId}
+                                id={squareId}
                                 cells={getSquareCells(
                                     state.sudoku,
                                     squareId
@@ -43,6 +64,7 @@ const Sudoku: React.FC<SudokuProps> = ({ sudoku: initial }) => {
                                     value: getValue(state.sudoku, cell),
                                 }))}
                                 selectCell={selectCell}
+                                state={state}
                             />
                         );
                     }

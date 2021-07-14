@@ -1,3 +1,5 @@
+import type { Notes } from "./notes";
+
 export type State = {
     initial: number[][];
     sudoku: number[][];
@@ -8,4 +10,6 @@ export type State = {
         square: number;
         value: number;
     };
+    notesOn: boolean;
+    notes: Notes;
 };

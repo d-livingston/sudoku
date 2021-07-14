@@ -1,5 +1,5 @@
 export enum ActionTypes {
-    DELETE = "Delete cell",
+    REMOVE = "Remove cell",
     FILL = "Fill cell",
     SELECT = "Select cell",
     SELECT_IN_DIRECTION = "Select cell in direction",
@@ -13,9 +13,41 @@ export interface Action {
 
 export function select(cell: number): Action {
     return {
-        type: ActionTypes.FILL,
+        type: ActionTypes.SELECT,
         payload: {
             cell,
         },
+    };
+}
+
+export function selectInDirection(
+    direction: "left" | "right" | "up" | "down"
+): Action {
+    return {
+        type: ActionTypes.SELECT_IN_DIRECTION,
+        payload: {
+            direction,
+        },
+    };
+}
+
+export function fill(value: number): Action {
+    return {
+        type: ActionTypes.FILL,
+        payload: {
+            value,
+        },
+    };
+}
+
+export function remove(): Action {
+    return {
+        type: ActionTypes.REMOVE,
+    };
+}
+
+export function toggleNotes(): Action {
+    return {
+        type: ActionTypes.TOGGLE_NOTES,
     };
 }
