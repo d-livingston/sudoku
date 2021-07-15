@@ -3,7 +3,6 @@ import * as PropTypes from "prop-types";
 import Banner from "./Banner";
 import Square from "./Square";
 import { State } from "../reducer";
-import { getSquareCells, getValue } from "../../utils";
 import "./grid.css";
 
 export type GridProps = {
@@ -43,13 +42,6 @@ const Grid: React.FC<GridProps> = ({ state, selectCell, toggleControls }) => {
                             <Square
                                 key={squareId}
                                 id={squareId}
-                                cells={getSquareCells(
-                                    state.sudoku,
-                                    squareId
-                                ).map((cell) => ({
-                                    cell,
-                                    value: getValue(state.sudoku, cell),
-                                }))}
                                 selectCell={selectCell}
                                 state={state}
                             />

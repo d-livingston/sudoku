@@ -1,33 +1,43 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import Cell from "./Cell";
-import { getColumn, getRow, getValue } from "../../utils";
+import { getColumn, getRow, getSquareCells, getValue } from "../../utils";
 import type { State } from "../reducer";
 import "./square.css";
 
 export type SquareProps = {
     id: number;
-    cells: Array<{ cell: number; value: number }>;
     selectCell: (cell: number) => void;
     state: State;
 };
 
 const propTypes = {
+    /**
+     * The square's id in the grid.
+     *
+     * 0 1 2
+     * 3 4 5
+     * 6 7 8
+     *
+     */
     id: PropTypes.number.isRequired,
-    cells: PropTypes.arrayOf(
-        PropTypes.exact({
-            cell: PropTypes.number.isRequired,
-            value: PropTypes.number.isRequired,
-        }).isRequired
-    ).isRequired,
+
+    /** A function to select the cell. Passed to the Cell components. */
     selectCell: PropTypes.func.isRequired,
+
+    /** The reducer's state. */
+    state: PropTypes.any.isRequired,
 };
 
-const Square: React.FC<SquareProps> = ({ id, cells, selectCell, state }) => {
+const Square: React.FC<SquareProps> = ({ id, selectCell, state }) => {
+    const cells = getSquareCells(state.sudoku, id).map((cell) => ({
+        cell,
+        value: getValue(state.sudoku, cell),
+    }));
+    const size = state.initial.length;
     return (
         <div className="sudoku__square">
             {cells.map(({ cell, value }) => {
-                const size = state.initial.length;
                 const isInSameHouse =
                     getRow(size, cell) === state.selected.row ||
                     getColumn(size, cell) === state.selected.column ||

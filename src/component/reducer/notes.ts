@@ -34,7 +34,11 @@ export default class Notes {
 
     public get(cell: number): boolean[] {
         return Array.from({ length: this.size }, (_, i) => i + 1).map(
-            (value) => this.notes[cell] && this.notes[cell][value]
+            (value) => {
+                if (!this.notes[cell]) return false;
+                if (!this.notes[cell][value]) return false;
+                return true;
+            }
         );
     }
 }
