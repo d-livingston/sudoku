@@ -2,6 +2,7 @@ import * as React from "react";
 import * as PropTypes from "prop-types";
 import Controls from "./controls";
 import Grid from "./grid";
+import Stopwatch from "./Stopwatch";
 import reducer, {
     computeInitialState,
     select,
@@ -31,6 +32,7 @@ const Sudoku: React.FC<SudokuProps> = ({ sudoku: initial }) => {
     );
 
     const [showControls, setShowControls] = React.useState(true);
+    const [time, setTime] = React.useState(0);
 
     const selectCell = (cell: number) => dispatch(select(cell));
 
@@ -51,6 +53,11 @@ const Sudoku: React.FC<SudokuProps> = ({ sudoku: initial }) => {
 
     return (
         <div id="sudoku" className="sudoku__container">
+            <Stopwatch
+                isSolved={state.isSolved}
+                time={time}
+                increment={() => setTime((time) => time + 1)}
+            />
             <Grid
                 state={state}
                 selectCell={selectCell}
