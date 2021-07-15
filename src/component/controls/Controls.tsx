@@ -15,8 +15,13 @@ export type ControlsProps = {
 };
 
 const propTypes = {
+    /** The Sudoku reducer state */
     state: PropTypes.any.isRequired,
+
+    /** The dispatch function for the Sudoku reducer */
     dispatch: PropTypes.func.isRequired,
+
+    /** Determines whether the controls should be shown */
     showControls: PropTypes.bool,
 };
 
@@ -34,7 +39,7 @@ const Controls: React.FC<ControlsProps> = ({
             <div className="sudoku__controls">
                 <NumberPad
                     size={state.initial.length}
-                    dispatchFill={(value: number) => dispatch(fill(value))}
+                    dispatchNumber={(value: number) => dispatch(fill(value))}
                 />
                 <div className="sudoku__other_btns">
                     <Button
