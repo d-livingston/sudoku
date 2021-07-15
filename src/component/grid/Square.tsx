@@ -37,6 +37,7 @@ const Square: React.FC<SquareProps> = ({ id, cells, selectCell, state }) => {
                         key={`cell-${cell}`}
                         value={value}
                         onClick={() => selectCell(cell)}
+                        isInvalid={state.invalidCells.has(cell)}
                         isSelected={cell === state.selected.cell}
                         isLocked={getValue(state.initial, cell) !== 0}
                         isInSameHouse={isInSameHouse}

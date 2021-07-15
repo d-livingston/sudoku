@@ -1,7 +1,15 @@
 import type { State } from "./state";
 import type { Action } from "./actions";
 import { ActionTypes } from "./actions";
-import { getCell, getColumn, getRow, getSquare, getValue } from "../../utils";
+import {
+    getCell,
+    getColumn,
+    getInvalidCells,
+    getRow,
+    getSquare,
+    getValue,
+    isSolvedSudoku,
+} from "../../utils";
 
 export default function reducer(state: State, action: Action): State {
     switch (action.type) {
@@ -103,6 +111,8 @@ function fill(state: State, action: Action): State {
             action.payload.value;
         return {
             ...state,
+            invalidCells: getInvalidCells(state.sudoku),
+            isSolved: isSolvedSudoku(state.sudoku),
             selected: {
                 ...state.selected,
                 value: action.payload.value,
@@ -124,6 +134,7 @@ function remove(state: State, _: Action): State {
         state.sudoku[state.selected.row][state.selected.column] = 0;
         return {
             ...state,
+            invalidCells: getInvalidCells(state.sudoku),
             selected: {
                 ...state.selected,
                 value: 0,

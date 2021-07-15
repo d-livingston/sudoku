@@ -1,8 +1,8 @@
 import { flatten } from "lodash";
 
 export function isSolvedSudoku(sudoku: number[][]): boolean {
-    if (!isValidSudoku(sudoku)) return false;
-    return sudoku.every((row) => row.every((value) => value !== 0));
+    if (!sudoku.every((row) => row.every((value) => value !== 0))) return false;
+    return isValidSudoku(sudoku);
 }
 
 export function isValidSudoku(sudoku: number[][]): boolean {
@@ -86,6 +86,15 @@ export function getSquare(size: number, cell: number): number {
     return Math.floor(row / sqrt) * sqrt + Math.floor(column / sqrt);
 }
 
+export function getRowCells(size: number, row: number): number[] {
+    const firstId = row * size;
+    return Array.from({ length: size }, (_, i) => i + firstId);
+}
+
+export function getColumnCells(size: number, column: number): number[] {
+    return Array.from({ length: size }, (_, i) => i * size + column);
+}
+
 export function getSquareCells(sudoku: number[][], square: number): number[] {
     const sqrt = Math.sqrt(sudoku.length);
     const rowMin = Math.floor(square / sqrt) * sqrt;
@@ -111,4 +120,55 @@ export function getSquareCells(sudoku: number[][], square: number): number[] {
 
 export function getValue(sudoku: number[][], cell: number): number {
     return sudoku[getRow(sudoku.length, cell)][getColumn(sudoku.length, cell)];
+}
+
+export function getInvalidCells(sudoku: number[][]): Set<number> {
+    const size = sudoku.length;
+    let invalidCells = new Set<number>();
+    if (isValidSudoku(sudoku)) return invalidCells;
+
+    for (let i = 0; i < size; i++) {
+        invalidCells = union(
+            invalidCells,
+            getInvalidCellsInHouse(sudoku, getRowCells(size, i))
+        );
+        invalidCells = union(
+            invalidCells,
+            getInvalidCellsInHouse(sudoku, getColumnCells(size, i))
+        );
+        invalidCells = union(
+            invalidCells,
+            getInvalidCellsInHouse(sudoku, getSquareCells(sudoku, i))
+        );
+    }
+    return invalidCells;
+}
+
+function getInvalidCellsInHouse(
+    sudoku: number[][],
+    cells: number[]
+): Set<number> {
+    const invalidCells = new Set<number>();
+
+    const values = cells.map((cell) => getValue(sudoku, cell));
+    first: for (let i = 0; i < values.length; i++) {
+        if (values[i] === 0) continue first;
+        second: for (let j = i + 1; j < values.length; j++) {
+            if (values[j] === 0) continue second;
+
+            if (values[i] === values[j]) {
+                invalidCells.add(cells[i]);
+                invalidCells.add(cells[j]);
+            }
+        }
+    }
+    return invalidCells;
+}
+
+function union<T>(set1: Set<T>, set2: Set<T>): Set<T> {
+    const u = new Set<T>(set1);
+    for (let element of set2) {
+        u.add(element);
+    }
+    return u;
 }

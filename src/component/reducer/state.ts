@@ -12,4 +12,6 @@ export type State = {
     };
     notesOn: boolean;
     notes: Notes;
+    invalidCells: Set<number>;
+    isSolved: boolean;
 };

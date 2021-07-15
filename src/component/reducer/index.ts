@@ -21,5 +21,7 @@ export function computeInitialState(initialSudoku: number[][]): State {
         },
         notesOn: false,
         notes: new Notes(initialSudoku.length),
+        invalidCells: new Set(),
+        isSolved: false,
     };
 }

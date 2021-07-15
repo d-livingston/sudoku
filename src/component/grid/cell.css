@@ -13,8 +13,16 @@
     background-color: var(--sudoku-same-value-bg);
 }
 
+.sudoku__invalid {
+    background-color: #ffb3b3;
+}
+
 .sudoku__selected {
     background-color: var(--sudoku-selected-bg);
+}
+
+.sudoku__invalid {
+    color: #d12424;
 }
 
 .sudoku__locked {

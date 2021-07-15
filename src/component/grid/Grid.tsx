@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
+import Banner from "./Banner";
 import Square from "./Square";
 import { State } from "../reducer";
 import { getSquareCells, getValue } from "../../utils";
@@ -56,6 +57,7 @@ const Grid: React.FC<GridProps> = ({ state, selectCell, toggleControls }) => {
                     }
                 )}
             </div>
+            <Banner show={state.isSolved} />
         </div>
     );
 };

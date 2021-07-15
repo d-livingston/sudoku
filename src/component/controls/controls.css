@@ -3,6 +3,8 @@
     width: 100%;
     max-width: var(--sudoku-max-width);
     margin-top: 6px;
+    transform: translateX(0);
+    opacity: 1;
 }
 
 .sudoku__controls {
