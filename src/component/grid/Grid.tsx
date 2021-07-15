@@ -17,25 +17,28 @@ const propTypes = {
 
 const Grid: React.FC<GridProps> = ({ state, selectCell }) => {
     return (
-        <div className="sudoku__grid">
-            {Array.from({ length: state.sudoku.length }, (_, i) => i).map(
-                (squareId) => {
-                    return (
-                        <Square
-                            key={squareId}
-                            id={squareId}
-                            cells={getSquareCells(state.sudoku, squareId).map(
-                                (cell) => ({
+        <div className="sudoku__grid_container">
+            <div className="sudoku__grid">
+                {Array.from({ length: state.sudoku.length }, (_, i) => i).map(
+                    (squareId) => {
+                        return (
+                            <Square
+                                key={squareId}
+                                id={squareId}
+                                cells={getSquareCells(
+                                    state.sudoku,
+                                    squareId
+                                ).map((cell) => ({
                                     cell,
                                     value: getValue(state.sudoku, cell),
-                                })
-                            )}
-                            selectCell={selectCell}
-                            state={state}
-                        />
-                    );
-                }
-            )}
+                                }))}
+                                selectCell={selectCell}
+                                state={state}
+                            />
+                        );
+                    }
+                )}
+            </div>
         </div>
     );
 };

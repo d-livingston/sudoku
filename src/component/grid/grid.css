@@ -1,11 +1,20 @@
-.sudoku__grid {
-    box-sizing: border-box;
-    border: var(--sudoku-board-border);
+.sudoku__grid_container {
     background-color: var(--sudoku-color);
+    position: relative;
+    padding-top: min(var(--sudoku-max-width), 100%);
+    width: 100%;
+    max-width: var(--sudoku-max-width);
+}
+
+.sudoku__grid {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
     display: grid;
     grid-template-columns: var(--sudoku-rows);
     grid-template-rows: var(--sudoku-rows);
-    gap: 3px;
-    height: var(--sudoku-board-width);
-    width: var(--sudoku-board-width);
+    border: 1px solid #000;
 }

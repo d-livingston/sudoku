@@ -1,9 +1,6 @@
 .sudoku__square {
-    box-sizing: border-box;
     display: grid;
     grid-template-columns: var(--sudoku-rows);
     grid-template-rows: var(--sudoku-rows);
-    gap: 1px;
-    height: var(--sudoku-square-width);
-    width: var(--sudoku-square-width);
+    border: 1px solid var(--sudoku-color);
 }

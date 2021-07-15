@@ -1,43 +1,35 @@
 .sudoku__controls_container {
-    padding: 0 16px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    width: 100%;
+    max-width: var(--sudoku-max-width);
+    margin-top: 6px;
 }
 
 .sudoku__controls {
     display: grid;
-    background-color: var(--sudoku-btn-color);
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 3fr 1px 1fr;
-    grid-template-areas:
-        "numpad numpad"
-        ". ."
-        "notes erase";
-    border: 3px solid var(--sudoku-btn-color);
-    gap: 1px;
+    grid-template-rows: 1fr 1fr;
+    width: 100%;
 }
 
-.sudoku__notes_btn {
-    grid-area: notes;
+.sudoku__other_btns {
+    display: flex;
 }
 
-.sudoku__erase_btn {
-    grid-area: erase;
+.sudoku__other_btns > * {
+    flex: 1 1 100%;
 }
 
 .sudoku__notes_btn,
 .sudoku__erase_btn {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
+    font-size: 12px;
 }
 
-.sudoku__notes_btn svg,
-.sudoku__erase_btn svg {
-    width: 32px;
+.sudoku__notes_btn > svg,
+.sudoku__erase_btn > svg {
+    width: 24px;
     height: auto;
 }
 
@@ -45,12 +37,13 @@
     position: relative;
 }
 
-.sudoku__notes_indicator {
+.sudoku__notes_btn > div {
     position: absolute;
+    font-size: 10px;
     font-weight: bold;
-    padding: 2px;
-    right: 3px;
-    top: 3px;
+    padding: 1px;
+    right: 10%;
+    top: 10%;
 }
 
 .sudoku__notes_indicator_on {
@@ -61,4 +54,37 @@
 .sudoku__notes_indicator_off {
     color: red;
     border: 2px solid red;
+}
+
+@media screen and (min-width: 768px) {
+    .sudoku__controls_container {
+        max-width: 256px;
+        margin-top: 0;
+        margin-left: 16px;
+    }
+
+    .sudoku__controls {
+        grid-template-rows: 3fr 2fr;
+        gap: 6px;
+    }
+
+    .sudoku__other_btns {
+        gap: 6px;
+    }
+
+    .sudoku__notes_btn,
+    .sudoku__erase_btn {
+        flex-direction: column;
+        font-size: 18px;
+    }
+
+    .sudoku__notes_btn > svg,
+    .sudoku__erase_btn > svg {
+        width: 36px;
+        height: auto;
+    }
+
+    .sudoku__notes_btn > div {
+        font-size: 14px;
+    }
 }

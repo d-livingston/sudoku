@@ -1,5 +1,8 @@
 :root {
+    --sudoku-max-width: 576px;
+    --sudoku-mq-width: 576px;
     /* customizable */
+    --sudoku-cell-width-sm: 30px;
     --sudoku-cell-width: 48px;
     --sudoku-color: #000;
     --sudoku-size: 3;
@@ -16,6 +19,10 @@
     --sudoku-rows: repeat(var(--sudoku-size), 1fr);
     /* Widths and borders */
     --sudoku-square-gap: 1px;
+    --sudoku-square-width-sm: calc(
+        var(--sudoku-cell-width-sm) * var(--sudoku-size) +
+            (var(--sudoku-size) - 1) * var(--sudoku-square-gap)
+    );
     --sudoku-square-width: calc(
         var(--sudoku-cell-width) * var(--sudoku-size) + (var(--sudoku-size) - 1) *
             var(--sudoku-square-gap)
@@ -24,6 +31,11 @@
         var(--sudoku-color);
     --sudoku-board-gap: 3px;
     --sudoku-board-border-width: 3px;
+    --sudoku-board-width-sm: calc(
+        var(--sudoku-square-width-sm) * var(--sudoku-size) +
+            (var(--sudoku-size) - 1) *
+            (var(--sudoku-board-gap) + var(--sudoku-board-border-width))
+    );
     --sudoku-board-width: calc(
         var(--sudoku-square-width) * var(--sudoku-size) +
             (var(--sudoku-size) - 1) *
@@ -31,4 +43,6 @@
     );
     --sudoku-board-border: var(--sudoku-board-border-width) solid
         var(--sudoku-color);
+
+    --sudoku-size-cutoff: 400px;
 }
