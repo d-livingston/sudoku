@@ -18,7 +18,7 @@ const NumberPad: React.FC<NumberPadProps> = ({ dispatchFill, size }) => {
     return (
         <div className="sudoku__number_pad">
             {Array.from({ length: size }, (_, i) => (
-                <Button onClick={() => dispatchFill(i + 1)}>
+                <Button key={`number-${i}`} onClick={() => dispatchFill(i + 1)}>
                     <Value value={i + 1} />
                 </Button>
             ))}

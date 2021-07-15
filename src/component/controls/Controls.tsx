@@ -11,16 +11,26 @@ import "./controls.css";
 export type ControlsProps = {
     state: State;
     dispatch: React.Dispatch<Action>;
+    showControls?: boolean;
 };
 
 const propTypes = {
     state: PropTypes.any.isRequired,
     dispatch: PropTypes.func.isRequired,
+    showControls: PropTypes.bool,
 };
 
-const Controls: React.FC<ControlsProps> = ({ state, dispatch }) => {
+const Controls: React.FC<ControlsProps> = ({
+    state,
+    dispatch,
+    showControls,
+}) => {
     return (
-        <div className="sudoku__controls_container">
+        <div
+            className={classNames("sudoku__controls_container", {
+                sudoku__controls_hidden: !showControls,
+            })}
+        >
             <div className="sudoku__controls">
                 <NumberPad
                     size={state.initial.length}

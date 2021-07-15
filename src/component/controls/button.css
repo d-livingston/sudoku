@@ -17,7 +17,11 @@
 
 @media screen and (min-width: 768px) {
     .sudoku__control_btn {
-        background-color: #ddd2;
+        background-color: #f2f2f2;
         border-radius: 0.25rem;
+    }
+
+    .sudoku__control_btn:hover {
+        background-color: #e3e3e3;
     }
 }

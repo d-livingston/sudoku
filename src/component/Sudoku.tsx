@@ -30,6 +30,8 @@ const Sudoku: React.FC<SudokuProps> = ({ sudoku: initial }) => {
         computeInitialState(initial)
     );
 
+    const [showControls, setShowControls] = React.useState(true);
+
     const selectCell = (cell: number) => dispatch(select(cell));
 
     React.useEffect(() => {
@@ -49,8 +51,16 @@ const Sudoku: React.FC<SudokuProps> = ({ sudoku: initial }) => {
 
     return (
         <div id="sudoku" className="sudoku__container">
-            <Grid state={state} selectCell={selectCell} />
-            <Controls state={state} dispatch={dispatch} />
+            <Grid
+                state={state}
+                selectCell={selectCell}
+                toggleControls={() => setShowControls(!showControls)}
+            />
+            <Controls
+                state={state}
+                dispatch={dispatch}
+                showControls={showControls}
+            />
         </div>
     );
 };

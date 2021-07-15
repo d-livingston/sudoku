@@ -49,7 +49,10 @@ const Cell: React.FC<CellProps> = ({
         >
             {value === 0 ? (
                 notes.map((note, index) => (
-                    <Value value={note ? index + 1 : 0} />
+                    <Value
+                        key={`value-${index + 1}`}
+                        value={note ? index + 1 : 0}
+                    />
                 ))
             ) : (
                 <Value value={value} />
