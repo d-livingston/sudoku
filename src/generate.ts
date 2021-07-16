@@ -4,7 +4,7 @@ import { getRow, getColumn } from "./utils";
 
 const defaultSize = 9;
 
-export type GenerateResult = {
+type GenerateResult = {
     sudoku: number[][];
     solution: number[][];
 };
