@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import Banner from "./Banner";
+import Banner from "../Banner";
 import Square from "./Square";
 import { State } from "../reducer";
 import "./grid.css";
@@ -11,9 +11,15 @@ export type GridProps = {
     toggleControls: () => void;
 };
 
+// TODO refactor the control toggle and banner to Sudoku component
 const propTypes = {
+    /** The reducer state. */
     state: PropTypes.any.isRequired,
+
+    /** The dispatch function to select a cell. */
     selectCell: PropTypes.func.isRequired,
+
+    /** The dispatch function to toggle the controls on and off. */
     toggleControls: PropTypes.func.isRequired,
 };
 
@@ -49,7 +55,7 @@ const Grid: React.FC<GridProps> = ({ state, selectCell, toggleControls }) => {
                     }
                 )}
             </div>
-            <Banner show={state.isSolved} />
+            <Banner visible={state.isSolved} />
         </div>
     );
 };

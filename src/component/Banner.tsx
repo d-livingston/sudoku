@@ -4,18 +4,19 @@ import classNames from "classnames";
 import "./banner.css";
 
 export type BannerProps = {
-    show: boolean;
+    visible: boolean;
 };
 
 const propTypes = {
-    show: PropTypes.bool.isRequired,
+    /**  Whether the banner is visible or not. */
+    visible: PropTypes.bool.isRequired,
 };
 
-const Banner: React.FC<BannerProps> = ({ show }) => {
+const Banner: React.FC<BannerProps> = ({ visible }) => {
     return (
         <div
             className={classNames("sudoku__banner", {
-                sudoku__banner_hidden: !show,
+                sudoku__banner_hidden: !visible,
             })}
         >
             <div className="sudoku__banner_title">Congratulations!</div>
