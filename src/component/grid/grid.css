@@ -1,11 +1,3 @@
-.sudoku__grid_container {
-    background-color: var(--sudoku-color);
-    position: relative;
-    padding-top: min(var(--sudoku-max-width), 100%);
-    width: 100%;
-    max-width: var(--sudoku-max-width);
-}
-
 .sudoku__grid {
     position: absolute;
     z-index: 999;
@@ -18,25 +10,4 @@
     grid-template-columns: var(--sudoku-rows);
     grid-template-rows: var(--sudoku-rows);
     border: 1px solid #000;
-}
-
-.sudoku__controls_toggle {
-    display: none;
-}
-
-@media screen and (min-width: 768px) {
-    .sudoku__controls_toggle {
-        display: block;
-        background: none;
-        border: none;
-        cursor: pointer;
-        position: absolute;
-        top: 1px;
-        right: -24px;
-        z-index: 1000;
-    }
-
-    .sudoku__controls_toggle:hover {
-        transform: scale(1.2);
-    }
 }

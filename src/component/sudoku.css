@@ -12,10 +12,37 @@
     box-sizing: border-box;
 }
 
+.sudoku__grid_container {
+    background-color: var(--sudoku-color);
+    position: relative;
+    padding-top: min(var(--sudoku-max-width), 100%);
+    width: 100%;
+    max-width: var(--sudoku-max-width);
+}
+
+.sudoku__controls_toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 1px;
+    right: -24px;
+    z-index: 1000;
+}
+
 @media screen and (min-width: 768px) {
     .sudoku__container {
         display: grid;
         grid-template-columns: var(--sudoku-max-width) auto;
         padding-top: 48px;
+    }
+
+    .sudoku__controls_toggle {
+        display: block;
+    }
+
+    .sudoku__controls_toggle:hover {
+        transform: scale(1.2);
     }
 }
