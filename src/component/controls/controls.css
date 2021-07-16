@@ -1,0 +1,100 @@
+.sudoku__controls_container {
+    display: flex;
+    width: 100%;
+    max-width: var(--sudoku-max-width);
+    margin-top: 6px;
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.sudoku__controls {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    width: 100%;
+}
+
+.sudoku__other_btns {
+    display: flex;
+}
+
+.sudoku__other_btns > * {
+    flex: 1 1 100%;
+}
+
+.sudoku__notes_btn,
+.sudoku__erase_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+}
+
+.sudoku__notes_btn > svg,
+.sudoku__erase_btn > svg {
+    width: 24px;
+    height: auto;
+}
+
+.sudoku__notes_btn {
+    position: relative;
+}
+
+.sudoku__notes_btn > div {
+    position: absolute;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 1px;
+    right: 10%;
+    top: 10%;
+}
+
+.sudoku__notes_indicator_on {
+    color: green;
+    border: 2px solid green;
+}
+
+.sudoku__notes_indicator_off {
+    color: red;
+    border: 2px solid red;
+}
+
+@media screen and (min-width: 768px) {
+    .sudoku__controls_container {
+        max-width: 256px;
+        margin-top: 0;
+        margin-left: 16px;
+        opacity: 1;
+        z-index: 998;
+        transition: transform 0.5s, opacity 0.5s;
+    }
+
+    .sudoku__controls_hidden {
+        transform: translateX(-150%);
+        opacity: 0;
+    }
+
+    .sudoku__controls {
+        grid-template-rows: 3fr 2fr;
+        gap: 6px;
+    }
+
+    .sudoku__other_btns {
+        gap: 6px;
+    }
+
+    .sudoku__notes_btn,
+    .sudoku__erase_btn {
+        flex-direction: column;
+        font-size: 18px;
+    }
+
+    .sudoku__notes_btn > svg,
+    .sudoku__erase_btn > svg {
+        width: 36px;
+        height: auto;
+    }
+
+    .sudoku__notes_btn > div {
+        font-size: 14px;
+    }
+}

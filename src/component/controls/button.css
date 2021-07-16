@@ -1,0 +1,27 @@
+.sudoku__control_btn {
+    background-color: var(--sudoku-btn-bg);
+    border: 1px solid #00000033;
+    color: var(--sudoku-btn-color);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.sudoku__control_btn:hover {
+    background-color: var(--sudoku-btn-bg-hover);
+}
+
+.sudoku__control_btn:focus {
+    z-index: 5;
+    outline: 3px solid var(--sudoku-selected-bg);
+}
+
+@media screen and (min-width: 768px) {
+    .sudoku__control_btn {
+        background-color: #f2f2f2;
+        border-radius: 0.25rem;
+    }
+
+    .sudoku__control_btn:hover {
+        background-color: #e3e3e3;
+    }
+}

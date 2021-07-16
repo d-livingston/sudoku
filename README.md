@@ -22,7 +22,7 @@ npm install @d-livingston/sudoku
 ## Importing the Package
 
 ```javascript
-import Sudoku from "@d-livingston/sudoku";
+import { generate, solve, Component } from "@d-livingston/sudoku";
 ```
 
 ## Usage
@@ -31,20 +31,18 @@ There are three main usages of this Sudoku package: generating Sudoku puzzles, s
 
 ### Generating Sudoku Puzzles
 
-The generator can be used to create a 9x9 Sudoku puzzle randomly and has both a synchronous and an asynchronous option.
+The generator can be used to create a 9x9 Sudoku puzzle randomly.
 
 ```javascript
-// Synchronous
-const generated = Sudoku.generateSync();
+import { generate } from "@d-livingston/sudoku";
 
-// Asynchronous
-const generated = await Sudoku.generate();
+generate();
 
 // OR
-Sudoku.generate().then((generated) => /* ... */ );
+Sudoku.generate({ verbose: true });
 ```
 
-The result of the generate method is an object containing the Sudoku puzzle, its solution, and an approximation of the difficulty of the puzzle. For example, the output may look like:
+The result of generate without verbose being set is a two-dimensional array containing the Sudoku puzzle. With it being set, the result is an object containing the puzzle and its solution, like below:
 
 ```bash
 {
@@ -71,55 +69,30 @@ The result of the generate method is an object containing the Sudoku puzzle, its
         [7, 2, 6, 9, 5, 3, 8, 4, 1],
         [5, 4, 9, 7, 1, 8, 6, 3, 2],
     ],
-
-    difficulty: "easy"
 }
 ```
 
 ### Solving Sudoku Puzzles
 
-The solver can be used to solve any valid Sudoku puzzle. It also features a synchronous and an asynchronous option.
+The solver can be used to solve any valid Sudoku puzzle.
 
 ```javascript
-// Synchronous
-const solution = Sudoku.solveSync(sudoku);
+import { solve } from "@d-livingston/sudoku";
 
-// Asynchronous
-const solution = await Sudoku.solve(sudoku);
-
-// OR
-Sudoku.solve(sudoku).then((solution) => /* ... */ );
+solve(sudoku);
 ```
 
-The resultant solution is an object with the solution of the Sudoku puzzle and a flag determining whether the puzzle has multiple solutions. For example, the output may look the following:
-
-```bash
-{
-    solution: [
-        [9, 8, 7, 4, 2, 6, 1, 5, 3],
-        [2, 6, 5, 1, 3, 7, 4, 8, 9],
-        [4, 1, 3, 5, 8, 9, 2, 6, 7],
-        [8, 5, 1, 6, 9, 2, 3, 7, 4],
-        [3, 7, 2, 8, 4, 5, 9, 1, 6],
-        [6, 9, 4, 3, 7, 1, 5, 2, 8],
-        [1, 3, 8, 2, 6, 4, 7, 9, 5],
-        [7, 2, 6, 9, 5, 3, 8, 4, 1],
-        [5, 4, 9, 7, 1, 8, 6, 3, 2],
-    ],
-
-    hasMultipleSolutions: false
-}
-```
+The result is the completed Sudoku puzzle.
 
 ### React Component
 
 The React component handles everything for you. All you have to provide is the initial Sudoku puzzle. This can be combined with the generate function to create a React component with a random puzzle:
 
 ```jsx
-const { sudoku } = Sudoku.generateSync();
+import { generate, Component } from "@d-livingston/sudoku";
 
 React.render(
-    <Sudoku.Component sudoku={sudoku} />,
+    <Component sudoku={generate()} />,
     document.getElementById("root")
 );
 ```

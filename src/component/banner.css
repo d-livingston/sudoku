@@ -1,0 +1,41 @@
+.sudoku__banner {
+    background-color: #fffffff8;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 30%;
+    bottom: 30%;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.sudoku__banner_hidden {
+    opacity: 0;
+    transform: translateY(-100%);
+    z-index: -1;
+}
+
+.sudoku__banner_title {
+    font-size: 36px;
+    text-align: center;
+}
+
+.sudoku__banner_subtitle {
+    font-size: 20px;
+    text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+    .sudoku__banner_title {
+        font-size: 54px;
+    }
+
+    .sudoku__banner_subtitle {
+        font-size: 32px;
+    }
+}

@@ -1,0 +1,17 @@
+.sudoku__stopwatch {
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1002;
+    font-size: 20px;
+}
+
+@media screen and (min-width: 768px) {
+    .sudoku__stopwatch {
+        font-size: 36px;
+        left: 0;
+        right: calc(100% - var(--sudoku-max-width));
+    }
+}

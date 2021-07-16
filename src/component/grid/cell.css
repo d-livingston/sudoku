@@ -1,0 +1,37 @@
+.sudoku__cell {
+    background-color: var(--sudoku-cell-bg);
+    border: 1px solid #00000033;
+    cursor: pointer;
+    color: var(--sudoku-cell-color);
+}
+
+.sudoku__same_house {
+    background-color: var(--sudoku-same-house-bg);
+}
+
+.sudoku__same_value {
+    background-color: var(--sudoku-same-value-bg);
+}
+
+.sudoku__invalid {
+    background-color: #ffb3b3;
+}
+
+.sudoku__selected {
+    background-color: var(--sudoku-selected-bg);
+}
+
+.sudoku__invalid {
+    color: #d12424;
+}
+
+.sudoku__locked {
+    color: var(--sudoku-locked-color);
+}
+
+.sudoku__notes {
+    display: grid;
+    grid-template-rows: var(--sudoku-rows);
+    grid-template-columns: var(--sudoku-rows);
+    gap: 0;
+}

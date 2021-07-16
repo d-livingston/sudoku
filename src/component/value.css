@@ -1,0 +1,6 @@
+.sudoku__value {
+    box-sizing: border-box;
+    color: inherit;
+    height: 100%;
+    width: 100%;
+}

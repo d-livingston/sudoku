@@ -1,0 +1,6 @@
+.sudoku__square {
+    display: grid;
+    grid-template-columns: var(--sudoku-rows);
+    grid-template-rows: var(--sudoku-rows);
+    border: 1px solid var(--sudoku-color);
+}

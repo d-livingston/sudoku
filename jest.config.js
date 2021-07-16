@@ -1,11 +1,10 @@
 module.exports = {
     roots: ["<rootDir>/src"],
-    testMatch: ["**/tests/**/*.+(test).+(ts|tsx)"],
-    setupFilesAfterEnv: ["./src/tests/fixtures/extend-expect.ts"],
+    testMatch: ["**/src/**/*.+(test).+(ts|tsx)"],
     transform: {
         "^.+\\.(ts|tsx)$": "ts-jest",
     },
     moduleNameMapper: {
-        "^.+\\.(css|less|scss)$": "identity-obj-proxy",
+        "^.+\\.(css)$": "identity-obj-proxy",
     },
 };
