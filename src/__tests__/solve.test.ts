@@ -1,4 +1,4 @@
-import solve from "../solve/index";
+import solve from "../solve";
 import { blank, invalid, solved } from "./__fixtures__/sudoku";
 
 it("solves Sudokus", async () => {
