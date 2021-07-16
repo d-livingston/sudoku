@@ -1,4 +1,29 @@
 {
+    "name": "@d-livingston/sudoku",
+    "version": "3.0.0",
+    "description": "A basic Sudoku package.",
+    "main": "dist/sudoku.js",
+    "files": [
+        "dist"
+    ],
+    "author": "Daniel Livingston <contact@daniellivingston.net>",
+    "homepage": "https://github.com/d-livingston/sudoku#readme",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/d-livingston/sudoku.git"
+    },
+    "keywords": [
+        "sudoku",
+        "puzzle",
+        "generate",
+        "solve",
+        "react",
+        "component"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
     "scripts": {
         "build": "webpack",
         "test": "jest",
@@ -24,6 +49,7 @@
         "@types/react-test-renderer": "^17.0.1",
         "autoprefixer": "^10.3.1",
         "babel-loader": "^8.2.2",
+        "clean-webpack-plugin": "^4.0.0-alpha.0",
         "css-loader": "^6.0.0",
         "css-minimizer-webpack-plugin": "^3.0.2",
         "file-loader": "^6.2.0",
