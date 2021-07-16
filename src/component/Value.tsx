@@ -10,7 +10,7 @@ const propTypes = {
     value: PropTypes.number.isRequired,
 };
 
-const Value: React.FC<ValueProps> = ({ value }) => {
+const Value = ({ value }: ValueProps): JSX.Element => {
     return (
         <svg
             className="sudoku__value"

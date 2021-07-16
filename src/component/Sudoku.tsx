@@ -55,7 +55,7 @@ const Sudoku: React.FC<SudokuProps> = ({ sudoku: initial }) => {
     return (
         <div id="sudoku" className="sudoku__container">
             <Stopwatch
-                isSolved={state.isSolved}
+                isPaused={state.isSolved}
                 time={time}
                 increment={() => setTime((time) => time + 1)}
             />

@@ -4,14 +4,14 @@ import "./stopwatch.css";
 
 export type StopwatchProps = {
     increment: () => void;
-    isSolved: boolean;
+    isPaused: boolean;
     time: number;
 };
 
 const propTypes = {
     increment: PropTypes.func.isRequired,
     time: PropTypes.number.isRequired,
-    isSolved: PropTypes.bool.isRequired,
+    isPaused: PropTypes.bool.isRequired,
 };
 
 function getTime(time: number): string {
@@ -23,12 +23,12 @@ function getTime(time: number): string {
     }`;
 }
 
-const Stopwatch: React.FC<StopwatchProps> = ({ isSolved, increment, time }) => {
+const Stopwatch: React.FC<StopwatchProps> = ({ isPaused, increment, time }) => {
     React.useEffect(() => {
         let interval = setInterval(() => {}, 1000);
         clearInterval(interval);
 
-        if (!isSolved) {
+        if (!isPaused) {
             interval = setInterval(increment, 1000);
         } else {
             clearInterval(interval);
