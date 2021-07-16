@@ -29,7 +29,7 @@ const propTypes = {
     state: PropTypes.any.isRequired,
 };
 
-const Square: React.FC<SquareProps> = ({ id, selectCell, state }) => {
+const Square = ({ id, selectCell, state }: SquareProps): JSX.Element => {
     const cells = getSquareCells(state.sudoku, id).map((cell) => ({
         cell,
         value: getValue(state.sudoku, cell),

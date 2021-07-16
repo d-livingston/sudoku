@@ -12,7 +12,7 @@ const propTypes = {
     visible: PropTypes.bool.isRequired,
 };
 
-const Banner: React.FC<BannerProps> = ({ visible }) => {
+const Banner = ({ visible }: BannerProps): JSX.Element => {
     return (
         <div
             className={classNames("sudoku__banner", {

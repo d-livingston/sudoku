@@ -41,7 +41,7 @@ const propTypes = {
     notes: PropTypes.arrayOf(PropTypes.bool.isRequired).isRequired,
 };
 
-const Cell: React.FC<CellProps> = ({
+const Cell = ({
     onClick,
     value,
     hasSameValue,
@@ -50,7 +50,7 @@ const Cell: React.FC<CellProps> = ({
     isInvalid,
     isLocked,
     notes,
-}) => {
+}: CellProps): JSX.Element => {
     return (
         <button
             className={classNames("sudoku__cell", {

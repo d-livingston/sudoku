@@ -17,7 +17,10 @@ const propTypes = {
     dispatchNumber: PropTypes.func.isRequired,
 };
 
-const NumberPad: React.FC<NumberPadProps> = ({ dispatchNumber, size = 9 }) => {
+const NumberPad = ({
+    dispatchNumber,
+    size = 9,
+}: NumberPadProps): JSX.Element => {
     return (
         <div className="sudoku__number_pad">
             {Array.from({ length: size }, (_, i) => (

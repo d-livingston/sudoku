@@ -25,11 +25,11 @@ const propTypes = {
     showControls: PropTypes.bool,
 };
 
-const Controls: React.FC<ControlsProps> = ({
+const Controls = ({
     state,
     dispatch,
     showControls,
-}) => {
+}: ControlsProps): JSX.Element => {
     return (
         <div
             className={classNames("sudoku__controls_container", {

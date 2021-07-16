@@ -23,7 +23,11 @@ const propTypes = {
     toggleControls: PropTypes.func.isRequired,
 };
 
-const Grid: React.FC<GridProps> = ({ state, selectCell, toggleControls }) => {
+const Grid = ({
+    state,
+    selectCell,
+    toggleControls,
+}: GridProps): JSX.Element => {
     return (
         <div className="sudoku__grid_container">
             <button
